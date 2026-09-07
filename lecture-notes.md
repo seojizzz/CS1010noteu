@@ -1059,6 +1059,247 @@ int main() {
 }
 ```
 
-# L3: To be updated
+# L3: Fixed Size arrays and Recursion
+## 3.1 Arrays
+### 3.1.1 Array Declaration
 
-*Lecture notes for L3 have not been taken yet — check back after the next lecture.*
+Let's say we want to declare an array that stores 5 elements of type `double` that we want to call "costs".
+
+An **array** is declared as such:
+`<type> <array name>[<no. of elements>]`
+
+```c
+double costs[5];
+```
+
+> **Important:** Arrays have a fixed type. You cannot add multiple different types to an array unlike Python.
+
+Arrays are stored on the stack. 
+```stack
+main
+
+costs = {?,?,?,?,?}
+```
+An array will have all of its elements stored contiguously to each other in memory. * This has implications for both performance and security in the far future.
+
+```c
+double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+        // initializes the array with 5 values
+```
+It is stored in the stack as such:
+```
+stack:
+|8.88|10.22|9.88|22.22|44.44|
+```
+### 3.1.2 Initializing elements
+However, what if we initialize only 3 elements out of 5?
+
+```c
+double costs[5]= {8.88,10.22,9.88};
+// the remaining elements will be initialized to 0.0 by default.
+
+
+double zeroarray[5]={0};
+//^^this is a very good way to initialize an entire array to 0!
+```
+
+What if we initalize more than 5 elements?
+```c
+double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
+```
+
+If we have more values than the specified size, what happens is up to the compiler (technically not undefined behavior) [we don’t recommend doing this, there’s no good reason to at this stage]
+
+
+What if we initialize it over 2 lines?
+```c
+double costs[5];
+costs = {8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
+```
+> This does **NOT** work and throws a `compile error`. Unlike scalar variables, arrays cannot be assigned new values as a whole.
+
+
+### 3.1.3 Accessing an Array (writing)
+We use the index.
+```c
+double costs[5];
+
+costs[0] = 8.88;
+// | 8.88 | ? | ? | ? | ? |
+
+costs[4] = 44.44;
+// | 8.88 | ? | ? | ? | 44.44 |
+```
+
+### 3.1.4 Copying Semantics
+```c
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    double costs_2[] = costs; // error!
+}
+```
+
+> This does **NOT** work and will throw a *compile error*! `error: array initalizer must be an initializer list.`
+
+Arrays (unlike numerical types and structs) as a whole are **not copyable** via assignment operators.
+
+### 3.1.5 Arrays as arguments to functions
+```c
+#include <stdio.h>
+#include <stddef.h>
+
+void print_doublearr_index(double arr[], size_t index) {
+    printf("%f\n", arr[index]);
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    print_doublearr_index(costs, 3);
+}
+```
+
+`size_t`: unsigned type (typically `unsigned long`)
+- Guaranteed to be large enough to index any array
+- Intent is clear: use by default for array indices, unless we need negative values
+- `size_t` is defined in `<stddef.h>`
+
+Array indices can technically be any integral type (`char`, `int`, `long` ...)
+
+### 3.1.6 Length of arrays
+```c
+void print_last_element (double arr[]) {
+    printf("%f\n", arr[?])
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    print_last_element(costs);
+}
+```
+In **C**, we do **NOT** have `length/len` operators to measure the length of an array.
+
+Instead, we use `size_t` for now:
+```c
+void print_last_element(double arr[], size_t length) {
+    printf("%f\n", arr[length - 1]);
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    print_last_element(costs, 5);
+}
+```
+
+### Setting Values inside Functinos
+
+```c
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    set_doublearr_index(costs, 3, 5.5);
+    printf("%f\n", costs[3]);
+}
+void set_doublearr_index(double arr[], size_t index, double val) {
+    arr[index] = val;
+}
+    //output is... 5.5.
+```
+
+This sets the index 3 (the 4th) element of costs to 5.5. But how is that possible? This is because arrays are pointers.
+[](#)
+
+### Returning from functions
+For now, do not return arrays declared within functions.
+```c
+// DONT DO THIS
+??? foo() {
+    double costs[5] ={8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
+    return costs;
+} // will return UB
+```
+
+## 3.2 Arrays and Structs
+### Zeroing out
+
+```c
+#include <stdio.h>
+
+typedef struct Position {
+    int x;
+    int y;
+} Position;
+
+int main(void){
+    Position positions[2] = {0};
+    printf("%d %d\n", positions[0].x, positions[0].y);
+} // This will zero out all members of all structs.
+```
+
+### UB
+```c
+int main(void) {
+    double costs[1] = {8.88};
+    printf("%f\n", costs[1]);
+}
+
+// UB [1] 
+
+
+int main(void) {
+    double costs[1];
+    printf("%f\n", costs[-1]);
+}
+
+// UB [2]
+
+??? foo() {
+    double costs[1] = {8.88};
+    return costs;
+}
+
+// UB [3]
+
+int main() {
+    double costs[1];
+    printf("%f\n", costs[0]);
+}
+```
+
+### Variable-length arrays
+
+Can we declare the size of an array as a variable? Yes.
+```c
+double costs[var];
+```
+
+> However, there are much better ways to do this (discussed later). We do not allow VLAs because of underlying issues. As a matter of fact, VLA was removed from Linux operating system.
+
+## 3.3 Multidimensional Arrays
+### 3.3.1 Array of arrays
+```c
+int main(void) {
+    int a[2][3] = {{0,1,2},{3,4,5}};
+    printf("%d\n", a[1][0]);
+}
+```
+
+Then a is stored as:
+$$a =
+\left[\begin{matrix}
+    0 & 1 & 2 \\ 3 & 4 & 5
+\end{matrix}\right]$$
+
+We are storing an array of arrays.
+
+Example: tic-tac-toe
+```c
+int grid[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
+```
+$$\text{grid} =
+\left[\begin{matrix}
+    1 & 2 &3 \\ 4 & 5 & 6 \\ 7&8&9
+\end{matrix}\right]$$
+
+Arrays can have more dimensions!
+
+> Only the first dimension size can be omitted.
+
