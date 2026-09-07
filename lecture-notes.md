@@ -1286,7 +1286,8 @@ Then a is stored as:
 $$a =
 \left[\begin{matrix}
     0 & 1 & 2 \\ 3 & 4 & 5
-\end{matrix}\right]$$
+\end{matrix}\right]
+$$
 
 We are storing an array of arrays.
 
@@ -1302,4 +1303,110 @@ $$\text{grid} =
 Arrays can have more dimensions!
 
 > Only the first dimension size can be omitted.
+
+## 3.4 Recursion
+### 3.4.1 Why Recursion
+You **cannot call yourself a programmer if you don't know how to recurse**.  You will be locking yourself away from future concepts if you don't learn this. This includes:
+- Binary search tres
+- Fast/Efficient sorting algorithms
+- A lot of efficient algorithms. The fast fourier transform (FFT) is an example
+
+### 3.4.1 Features of recursion
+
+- **Base Case:**
+    - The simplest possible case that we have to solve manually.
+
+- **Recursive Case:**
+    - In this case we usually have to "steer" the general case into the smaller case somehow. 
+    - We will rely on Cheems to solve the smaller version of the problem for us.
+    - We will use whatever Cheems gives us + a little bit more work to solve the problems in general.
+
+
+```c
+<return_type> foo(<param(s) here>){
+    if(<base case>){
+    return; // or return value;
+}
+
+// handle recursive case here
+// any computation before recursive call(s)
+
+foo(<with smaller case>);
+    // any computation after recursive call(s)
+}
+```
+
+### 3.4.2 Example: Printing an array in reverse
+
+Logic:
+1. The base case is when the length of the array is 0, so we do nothing.
+2. We have an entire array of $n$ elements.
+3. 
+
+- The entire array of $n$ elements
+    - The last element will be our base case.
+    - Cheems will handle the rest with: `print_arr_reverse(arr, len-1)`
+-  We should do something only with the last element. We print the last element before Cheems.
+
+```c
+void print_arr_reverse(int arr[], size_t len){
+    if (len == 0) {
+        return; // array has nothing, we do nothing.
+    }
+
+    printf("%d\n", arr[len-1]);
+
+    print_arr_reverse(arr, len-1); // cheems!
+}
+```
+
+### Example: Reverse an array
+Input: An array of length `len`.
+Output: Reverse the elements of `arr`.
+
+We need a helper function here:
+The function will need: 
+- take in an array
+- Swap the first and last elements
+
+```c
+void reverse_arr_helper(int arr[], size_t start, size_t end) {
+    if (start >= end) {
+        return;
+    }
+    reverse_arr_helper(arr, start+1, end-1);
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+}
+
+void reverse_arr(int arr[], size_t len) {
+    if (len==0) {return;}
+    reverse_arr_helper(arr,0,len-1);
+}
+```
+
+### Example: Sort an array
+Let's say Cheems has already sorted the first $n-1$ elements for us. What should we do with the last element?
+> We figure out where to put it.
+
+```c
+void shift_left(int arr[], size_t len, size_t count) {
+    ...
+}
+
+void count_larger_than(int arr[], size_t len, size_t val) {
+    ...
+}
+
+void sort_arr(int arr[], size_t len) {
+    if(len==0){
+        return;
+    }
+    size_t count = count_larger_than(arr, len-1, arr[len-1]);
+    shift_left(arr, len, count);
+}
+
+```
+
 
