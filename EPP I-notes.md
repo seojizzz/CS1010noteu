@@ -82,10 +82,115 @@ Derivation:
 $$V_b = V_1 + V_2 + V_3$$
 
 ## 1.3 Resistances in Series and Parallel
+### Resistance in Series
+* From KCL, we know that currents in all resistors in series is identical.
+* From KVL and Ohm's law,
+$$
+\begin{array}{rcl}
+    V_b & = & V_1+ V_2+V_3 \\
+    & = & IR_1+IR_2+IR_3 \\
+    & = & I\cdot(R_1+R_2+R_3)\\
+\end{array}
+$$
+* Since $V_b = IR_b$ ,
+$$R_b=R_1+R_2+R_3$$
+Resistances in series sum up to resistance in series.
+
+### Resistance in Parallel
+* $V_b=V_1=V_2=V_3$
+* From KCL,
+$$
+\begin{array}{rcl}
+I&=&I_1+I_2+I_3\\
+&=&\frac{V_b}{R_1}+\frac{V_b}{R_2}+\frac{V_b}{R_3}\\
+&=&V_b\left(\frac{1}{R_1}+\frac{1}{R_2}+\frac{1}{R_3}\right)
+\end{array}
+$$
+* Since $I=\frac{V_b}{R_{eq}}$, we have:
+$$R_{eq}=\frac{1}{R_1}+\frac{1}{R_2}+\frac{1}{R_3}$$
+* Since $\frac{1}{R_{eq}}>R_i$ for any $i=1,2,3,\cdots$, $\quad\therefore R_{eq}<R_i$ .
+* Resistors in parallel result in reduced resistance.
+
 ## 1.4 Voltage Division Principle
+In series circuit, the voltage across each resistance is a fraction of the total voltage, equal to the ratio of the concerned resistance to the total resistance
+
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/1.4.1.png" alt="Figure 1.4.1">
+    </figure>
+</div>
+
+$$\text{Figure 1.4.1}$$
+
+$$
+
+\begin{array}{rcccl}
+I & = & \displaystyle\frac{V_b}{R_1+R_2+R_3}&& \\
+V_1 & = & I\times R_1&=&\displaystyle \frac{R_1}{R_1+R_2+R_3}\cdot V_b \\[10pt]
+V_2 & = & I\times R_2&=&\displaystyle \frac{R_2}{R_1+R_2+R_3}\cdot V_b \\[10pt]
+V_3 & = & I\times R_3&=&\displaystyle \frac{R_3}{R_1+R_2+R_3}\cdot V_b \\
+\end{array}
+$$
+
 ## 1.5 Current Division Principle
+For two resistances in parallel, the current flowing in each resistance is a fraction of the total current, equal to the ratio of the other resistance to the sum of both the resistances
+
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/1.5.1.png" alt="Figure 1.5.1">
+    </figure>
+</div>
+
+$$\text{Figure 1.5.1.}$$
+$$
+\begin{array}{rcl}
+V_b&=&\displaystyle(R_1||R_2)\cdot I=\frac{R_1R_2}{R_1+R_2}\cdot I\\[10pt]
+I_1&=&\displaystyle\frac{V_1}{R_1}=\frac{V_b}{R_1}=\frac{R_1}{R_1+R_2}\cdot I\\[10pt]
+I_1&=&\displaystyle\frac{R_1}{R_1+R_2}\cdot I
+\end{array}
+$$
+
+---
+
 # 2. Thevenin Equivalent Circuit
+
+The Thevenin equivalent circuit replaces any linear two-terminal network with an equivalent circuit consisting of a single voltage source, $V_{th}$, in series with a resistance, $R_{th}$. The equivalent circuit produces the same terminal voltage and current for any connected load.
+
 ## 2.1 Concept of Thevenin Equivalent Circuit
+The equivalent circuit is called a “Thevenin equivalent circuit” if it consists of just an ideal voltage source and a series resistance
+* Ideal voltage source called “Thevenin voltage” (VT)
+* Series resistance called “Thevenin resistance” (RT)
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/2.1.1.png" alt="Thevenin equivalent circuit">
+    </figure>
+</div>
+
+$$\text{Fig 2.1.1:}
+\quad V_{th}\text{ in series with }R_{th}$$
+
+### Steps to finding the Thevenin Equivalent
+
+1. **Remove the load** from the two terminals of interest.
+2. Find the **Thevenin voltage**, $V_{th}$, as the open-circuit voltage across the terminals:
+   $$V_{th}=V_{oc}$$
+3. Find the **Thevenin resistance**, $R_{th}$:
+   * Deactivate independent sources: replace ideal voltage sources with short circuits and ideal current sources with open circuits.
+   * Find the equivalent resistance looking into the terminals.
+   $$R_{th}=R_{eq}\text{ (with independent sources deactivated)}$$
+4. Connect the load back to the Thevenin equivalent.
+
+For a load resistance $R_L$, the load current and voltage are:
+$$I_L=\frac{V_{th}}{R_{th}+R_L}$$
+$$V_L=I_LR_L=\frac{R_L}{R_{th}+R_L}V_{th}$$
+
+If dependent sources are present, they must remain active; $R_{th}$ can be found using a test voltage or current source:
+$$R_{th}=\frac{V_{test}}{I_{test}}$$
+
+Thevenin's theorem is useful because it simplifies a complex circuit into a form that makes load-current and load-voltage calculations straightforward.
+
+## 2.2 
+
 # 3. Circuit Analysis Techniques
 ## 3.1 Polarity
 ## 3.2 Passive and Active elements
