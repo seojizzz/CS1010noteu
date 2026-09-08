@@ -1,17 +1,17 @@
-\documentclass[11pt,a4paper]{article}
-
-\usepackage[margin=1in]{geometry}
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=0.5in]{geometry}
 \usepackage{amsmath,amssymb}
+\usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage[siunitx]{circuitikz}
 \usepackage{tikz}
-\usepackage{physics}
 \usepackage{hyperref}
+\usepackage{tabularx}
 
-\title{Electrical Principles and Practice}
-\author{}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+\title{Engineering Principles and Practice I}
+\author{by Seojin}
 \date{}
-
 \begin{document}
 
 \maketitle
@@ -19,7 +19,26 @@
 
 \section{Fundamentals of Electricity}
 
-\subsection{Basic quantities}
+\subsection{Electrical quantities}
+
+\begin{center}
+    \begin{tabularx}{\textwidth}{|l|X|l|}
+        \hline
+        \textbf{Quantity} & \textbf{Description} & \textbf{SI Unit} \\
+        \hline
+        Charge & The amount of electricity held by an object & \si{\coulomb} \\
+        \hline
+        Current & The rate of flow of charge & \si{\ampere} \\
+        \hline
+        Voltage & The potential difference between two points & \si{\volt} \\
+        \hline
+        Resistance & The opposition to the flow of current & \si{\ohm} \\
+        \hline
+        Power & The rate at which energy is transferred or converted & \si{\watt} \\
+        \hline
+    \end{tabularx}
+\end{center}
+
 \begin{align}
 	V &= \frac{W}{Q}, & I &= \frac{\mathrm{d}Q}{\mathrm{d}t}, & P &= VI.
 \end{align}
