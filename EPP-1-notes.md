@@ -162,7 +162,7 @@ The equivalent circuit is called a “Thevenin equivalent circuit” if it consi
 * Series resistance called “Thevenin resistance” (RT)
 <div align="center">
     <figure>
-        <img src="assets/EPP1/2.1.1.png" alt="Thevenin equivalent circuit">
+        <img src="assets/EPP1/2.1.1.png" alt="Figure 2.1.1">
     </figure>
 </div>
 
@@ -239,10 +239,11 @@ We assign (assume) a reference polarity for the unknown voltage across each elem
 4. Define the remaining node voltages as unknown variables.
 5. Apply KCL at the nodes, to obtain as many equations as the number of unknown variables.
     * Express each current in a resistive branch in terms of the adjacent node voltages (using Ohm’s law).
+6. Solve Simulatenous Linear Equations.
 
 <div align="center">
     <figure>
-        <img src="assets/EPP1/3.3.1.png" alt="Thevenin equivalent circuit">
+        <img src="assets/EPP1/3.3.1.png" alt="Figure 3.1.1">
     </figure>
 </div>
 
@@ -250,10 +251,92 @@ $$\text{Fig 3.3.1. junction } V_a \text{, at which NVA is done}$$
 
 $$\frac{V_b-V_a}{R_1}+\frac{V_c-V_a}{R_2}+\frac{0-V_a}{R_3}=0$$
 
+$$
+\begin{array}{rcl}
+a_1V_a+b_1V_b+c_1V_c & = & d_1 \\
+a_2V_a+b_2V_b+c_2V_c & = & d_2 \\
+a_3V_a+b_3V_b+c_3V_c & = & d_3
+\end{array}
+$$
+
 # 4. Capacitors
 
+A capacitor is a passive two-terminal component that stores electrical energy in an electric field. It is made from two conductive plates separated by an insulating material (dielectric).
+
+When a voltage is applied across the plates, charge accumulates on them: one plate becomes positively charged and the other negatively charged, creating charge stored in the form of an electric field.
+
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/4.0.1.png" alt="Figure 4.0.1">
+    </figure>
+</div>
+
+$$\text{Fig 4.0.1: Resistor-Capacitor Circuit}$$
+
+Capacitors oppose sudden changes in voltage and are commonly used for filtering, smoothing, timing, and energy storage in electronic circuits.
+
 ## 4.1 Capacitance
+
+The Capacitance $C$ describes a capacitor’s capability to store electric charge when a voltage is applied.  The SI unit is a Farad  ($F$), or **amount of charge per volt**:
+
+$$C = \frac{Q}{V}$$
+
+where:
+- $Q$ is the charge stored, in coulombs (C)
+- $C$ is the capacitance, in farads (F)
+- $V$ is the voltage across the capacitor in Volts (V)
+
+> Note: 1 Farad is very large. A 1 F capacitor is called a supercapacitor.
+
+### Practical Capacitors and Plate Capacitors
+Most commonly found capacitors today are specified in pF, nF, and µF.
+
+In the case of the parallel-plate capacitor, the capacitance can be determined using:
+$$C=\frac{\varepsilon A}{d},\qquad \text{where } \varepsilon = \varepsilon_r\varepsilon_0$$
+
+where:
+* $\varepsilon$: Permittivity of dielectric
+* $\varepsilon_r$: Relative permittivity
+* $\varepsilon_0$: Permittivity of free space ($8.85 \times 10^{-12}  \text{ F m}^{-1}$)
+* $A$: Overlap area of conductor
+* $d$: Distance between plates
+
 ## 4.2 Capacitance in Series and Parallel
+### Capacitances in Parallel
+* Voltage is the same for all three capacitors, but charges are different.
+
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/4.2.1.png" alt="Figure 4.2.1">
+    </figure>
+</div>
+
+$$\text{Fig 4.2.1: Parallel Capacitor Circuit}$$
+Hence,
+$$\begin{array}{rcl}
+    Q_t&=&Q_1+Q_2+Q_3\\
+    &=&C_1V+C_2V+C_3V\\
+    &=&(C_1+C_2+C_3)V\\
+    &=&C_{eq}V
+\end{array}
+\\[12pt]
+\boxed{\therefore C_{eq}=C_1+C_2+C_3}
+$$
+
+### Capacitances in Series
+Charge is the same for all three capacitors, but voltages are different.
+
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/4.2.2.png" alt="Figure 4.2.2">
+    </figure>
+</div>
+
+$$\text{Fig 4.2.2: Parallel Capacitor Circuit}$$
+Hence,
+
+
+
 ## 4.3 Capacitor Equations
 ## 4.4 DC Transients
 # 5. Inductors
