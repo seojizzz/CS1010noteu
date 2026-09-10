@@ -31,9 +31,9 @@ $$V = V_{total} - i_L R_{i}$$
 
 
 
-## 1.2 Kirchoff's Current and Voltage Laws 
+## 1.2 Kirchhoff's Current and Voltage Laws 
 
-### Kirchoff's Current Law
+### Kirchhoff's Current Law
 The sum of all currents entering a node is equal to the sum of all currents leaving a node.
 * This is based on the *conservation of charges*.
 * Current = Flow of charges
@@ -58,7 +58,7 @@ KCL can be applied to a supernode, which is any enclosed portion of the circuit.
 
 $$\text{Figure 1.2.2:}\quad  i_1 = i_2 + i_3 + i_4$$
 
-### Kirchoff's Voltage Law
+### Kirchhoff's Voltage Law
 Around any closed loop, the sum of voltage rises is equal to the sum of voltage drops.
 * This is derived from the conservation of power.
 * Voltage rises when we go from negative to positive polarity.
