@@ -189,13 +189,69 @@ $$R_{th}=\frac{V_{test}}{I_{test}}$$
 
 Thevenin's theorem is useful because it simplifies a complex circuit into a form that makes load-current and load-voltage calculations straightforward.
 
-## 2.2 
-
 # 3. Circuit Analysis Techniques
 ## 3.1 Polarity
+To find the unknown voltages and currents for various elements in the circuit. We need to find the voltage polarity and current direction, not just their magnitudes!
+### Reference Directions for Current
+We assign (assume) a reference direction for the unknown current in each branch. After solving the circuit, the current may be positive or negative.
+* If positive,
+    * The actual current is in the same direction as the
+reference direction
+* If negative,
+    * The actual current is in the opposite direction of the
+reference direction
+### Reference Directions for Voltage
+We assign (assume) a reference polarity for the unknown voltage across each element. After solving the circuit, the voltage may be positive or negative
+* If positive,
+    * The actual voltage polarity is in the same direction as the reference polarity
+* If negative,
+    * The actual voltage polarity is in the opposite direction of the reference polarity
+
 ## 3.2 Passive and Active elements
+
+**Passive elements** consume power: voltage (potential) drops in the direction of the current, e.g.,
+- Resistors
+- Batteries being recharged
+
+**Active elements** deliver power: voltage (potential) rises in the direction of the current.
+- A DC power supply that is delivering current to some resistors
+
+### Passive Sign Convention
+* Adopted when it is not clear whether an unknown element is active or passive
+* Assumes all unknown elements are passive
+    * Reference direction for current is always assumed to enter the positive voltage terminal of the element
+* Significance:
+    * If power is calculated to be positive, the element is passive (a load)
+    * If power is calculated to be negative, the element is active (a source)
+
 ## 3.3 Node Voltage Analysis
+
+* Most general method for analysing circuits.
+* Basic idea
+    * Solve for unknown node voltages w.r.t. a *reference node*.
+    * Use them to calculate the voltage across any element, & the current passing through it.
+
+### Steps for NVA
+1. Select a reference node (usually a ground terminal)
+2. For each voltage source connected to the reference node, the other end's node is a known constant.
+3. For all other voltage sources, one end’s node voltage can be written in terms of the other end’s node voltage. So there is at most one unknown variable for each such voltage source.
+    * *If there are known voltages in place of unknowns, you can express them as constants too instead of variables.* 
+4. Define the remaining node voltages as unknown variables.
+5. Apply KCL at the nodes, to obtain as many equations as the number of unknown variables.
+    * Express each current in a resistive branch in terms of the adjacent node voltages (using Ohm’s law).
+
+<div align="center">
+    <figure>
+        <img src="assets/EPP1/3.3.1.png" alt="Thevenin equivalent circuit">
+    </figure>
+</div>
+
+$$\text{Fig 3.3.1. junction } V_a \text{, at which NVA is done}$$
+
+$$\frac{V_b-V_a}{R_1}+\frac{V_c-V_a}{R_2}+\frac{0-V_a}{R_3}=0$$
+
 # 4. Capacitors
+
 ## 4.1 Capacitance
 ## 4.2 Capacitance in Series and Parallel
 ## 4.3 Capacitor Equations

@@ -94,13 +94,13 @@ More specifically,
 \\
 - We write in a higher-level programming language like C to create instructions that the CPU has to execute. A **compiler** (e.g. `clang` or `gcc`) takes the C code and produces assembly code.
 - We use high-level language and compilers so that our code is *portable*; we leave lower level details to be handled by the compiler.
-- We also leave hardware level optimisations to be hadnled by compilers.
+- We also leave hardware level optimisations to be handled by compilers.
 
 **C**
 : is a *compiled* progrmaming lanugage.
 
 *Compiler*
-: has to take C code written to produce assemlby instructions that the CPU will execute.
+: has to take C code written to produce assembly instructions that the CPU will execute.
 
 | Pros | Cons |
 | ---- | ---- |
