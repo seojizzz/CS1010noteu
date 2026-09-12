@@ -48,7 +48,8 @@
         * [2.2.2 Local variables](#222-local-variables)
     * [2.X Lab](#2x-lab)
 
-* [L3: To be updated](#l3-to-be-updated)
+* [L3: Fixed Size arrays and Recursion](#l3-fixed-size-arrays-and-recursion)
+    * [3.1 Arrays](#31-arrays)
 
 </details>
 
@@ -97,7 +98,7 @@ More specifically,
 - We also leave hardware level optimisations to be handled by compilers.
 
 **C**
-: is a *compiled* progrmaming lanugage.
+: is a *compiled* programming language.
 
 *Compiler*
 : has to take C code written to produce assembly instructions that the CPU will execute.
@@ -125,7 +126,7 @@ int main(void) {
 }
 ```
 1. `#include <stdio.h>` makes the C "standard input/output" header file available to this program.
-2. `int main(void) {` declares the main function, and code **starts** executing from within `main`. The `void` means that the function does not take any input arguments. the opening brace `{` means the the start of the code within `main`.
+2. `int main(void) {` declares the main function, and code **starts** executing from within `main`. The `void` means that the function does not take any input arguments. The opening brace `{` means the start of the code within `main`.
 3. `    printf("Hello world!\n");` Creates a string `"Hello world!"` and a new line character `\n` and  passes the argument to `printf`, which is sent to the standard output of the program
 4. Semicolon `;`  indicates the end of the statement.
 5. Closing brace `}` ends the code within `main`. 
@@ -330,7 +331,7 @@ printf("%d", x);
 
 | Operator | Meaning            | Example |
 | -------- | ------------------ | ------- |
-| `=`      | Assignmnent        | `x=1`   |
+| `=`      | Assignment         | `x=1`   |
 | `+`      | Addition           | `x + y` |
 | `-`      | Subtraction        | `x - y` |
 | `*`      | Multiplication     | `x * y` |
@@ -1103,7 +1104,7 @@ double zeroarray[5]={0};
 //^^this is a very good way to initialize an entire array to 0!
 ```
 
-What if we initalize more than 5 elements?
+What if we initialize more than 5 elements?
 ```c
 double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
 ```
@@ -1139,7 +1140,7 @@ int main(void) {
 }
 ```
 
-> This does **NOT** work and will throw a *compile error*! `error: array initalizer must be an initializer list.`
+> This does **NOT** work and will throw a *compile error*! `error: array initializer must be an initializer list.`
 
 Arrays (unlike numerical types and structs) as a whole are **not copyable** via assignment operators.
 
@@ -1190,7 +1191,7 @@ int main(void) {
 }
 ```
 
-### Setting Values inside Functinos
+### Setting Values inside Functions
 
 ```c
 int main(void) {
@@ -1307,9 +1308,9 @@ Arrays can have more dimensions!
 ## 3.4 Recursion
 ### 3.4.1 Why Recursion
 You **cannot call yourself a programmer if you don't know how to recurse**.  You will be locking yourself away from future concepts if you don't learn this. This includes:
-- Binary search tres
+- Binary search trees
 - Fast/Efficient sorting algorithms
-- A lot of efficient algorithms. The fast fourier transform (FFT) is an example
+- A lot of efficient algorithms. The fast Fourier transform (FFT) is an example
 
 ### 3.4.1 Features of recursion
 
@@ -1409,4 +1410,8 @@ void sort_arr(int arr[], size_t len) {
 
 ```
 
+# 3.X Lab
+* When declaring `arrays[][]`, you need to at least declare the no. of columns `[][cols]`.
 
+* `void` will not affect the variable inside `main` without `return`.
+* However, `void` calls on the array directly and can redefine the array elements.

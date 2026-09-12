@@ -333,12 +333,63 @@ Charge is the same for all three capacitors, but voltages are different.
 </div>
 
 $$\text{Fig 4.2.2: Parallel Capacitor Circuit}$$
+
+From KVL,
+$$
+\begin{array}{rcl}
+V&=&V_1+V_2+V_3\\[10pt]
+\dfrac{Q}{C_{eq}}&=&\displaystyle\frac{Q}{C_1}+\frac{Q}{C_2}+\frac{Q}{C_3}\\
+\end{array}
+$$
 Hence,
 
+$$
+\dfrac{1}{C_{eq}}=\displaystyle\frac{1}{C_1}+\frac{1}{C_2}+\frac{1}{C_3}
+$$
 
 
 ## 4.3 Capacitor Equations
+### Current-Voltage relationship
+
+* Capacitor has current flowing only when the stored electric charge is changing (voltage also changing)
+* Since $i(t) = \dfrac{dq}{dt}$, and $q(t) = Cv(t)$,
+we have:
+$$i(t)=C\dfrac{dv(t)}{dt}$$
+
+* At steady state, when the voltage is stable, its current will be 0.
+* Hence, capacitors in DC circuits behave as
+open−circuit at steady state
+
+Because of this, **a capacitor's voltage cannot change instantaneously.**
+
+* $i(t)=C\dfrac{dv}{dt}$;  if voltage changes instantaneously in zero time duration, then $\dfrac{dv}{dt}=\infty$, which is impossible as current becomes infinite.
+
+
+### Energy storage in Capacitors
+
+* When a capacitor gets charged, the energy is stored in its electric field
+* The stored energy can be expressed in terms of the work done in moving the charges to set up the field
+
+* Recall: voltage is a measure of the energy transferred (work done) per unit charge
+* Hence, work done in moving charge $dq$ from one plate to another:
+$$dw=v\,dq$$
+
+* For a capacitor that already has voltage $V$, the stored charge is $Q = CV$
+* Hence, work done to attain Q is:
+$$W=\displaystyle\int_0^Q{V}{dq}=\displaystyle\int_0^Q{\dfrac{q}{C}}{dq}=\dfrac{Q^2}{2C}=\dfrac{CV^2}{2}$$
+
+The energy equation for capcacitors is given by:
+
+$$\boxed{E=\frac{1}{2}CV^2}$$
+
 ## 4.4 DC Transients
+
+What is a DC transient?
+* The time-varying voltages and currents resulting from the adding or removing of a power source to circuits containing energy storage elements (e.g., capacitors/ inductors)
+
+Using an RC circuit with a DC source, 
+
+
 # 5. Inductors
 ## 5.1 Faraday's Law
 ## 5.2 Inductance in Series and Parallel
