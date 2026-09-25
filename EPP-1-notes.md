@@ -7,7 +7,7 @@
 
 | Quantity | Description |
 | ----- | ----- |
-| Electric charge | The physical property of matter that causes it to experience a force when placed in an electromagnetic field The charge carried by an electron: $$q_e=-16.02\times10^{-19}\text{ C}$$ In a conductor, electrons move under the influence of an electric field, giving rise to an electric current opposite to the flow of electrons. |
+| Electric charge | The physical property of matter that causes it to experience a force when placed in an electromagnetic field The charge carried by an electron: $$q_e=-1.602\times10^{-19}\text{ C}$$ In a conductor, electrons move under the influence of an electric field, giving rise to an electric current opposite to the flow of electrons. |
 | Voltage | It is a measure of the **energy transferred per unit charge** when the charge is moved from one point to another point Unit of voltage: Volt (V) $$V = \frac{E}{Q}$$ Also called electromotive force (EMF) The ‘+’ terminal is at a higher energy level than the ‘-’ terminal. |
 | Electric Current | The time rate of flow of electrical charges through an element Unit: Ampere (A) $$I = \frac{Q}{t}$$ Electric current has a direction, and it is the direction of flow of positive charges. |
 | Electric Power | Rate of energy transfer. $$\text{P}=\text{V}\times I = \frac{E}{q}\times\frac{q}{t} = \frac{V^2}{R}=I^2R$$ |
