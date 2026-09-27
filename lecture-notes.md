@@ -1439,28 +1439,195 @@ void sort_arr(int arr[], size_t len) {
 
 
 # L4: Loops
+
 ## 4.1 `while` Loops and `for` Loops
+
 ### Why loops?
-Some problems can be done using recursion, but take very long and require lots of effort. Consider the following example where we try to print an entire array.
+
+Some problems can be solved using recursion, but recursion can use a lot of stack space. Consider printing every element of an array:
 
 ```c
 void print_arr_from(double arr[], size_t length, size_t i) {
-    if (i==length) {return};
-    printf("%lf\n", arr[i]);
-    print_arr_from(arr,length, i+1);
+    if (i == length) {
+        return;
+    }
+    printf("%f\n", arr[i]);
+    print_arr_from(arr, length, i + 1);
 }
+
 void print_arr(double arr[], size_t length) {
     print_arr_from(arr, length, 0);
 }
 ```
 
-However, this results in **stack overflow**. The `print_arr_from` called itself too many times.
-* Every recursive call uses **stack space**. Each call waits for the next call to finish, so printing an array of length \(n\) creates roughly \(n\) nested calls. A sufficiently large array can exhaust the stack even when the base case is correct.
+Each recursive call uses a stack frame and waits for the next call to finish. Printing an array of length \(n\) creates roughly \(n\) nested calls, so a sufficiently large array can exhaust the stack and cause a **stack overflow**. C does not guarantee tail-call optimization to avoid this.
 
+Loops let us repeat code without making a new function call for every repetition.
 
+### `while` loops
 
+```c
+while (expression) {
+    // loop body
+}
+```
+
+The expression is checked first. If it is true, the loop body runs. At the end of the body, execution returns to the condition and checks it again. If the expression is false, the loop body is skipped or the loop ends.
+
+For example, print every element of an array:
+
+```c
+void print_arr(double arr[], size_t length) {
+    size_t i = 0;
+
+    while (i < length) {
+        printf("%f\n", arr[i]);
+        i += 1;
+    }
+}
+```
+
+Here, `i` is the **index** (or iterator). It starts at zero, increases after each iteration, and the loop ends when `i < length` becomes false.
+
+If the loop body never changes anything that can make the condition false, the loop may run forever. For example, leaving out `i += 1` would repeatedly print `arr[0]`.
+
+Array indices go from `0` to `length - 1`. Using `i <= length` would eventually access `arr[length]`, which is outside the array and causes undefined behavior.
+
+For reverse iteration with `size_t`, avoid a condition such as `i >= 0`: `size_t` is unsigned, so that condition is always true, even after the value wraps around. One way to print in reverse is:
+
+```c
+void print_arr_reverse(double arr[], size_t length) {
+    for (size_t i = 0; i < length; i += 1) {
+        printf("%f\n", arr[(length - 1) - i]);
+    }
+}
+```
+
+### `for` loops
+
+A `for` loop puts initialization, condition, and iteration in one place:
+
+```c
+for (expression1; expression2; expression3) {
+    // loop body
+}
+```
+
+- `expression1` runs once before the loop starts. It often declares and initializes an index.
+- `expression2` is the condition. The body runs only when it is true.
+- `expression3` runs after each execution of the body. It often updates the index.
+
+The `while` and `for` versions below do the same thing:
+
+```c
+size_t i = 0;
+while (i < length) {
+    printf("%f\n", arr[i]);
+    i += 1;
+}
+```
+
+```c
+for (size_t i = 0; i < length; i += 1) {
+    printf("%f\n", arr[i]);
+}
+```
+
+Variables declared in a `for` loop’s initialization are scoped to the loop, so `i` cannot be used after the loop. A variable declared before a `while` loop remains accessible after it.
 
 ## 4.2 Loop control with `break`, `continue`, `return`
+
+### `break`
+
+`break` immediately exits the **innermost loop** containing it. Execution continues after that loop.
+
+```c
+for (size_t i = 0; i < 5; ++i) {
+    printf("%zu\n", i);
+    if (i == 1) {
+        break;
+    }
+}
+printf("Loop ended!\n");
+```
+
+This prints `0`, `1`, and `Loop ended!`. In nested loops, `break` exits only the inner loop.
+
+### `continue`
+
+`continue` skips the rest of the current loop body and moves to the next iteration. In a `for` loop, the iteration expression runs before the condition is checked again.
+
+```c
+for (size_t i = 0; i < 5; ++i) {
+    if (i == 1) {
+        continue;
+    }
+    printf("%zu\n", i);
+}
+```
+
+This prints `0`, `2`, `3`, and `4`.
+
+### `return`
+
+`return` immediately exits the **entire function**, including any loops inside it. For example, this function returns as soon as it finds a `1`:
+
+```c
+bool has_one_inside_array(int arr[], size_t length) {
+    for (size_t i = 0; i < length; ++i) {
+        if (arr[i] == 1) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
 ## 4.3 Array recursion
+
+Array elements are commonly processed by iterating over their indices:
+
+```c
+for (size_t i = 0; i < length; ++i) {
+    // process arr[i]
+}
+```
+
+This is useful for tasks such as printing every element, initializing an array, and calculating a sum. The index starts at `0`, and the loop condition `i < length` ensures the last index accessed is `length - 1`.
+
 ## 4.4 Examples
 
+### Initialize every array element
+
+```c
+void init_array(double arr[], size_t length, double val) {
+    for (size_t i = 0; i < length; ++i) {
+        arr[i] = val;
+    }
+}
+```
+
+`++i`, `i++`, and `i += 1` all increase `i` by one here.
+
+### Nested loops: print a triangle
+
+A loop can be placed inside another loop. The inner loop runs to completion during each outer loop iteration.
+
+```c
+void print_triangle(size_t height) {
+    for (size_t i = 0; i < height; ++i) {
+        for (size_t j = 0; j < i + 1; ++j) {
+            printf("X ");
+        }
+        printf("\n");
+    }
+}
+```
+
+The outer loop controls the row number. The inner loop prints `i + 1` Xs on that row. Each loop’s index is scoped to its own `for` loop.
+
+### A method for planning loops
+
+1. Decide what condition must be true for the loop to continue.
+2. If the loop needs an iterator, choose its type and initialize it.
+3. Decide how to update the iterator after each iteration.
