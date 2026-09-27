@@ -3,7 +3,7 @@
 
 <details>
 
-<summary> Table of contents</summary>
+<summary>Table of contents</summary>
 
 * [CS1010 Programming Methodology - Lecture Notes](#cs1010-programming-methodology---lecture-notes)
     * [Admin matters](#admin-matters)
@@ -50,6 +50,27 @@
 
 * [L3: Fixed Size arrays and Recursion](#l3-fixed-size-arrays-and-recursion)
     * [3.1 Arrays](#31-arrays)
+        * [3.1.1 Array Declaration](#311-array-declaration)
+        * [3.1.2 Initializing elements](#312-initializing-elements)
+        * [3.1.3 Accessing an Array (writing)](#313-accessing-an-array-writing)
+        * [3.1.4 Copying Semantics](#314-copying-semantics)
+        * [3.1.5 Arrays as arguments to functions](#315-arrays-as-arguments-to-functions)
+        * [3.1.6 Length of arrays](#316-length-of-arrays)
+        * [Setting Values inside Functions](#setting-values-inside-functions)
+        * [Returning from functions](#returning-from-functions)
+    * [3.2 Arrays and Structs](#32-arrays-and-structs)
+        * [Zeroing out](#zeroing-out)
+        * [UB](#ub)
+        * [Variable-length arrays](#variable-length-arrays)
+    * [3.3 Multidimensional Arrays](#33-multidimensional-arrays)
+        * [3.3.1 Array of arrays](#331-array-of-arrays)
+    * [3.4 Recursion](#34-recursion)
+        * [3.4.1 Why Recursion](#341-why-recursion)
+        * [3.4.2 Features of recursion](#342-features-of-recursion)
+        * [3.4.3 Example: Printing an array in reverse](#343-example-printing-an-array-in-reverse)
+        * [Example: Reverse an array](#example-reverse-an-array)
+        * [Example: Sort an array](#example-sort-an-array)
+    * [3.X Lab](#3x-lab)
 
 </details>
 
@@ -1312,7 +1333,7 @@ You **cannot call yourself a programmer if you don't know how to recurse**.  You
 - Fast/Efficient sorting algorithms
 - A lot of efficient algorithms. The fast Fourier transform (FFT) is an example
 
-### 3.4.1 Features of recursion
+### 3.4.2 Features of recursion
 
 - **Base Case:**
     - The simplest possible case that we have to solve manually.
@@ -1337,7 +1358,7 @@ foo(<with smaller case>);
 }
 ```
 
-### 3.4.2 Example: Printing an array in reverse
+### 3.4.3 Example: Printing an array in reverse
 
 Logic:
 1. The base case is when the length of the array is 0, so we do nothing.
@@ -1415,3 +1436,31 @@ void sort_arr(int arr[], size_t len) {
 
 * `void` will not affect the variable inside `main` without `return`.
 * However, `void` calls on the array directly and can redefine the array elements.
+
+
+# L4: Loops
+## 4.1 `while` Loops and `for` Loops
+### Why loops?
+Some problems can be done using recursion, but take very long and require lots of effort. Consider the following example where we try to print an entire array.
+
+```c
+void print_arr_from(double arr[], size_t length, size_t i) {
+    if (i==length) {return};
+    printf("%lf\n", arr[i]);
+    print_arr_from(arr,length, i+1);
+}
+void print_arr(double arr[], size_t length) {
+    print_arr_from(arr, length, 0);
+}
+```
+
+However, this results in **stack overflow**. The `print_arr_from` called itself too many times.
+* Every recursive call uses **stack space**. Each call waits for the next call to finish, so printing an array of length \(n\) creates roughly \(n\) nested calls. A sufficiently large array can exhaust the stack even when the base case is correct.
+
+
+
+
+## 4.2 Loop control with `break`, `continue`, `return`
+## 4.3 Array recursion
+## 4.4 Examples
+
