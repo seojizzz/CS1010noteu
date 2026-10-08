@@ -1631,3 +1631,24 @@ The outer loop controls the row number. The inner loop prints `i + 1` Xs on that
 1. Decide what condition must be true for the loop to continue.
 2. If the loop needs an iterator, choose its type and initialize it.
 3. Decide how to update the iterator after each iteration.
+
+
+# L5: Pointers and Strings
+## 5.1 Pointers
+
+```c
+int x =1;
+int *ptr = &x;
+printf("%d\n",*ptr);
+// 1
+```
+
+`int *ptr = &x` - type pointer to an integer. `&` means address.
+`*ptr = 1;` - dereferencing a pointer to its address
+
+## 5.2 Address-of (&) and Dereferencing (*), nullptr, pointers to pointers
+## 5.3 Functions, structs, arrays, and pointer arithmetic
+## 5.4 Strings: Null termination, character arrays and string literals
+## 5.5 Printing strings, const and string library functions
+## 5.6 Pointer Provenance Framework: reasoning about pointers
+## 5.X Lab
