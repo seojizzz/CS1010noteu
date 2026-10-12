@@ -1,9 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1791789908.00362 "c:/dev/CS1010noteu/CS1010_Lecture_Notes.tex" "CS1010_Lecture_Notes.pdf" "CS1010_Lecture_Notes" 1791789913.16711 0
-  "CS1010_Lecture_Notes.aux" 1791789912 48601 fbcf03fbcc50dc4a40402d2bec00fd1a "pdflatex"
-  "CS1010_Lecture_Notes.tex" 1791789857 75994 115d72510fa1367a19a9c3cd6b6dbdd9 ""
-  "CS1010_Lecture_Notes.toc" 1791789912 6628 9bbca970eecc26982381d3e707f8a8e8 "pdflatex"
-  "c:/dev/CS1010noteu/CS1010_Lecture_Notes.tex" 1791789857 75994 115d72510fa1367a19a9c3cd6b6dbdd9 ""
+["pdflatex"] 1791790645.90167 "c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex" "CS1010_Lecture_Notes.pdf" "CS1010_Lecture_Notes" 1791790651.22332 0
+  "CS1010_Lecture_Notes.aux" 1791790650 32273 95a5aaadfba0d669de52c201b4e4dc38 "pdflatex"
+  "CS1010_Lecture_Notes.tex" 1791790639 73266 a7c4364b1d370586888e3fa71f885879 ""
+  "CS1010_Lecture_Notes.toc" 1791790650 6615 59e706eef4c08f39396ec17aba321511 "pdflatex"
+  "c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex" 1791790639 73266 a7c4364b1d370586888e3fa71f885879 ""
   "c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1786913759 2375 baa924870cfb487815765f9094cf3728 ""
   "c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1786913759 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1786913759 2405 5dcf2c1b967ee25cc46c58cd52244aed ""

@@ -1,8 +1,8 @@
-PWD c:/dev/CS1010noteu
+PWD c:/dev/CS1010noteu/LaTeX
 INPUT c:/texlive/2026/texmf.cnf
 INPUT c:/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT c:/dev/CS1010noteu/CS1010_Lecture_Notes.tex
+INPUT c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex
 OUTPUT CS1010_Lecture_Notes.log
 INPUT c:/texlive/2026/texmf-dist/tex/latex/base/article.cls
 INPUT c:/texlive/2026/texmf-dist/tex/latex/base/article.cls
@@ -192,6 +192,7 @@ INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT ./CS1010_Lecture_Notes.toc
 INPUT ./CS1010_Lecture_Notes.toc
 INPUT CS1010_Lecture_Notes.toc
+INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmbx10.tfm
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ot1lmr.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ot1lmr.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ot1lmr.fd
@@ -232,14 +233,13 @@ INPUT c:/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 INPUT c:/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
-INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmbx10.tfm
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
+OUTPUT CS1010_Lecture_Notes.toc
 INPUT c:/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
-OUTPUT CS1010_Lecture_Notes.toc
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
@@ -273,12 +273,12 @@ INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
-INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmr9.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
 INPUT c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmtt.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmtt.fd
 INPUT c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmtt.fd
+INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ts1-lmtt10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ts1-lmtt9.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmtk10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmr9.tfm
@@ -286,6 +286,7 @@ INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi9.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy9.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmr9.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ts1-lmtt10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm

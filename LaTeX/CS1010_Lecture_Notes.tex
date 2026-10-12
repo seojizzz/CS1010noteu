@@ -43,7 +43,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt plus 1pt minus 1pt}
 \setlength{\emergencystretch}{3em}
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2} % Include headings and subheadings only.
 % Numbers are already written in the source headings. Disabling automatic
 % numbering keeps 0.0, 0.X, L0, etc., without adding a second number.
 \setcounter{secnumdepth}{-1}
@@ -59,7 +59,7 @@
 
 % Markdown #, ## and ### map to the following commands.
 % Use starred forms for headings with no number in the source. Both forms
-% appear in the table of contents. Include the source label in the argument.
+% are eligible for the TOC, subject to tocdepth. Keep source labels in arguments.
 \NewDocumentCommand{\heading}{s m}{%
   \IfBooleanTF{#1}{\section*{#2}\addcontentsline{toc}{section}{#2}}{\section{#2}}}
 \NewDocumentCommand{\subheading}{s m}{%
@@ -121,7 +121,15 @@
 
 \begin{document}
 \maketitle
+% Compact TOC spacing; the main notes retain their normal paragraph spacing.
+\begingroup
+\setlength{\parskip}{0pt}
+\linespread{0.95}\selectfont
+\makeatletter
+\patchcmd{\l@section}{1.0em}{0.35em}{}{}
+\makeatother
 \tableofcontents
+\endgroup
 \clearpage
 
 \subsubheading*{Admin matters:}
@@ -138,30 +146,7 @@
   Dr.~Sriram Sami
 \end{itemize}
 
-\textbf{Schedule}:
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Activity
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Time
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Venue
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Lecture & Monday 4pm-6pm & I3-LT38 \\
-Tutorial & Wednesday 9am-10am & COM1-0120 \\
-Lab & Thursday 4pm-6pm & COM1-0120 \\
-\end{longtable}
-
-\textbf{Exams}:
+\textbf{Exam Schedule}:
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}
@@ -180,7 +165,7 @@ Time
 \bottomrule\noalign{}
 \endlastfoot
 Practical Exam & Tue, 15 Sep & 6pm-9pm \\
-Midterm & Mon, 5 Oct & 4pm-6pm \\
+Midterm & Mon, 28 Sep & 4pm-6pm \\
 Practical Exam & Tue, 13 Oct & 6pm-9pm \\
 Practical Exam & Tue, 10 Nov & 6pm-9pm \\
 \textbf{Final} & Wed, 25 Nov & 9am-11am \\
@@ -198,10 +183,8 @@ Practical Exam & Tue, 10 Nov & 6pm-9pm \\
 
 \begin{description}
 \tightlist
-\item[\emph{Program}]
-is a set of instructions that a computer runs.
-\item[\emph{Programming}]
-is writing code that is used to create a program.
+\item[\emph{Program}] is a set of instructions that a computer runs.
+\item[\emph{Programming}] is writing code that is used to create a program.
 \end{description}
 
 More specifically,
@@ -442,49 +425,32 @@ int main(void) {
 
 \textbf{ASCII table:}
 
-\begin{longtable}[]{@{}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedleft
-Dec
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Symbol
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Dec
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Symbol
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Dec
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Symbol
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Dec
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Symbol
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Dec
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Symbol
-\end{minipage} \\
-\midrule\noalign{}
+\begingroup
+\setlength{\tabcolsep}{7pt}
+\begin{longtable}{@{}*{5}{r>{\ttfamily\arraybackslash}c}@{}}
+\toprule
+\textbf{Dec} & \multicolumn{1}{c}{\textbf{Symbol}} & \textbf{Dec} & \multicolumn{1}{c}{\textbf{Symbol}} & \textbf{Dec} & \multicolumn{1}{c}{\textbf{Symbol}} & \textbf{Dec} & \multicolumn{1}{c}{\textbf{Symbol}} & \textbf{Dec} & \multicolumn{1}{c}{\textbf{Symbol}} \\
+\midrule
 \endhead
-\bottomrule\noalign{}
+\bottomrule
 \endlastfoot
-48 & 0 & 63 & ? & 78 & N & 93 & \texttt{{]}} & 108 & l \\
-49 & 1 & 64 & @ & 79 & O & 94 & \^{} & 109 & m \\
+48 & 0 & 63 & ? & 78 & N & 93 & ] & 108 & l \\
+49 & 1 & 64 & @ & 79 & O & 94 & \textasciicircum{} & 109 & m \\
 50 & 2 & 65 & A & 80 & P & 95 & \_ & 110 & n \\
-51 & 3 & 66 & B & 81 & Q & 96 & \texttt{\textbar{}\ 111\ \textbar{}\ o\ \textbar{}\ \textbar{}\ 52\ \textbar{}\ 4\ \textbar{}\ 67\ \textbar{}\ C\ \textbar{}\ 82\ \textbar{}\ R\ \textbar{}\ 97\ \textbar{}\ a\ \textbar{}\ 112\ \textbar{}\ p\ \textbar{}\ \textbar{}\ 53\ \textbar{}\ 5\ \textbar{}\ 68\ \textbar{}\ D\ \textbar{}\ 83\ \textbar{}\ S\ \textbar{}\ 98\ \textbar{}\ b\ \textbar{}\ 113\ \textbar{}\ q\ \textbar{}\ \textbar{}\ 54\ \textbar{}\ 6\ \textbar{}\ 69\ \textbar{}\ E\ \textbar{}\ 84\ \textbar{}\ T\ \textbar{}\ 99\ \textbar{}\ c\ \textbar{}\ 114\ \textbar{}\ r\ \textbar{}\ \textbar{}\ 55\ \textbar{}\ 7\ \textbar{}\ 70\ \textbar{}\ F\ \textbar{}\ 85\ \textbar{}\ U\ \textbar{}\ 100\ \textbar{}\ d\ \textbar{}\ 115\ \textbar{}\ s\ \textbar{}\ \textbar{}\ 56\ \textbar{}\ 8\ \textbar{}\ 71\ \textbar{}\ G\ \textbar{}\ 86\ \textbar{}\ V\ \textbar{}\ 101\ \textbar{}\ e\ \textbar{}\ 116\ \textbar{}\ t\ \textbar{}\ \textbar{}\ 57\ \textbar{}\ 9\ \textbar{}\ 72\ \textbar{}\ H\ \textbar{}\ 87\ \textbar{}\ W\ \textbar{}\ 102\ \textbar{}\ f\ \textbar{}\ 117\ \textbar{}\ u\ \textbar{}\ \textbar{}\ 58\ \textbar{}\ :\ \textbar{}\ 73\ \textbar{}\ I\ \textbar{}\ 88\ \textbar{}\ X\ \textbar{}\ 103\ \textbar{}\ g\ \textbar{}\ 118\ \textbar{}\ v\ \textbar{}\ \textbar{}\ 59\ \textbar{}\ ;\ \textbar{}\ 74\ \textbar{}\ J\ \textbar{}\ 89\ \textbar{}\ Y\ \textbar{}\ 104\ \textbar{}\ h\ \textbar{}\ 119\ \textbar{}\ w\ \textbar{}\ \textbar{}\ 60\ \textbar{}\ \textless{}\ \textbar{}\ 75\ \textbar{}\ K\ \textbar{}\ 90\ \textbar{}\ Z\ \textbar{}\ 105\ \textbar{}\ i\ \textbar{}\ 120\ \textbar{}\ x\ \textbar{}\ \textbar{}\ 61\ \textbar{}\ =\ \textbar{}\ 76\ \textbar{}\ L\ \textbar{}\ 91\ \textbar{}}{[}` & 106 & j \\
+51 & 3 & 66 & B & 81 & Q & 96 & \textasciigrave{} & 111 & o \\
+52 & 4 & 67 & C & 82 & R & 97 & a & 112 & p \\
+53 & 5 & 68 & D & 83 & S & 98 & b & 113 & q \\
+54 & 6 & 69 & E & 84 & T & 99 & c & 114 & r \\
+55 & 7 & 70 & F & 85 & U & 100 & d & 115 & s \\
+56 & 8 & 71 & G & 86 & V & 101 & e & 116 & t \\
+57 & 9 & 72 & H & 87 & W & 102 & f & 117 & u \\
+58 & : & 73 & I & 88 & X & 103 & g & 118 & v \\
+59 & ; & 74 & J & 89 & Y & 104 & h & 119 & w \\
+60 & \textless{} & 75 & K & 90 & Z & 105 & i & 120 & x \\
+61 & = & 76 & L & 91 & [ & 106 & j & 121 & y \\
 62 & \textgreater{} & 77 & M & 92 & \textbackslash{} & 107 & k & 122 & z \\
 \end{longtable}
+\endgroup
 
 It is possible to find the size of a variable.
 
