@@ -1,0 +1,86 @@
+\contentsline {subsubsection}{Admin matters:}{4}{Doc-Start}%
+\contentsline {section}{L0: Introduction}{4}{section*.1}%
+\contentsline {subsection}{0.0 Programming}{4}{subsection*.2}%
+\contentsline {subsection}{0.1 Basic Program}{5}{subsection*.3}%
+\contentsline {subsection}{0.2 Variables and data storage}{5}{subsection*.4}%
+\contentsline {subsubsection}{0.2.1 Variables}{5}{subsubsection*.5}%
+\contentsline {subsubsection}{0.2.2 Format Specifiers}{9}{subsubsection*.6}%
+\contentsline {subsection}{0.3 Arithmetic and Assignment Operators}{10}{subsection*.7}%
+\contentsline {subsubsection}{0.3.1 Arithmetic Operators}{10}{subsubsection*.8}%
+\contentsline {subsubsection}{0.3.2 Unary operators}{10}{subsubsection*.9}%
+\contentsline {subsubsection}{0.3.3 Comparison Operators}{11}{subsubsection*.10}%
+\contentsline {subsubsection}{0.3.4 Logic Operators}{11}{subsubsection*.11}%
+\contentsline {subsubsection}{0.3.5 Assignment Operators}{11}{subsubsection*.12}%
+\contentsline {subsubsection}{0.3.6 Integer Division}{11}{subsubsection*.13}%
+\contentsline {subsubsection}{0.3.7 Division with \texttt {double}}{11}{subsubsection*.14}%
+\contentsline {subsubsection}{0.3.8 Operator Precedence}{12}{subsubsection*.15}%
+\contentsline {subsection}{0.4 Ternary Operators}{12}{subsection*.16}%
+\contentsline {subsubsection}{Common condition tests}{12}{lstnumber.-23.1}%
+\contentsline {subsection}{0.5 Undefined Behaviour}{13}{subsection*.17}%
+\contentsline {subsubsection}{Example: Division by zero}{13}{subsection*.17}%
+\contentsline {subsubsection}{Integer Overflow}{14}{lstnumber.-26.1}%
+\contentsline {subsubsection}{Key takeaway}{14}{table.13}%
+\contentsline {subsection}{0.X Lab}{14}{subsection*.18}%
+\contentsline {section}{L1: Conditionals and Functions}{15}{section*.19}%
+\contentsline {subsection}{1.1 Abstraction I: Functions}{15}{subsection*.20}%
+\contentsline {subsection}{1.2 Conditional Statements}{16}{subsection*.21}%
+\contentsline {subsubsection}{1.2.1 If/else constructs}{16}{subsubsection*.22}%
+\contentsline {subsubsection}{1.2.2 Comparison and logical operators}{16}{subsubsection*.23}%
+\contentsline {subsubsection}{1.2.3 Boolean operators}{17}{subsubsection*.24}%
+\contentsline {subsection}{1.X Lab}{17}{subsection*.25}%
+\contentsline {section}{L2: Abstractions, Structs, and the Stack}{18}{section*.26}%
+\contentsline {subsection}{2.1 Abstraction II: Functions}{18}{subsection*.27}%
+\contentsline {subsubsection}{2.1.1 Abstraction of Behavior: Functions}{18}{subsubsection*.28}%
+\contentsline {subsubsection}{2.1.2 Abstraction of Data: Structs}{18}{subsubsection*.29}%
+\contentsline {subsection}{2.2 The Stack and Block Scoping}{19}{subsection*.30}%
+\contentsline {subsubsection}{2.2.1 Stack Frames}{19}{subsubsection*.31}%
+\contentsline {subsubsection}{2.2.2 Local variables}{19}{subsubsection*.32}%
+\contentsline {subsection}{2.X Lab}{20}{subsection*.33}%
+\contentsline {section}{L3: Fixed Size arrays and Recursion}{22}{section*.34}%
+\contentsline {subsection}{3.1 Arrays}{22}{subsection*.35}%
+\contentsline {subsubsection}{3.1.1 Array Declaration}{22}{subsubsection*.36}%
+\contentsline {subsubsection}{3.1.2 Initializing elements}{23}{subsubsection*.37}%
+\contentsline {subsubsection}{3.1.3 Accessing an Array (writing)}{23}{subsubsection*.38}%
+\contentsline {subsubsection}{3.1.4 Copying Semantics}{23}{subsubsection*.39}%
+\contentsline {subsubsection}{3.1.5 Arrays as arguments to functions}{24}{subsubsection*.40}%
+\contentsline {subsubsection}{3.1.6 Length of arrays}{24}{subsubsection*.41}%
+\contentsline {subsubsection}{Setting Values inside Functions}{24}{lstnumber.-63.8}%
+\contentsline {subsubsection}{Returning from functions}{25}{lstnumber.-64.9}%
+\contentsline {subsection}{3.2 Arrays and Structs}{25}{subsection*.42}%
+\contentsline {subsubsection}{Zeroing out}{25}{subsection*.42}%
+\contentsline {subsubsection}{UB}{25}{lstnumber.-66.11}%
+\contentsline {subsubsection}{Variable-length arrays}{25}{lstnumber.-67.26}%
+\contentsline {subsection}{3.3 Multidimensional Arrays}{26}{subsection*.43}%
+\contentsline {subsubsection}{3.3.1 Array of arrays}{26}{subsubsection*.44}%
+\contentsline {subsection}{3.4 Recursion}{26}{subsection*.45}%
+\contentsline {subsubsection}{3.4.1 Why Recursion}{26}{subsubsection*.46}%
+\contentsline {subsubsection}{3.4.2 Features of recursion}{26}{subsubsection*.47}%
+\contentsline {subsubsection}{3.4.3 Example: Printing an array in reverse}{27}{subsubsection*.48}%
+\contentsline {subsubsection}{Example: Reverse an array}{27}{lstnumber.-72.9}%
+\contentsline {subsubsection}{Example: Sort an array}{28}{lstnumber.-73.14}%
+\contentsline {section}{3.X Lab}{28}{section*.49}%
+\contentsline {section}{L4: Loops}{28}{section*.50}%
+\contentsline {subsection}{4.1 \texttt {while} Loops and \texttt {for} Loops}{28}{subsection*.51}%
+\contentsline {subsubsection}{Why loops?}{28}{subsection*.51}%
+\contentsline {subsubsection}{\texttt {while} loops}{28}{lstnumber.-75.11}%
+\contentsline {subsubsection}{\texttt {for} loops}{29}{lstnumber.-78.5}%
+\contentsline {subsection}{4.2 Loop control with \texttt {break}, \texttt {continue}, \texttt {return}}{30}{subsection*.52}%
+\contentsline {subsubsection}{\texttt {break}}{30}{subsection*.52}%
+\contentsline {subsubsection}{\texttt {continue}}{30}{lstnumber.-82.7}%
+\contentsline {subsubsection}{\texttt {return}}{30}{lstnumber.-83.6}%
+\contentsline {subsection}{4.3 Array recursion}{30}{subsection*.53}%
+\contentsline {subsection}{4.4 Examples}{31}{subsection*.54}%
+\contentsline {subsubsection}{Initialize every array element}{31}{subsection*.54}%
+\contentsline {subsubsection}{Nested loops: print a triangle}{31}{lstnumber.-86.5}%
+\contentsline {subsubsection}{A method for planning loops}{31}{lstnumber.-87.8}%
+\contentsline {section}{L5: Pointers and Strings}{31}{section*.55}%
+\contentsline {subsection}{5.1 Pointers}{31}{subsection*.56}%
+\contentsline {subsubsection}{memory}{31}{subsection*.56}%
+\contentsline {subsubsection}{Pointers.}{32}{table.16}%
+\contentsline {subsubsection}{Why pointers?}{32}{lstnumber.-90.4}%
+\contentsline {subsection}{5.2 Address-of (\&) and Dereferencing (*), nullptr, pointers to pointers}{32}{subsection*.57}%
+\contentsline {subsection}{5.3 Functions, structs, arrays, and pointer arithmetic}{32}{subsection*.58}%
+\contentsline {subsection}{5.4 Strings: Null termination, character arrays and string literals}{32}{subsection*.59}%
+\contentsline {subsection}{5.5 Printing strings, const and string library functions}{32}{subsection*.60}%
+\contentsline {subsection}{5.6 Pointer Provenance Framework: reasoning about pointers}{32}{subsection*.61}%
+\contentsline {subsection}{5.X Lab}{32}{subsection*.62}%

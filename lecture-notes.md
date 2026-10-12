@@ -1634,7 +1634,47 @@ The outer loop controls the row number. The inner loop prints `i + 1` Xs on that
 
 
 # L5: Pointers and Strings
+
 ## 5.1 Pointers
+### memory
+Before we talk about pointers, we need to first about memory.
+Memory has two Features:
+* **address** is the location of where data is stored
+* **value** of the memory is the data stored at the location
+
+For example:
+
+```c
+int x = 4;
+int *p = &x;
+```
+Then the memory would look like so:
+| Address | Value |
+| --- | --- |
+| '0x1000' | '0x4' |
+| '0x1004' | '0x1000' |
+| '0x1008' | |
+| '0x100C' | |
+| '0x1010' | |
+| '0x1014' | |
+| '0x1018' | |
+| '0x101C' | |
+
+### Pointers.
+A pointer is a value that happens to be a sign that points to another value's address.
+We define integer `int x = 4`. 
+In english, "integer named `x` is set to $4$."
+And then we define `int *p = &x`
+In english, "integer pointer named `p` is set to the *address* of `x`"
+The asterisk `*` stands for pointer, while the ampersand `&` stands for address.
+
+```c
+int *p = &x;
+int y = *p; 
+```
+when an asterisk is used without the type, it becomes a pointer **dereference**.
+In english, "integer named `y` is set to *the thing pointed to* by `p`."
+
 
 ```c
 int x =1;
@@ -1645,6 +1685,11 @@ printf("%d\n",*ptr);
 
 `int *ptr = &x` - type pointer to an integer. `&` means address.
 `*ptr = 1;` - dereferencing a pointer to its address
+
+### Why pointers?
+We break down functions in C based on the actions they perform. However, they are sometimes out of scope that we want. To get around this, we pass the struct using a pointer so that the pointer to the struct is in scope of the functions we want. This reduces the space by not copying.
+
+Necessary for memory allocation.
 
 ## 5.2 Address-of (&) and Dereferencing (*), nullptr, pointers to pointers
 ## 5.3 Functions, structs, arrays, and pointer arithmetic

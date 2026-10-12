@@ -1,0 +1,2470 @@
+% CS1010 Programming Methodology - Lecture Notes
+% Converted from lecture-notes.md. Prose and examples are preserved.
+% Compile with pdfLaTeX; rerun until contents and cross-references settle.
+% Self-contained: no external code files, Pygments, or shell escape required.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=20mm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{upquote}
+\usepackage{longtable,booktabs,array,calc}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{etoolbox}
+\usepackage{titlesec}
+\usepackage{xparse}
+\usepackage{xurl}
+\usepackage[unicode]{hyperref}
+\usepackage{bookmark}
+
+\definecolor{HeadingBlue}{HTML}{234967}
+\definecolor{LinkBlue}{HTML}{245E8C}
+\definecolor{CodeBackground}{HTML}{F2F2F2}
+\definecolor{CodeBorder}{HTML}{D9D9D9}
+\definecolor{CodeText}{HTML}{242424}
+\definecolor{CodeKeyword}{HTML}{0000FF}
+\definecolor{CodeFunction}{HTML}{795E26}
+\definecolor{CodeType}{HTML}{267F99}
+\definecolor{CodeString}{HTML}{A31515}
+\definecolor{CodeComment}{HTML}{008000}
+\definecolor{CodePreprocessor}{HTML}{AF00DB}
+
+\hypersetup{
+  colorlinks=true, linkcolor=LinkBlue, urlcolor=LinkBlue,
+  pdftitle={CS1010 Programming Methodology - Lecture Notes},
+  pdfauthor={Seojin}, bookmarksopen=true, bookmarksopenlevel=1
+}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\rightarrow}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{3}
+% Numbers are already written in the source headings. Disabling automatic
+% numbering keeps 0.0, 0.X, L0, etc., without adding a second number.
+\setcounter{secnumdepth}{-1}
+\setlist{topsep=4pt,itemsep=2pt,parsep=0pt,leftmargin=*}
+\setlist[description]{style=nextline,font=\normalfont\bfseries}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\titleformat{\section}{\Large\bfseries\color{HeadingBlue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\color{HeadingBlue}}{}{0pt}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{20pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{14pt plus 2pt minus 1pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{10pt plus 2pt minus 1pt}{4pt}
+
+% Markdown #, ## and ### map to the following commands.
+% Use starred forms for headings with no number in the source. Both forms
+% appear in the table of contents. Include the source label in the argument.
+\NewDocumentCommand{\heading}{s m}{%
+  \IfBooleanTF{#1}{\section*{#2}\addcontentsline{toc}{section}{#2}}{\section{#2}}}
+\NewDocumentCommand{\subheading}{s m}{%
+  \IfBooleanTF{#1}{\subsection*{#2}\addcontentsline{toc}{subsection}{#2}}{\subsection{#2}}}
+\NewDocumentCommand{\subsubheading}{s m}{%
+  \IfBooleanTF{#1}{\subsubsection*{#2}\addcontentsline{toc}{subsubsection}{#2}}{\subsubsection{#2}}}
+\pdfstringdefDisableCommands{\def\texttt#1{#1}}
+
+% VS Code-inspired light colours on grey, with wrapping and page breaks.
+\lstdefinestyle{codebase}{
+  basicstyle=\ttfamily\fontsize{9}{11}\selectfont\color{CodeText},
+  backgroundcolor=\color{CodeBackground},
+  frame=single, rulecolor=\color{CodeBorder}, framerule=0.3pt,
+  framesep=5pt, xleftmargin=6pt, xrightmargin=6pt,
+  aboveskip=7pt, belowskip=7pt,
+  columns=fullflexible, keepspaces=true, tabsize=4,
+  breaklines=true, breakatwhitespace=false, breakindent=1.5em,
+  showstringspaces=false, showspaces=false, showtabs=false,
+  upquote=true, numbers=none, captionpos=b,
+  literate={→}{{$\rightarrow$}}1 {—}{{---}}3 {’}{{'}}1
+}
+\lstdefinestyle{cscode}{
+  style=codebase, language=C,
+  keywordstyle=\color{CodeKeyword},
+  keywordstyle=[2]\color{CodeFunction},
+  keywordstyle=[3]\color{CodeType},
+  commentstyle=\color{CodeComment},
+  stringstyle=\color{CodeString},
+  directivestyle=\color{CodePreprocessor},
+  morekeywords={bool,true,false,nullptr,alignas,alignof,static_assert,thread_local,typeof,typeof_unqual,constexpr},
+  morekeywords=[2]{add,bar,count_larger_than,foo,grade,has_one_inside_array,increment,init_array,is_even,main,param,print_arr,print_arr_from,print_arr_reverse,print_doublearr_index,print_last_element,print_movement,print_triangle,printf,read_int,read_point,reverse_arr,reverse_arr_helper,set_doublearr_index,shift_left,sort_arr},
+  morekeywords=[3]{size_t,ptrdiff_t,Point,Position}
+}
+% Add new function names to morekeywords=[2] above when extending the notes.
+\lstdefinestyle{shellcode}{
+  style=codebase, language=bash,
+  keywordstyle=\color{CodeKeyword},
+  commentstyle=\color{CodeComment}, stringstyle=\color{CodeString}
+}
+\lstdefinestyle{plaincode}{style=codebase,language={}}
+\lstset{style=cscode}
+
+% Tables span the available width and can continue onto subsequent pages.
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\AtBeginEnvironment{longtable}{\small\setlength{\parskip}{0pt}}
+\setlength{\LTpre}{6pt}
+\setlength{\LTpost}{6pt}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\providecommand{\pandocbounded}[1]{#1}
+
+\title{\textbf{CS1010 Programming Methodology}\\[4pt]\Large Lecture Notes}
+\author{Seojin}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+
+\subsubheading*{Admin matters:}
+\label{admin-matters}
+\hypertarget{admin-matters}{}
+
+\textbf{Instructors}:
+
+\begin{itemize}
+\tightlist
+\item
+  Dr.~Eldon Chung
+\item
+  Dr.~Sriram Sami
+\end{itemize}
+
+\textbf{Schedule}:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Activity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Venue
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Lecture & Monday 4pm-6pm & I3-LT38 \\
+Tutorial & Wednesday 9am-10am & COM1-0120 \\
+Lab & Thursday 4pm-6pm & COM1-0120 \\
+\end{longtable}
+
+\textbf{Exams}:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Activity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Date
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Time
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Practical Exam & Tue, 15 Sep & 6pm-9pm \\
+Midterm & Mon, 5 Oct & 4pm-6pm \\
+Practical Exam & Tue, 13 Oct & 6pm-9pm \\
+Practical Exam & Tue, 10 Nov & 6pm-9pm \\
+\textbf{Final} & Wed, 25 Nov & 9am-11am \\
+\end{longtable}
+
+\textbf{More info}: \href{https://cs1010.org}{CS1010 website}
+
+\heading{L0: Introduction}
+\label{l0-introduction}
+\hypertarget{l0-introduction}{}
+
+\subheading{0.0 Programming}
+\label{00-programming}
+\hypertarget{00-programming}{}
+
+\begin{description}
+\tightlist
+\item[\emph{Program}]
+is a set of instructions that a computer runs.
+\item[\emph{Programming}]
+is writing code that is used to create a program.
+\end{description}
+
+More specifically,
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The \textbf{CPU} (Central Processing Unit) reads information from the computer memory.
+\item
+  The CPU then writes information to the \emph{Program Code}. The program code that we make is stored in the memory.
+\item
+  The Program stores data (Program data) for intermediate steps. These are also stored in memory.
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  We write in a higher-level programming language like C to create instructions that the CPU has to execute. A \textbf{compiler} (e.g.~\texttt{clang} or \texttt{gcc}) takes the C code and produces assembly code.
+\item
+  We use high-level language and compilers so that our code is \emph{portable}; we leave lower level details to be handled by the compiler.
+\item
+  We also leave hardware level optimisations to be handled by compilers.
+\end{itemize}
+
+\begin{description}
+\tightlist
+\item[\textbf{C}]
+is a \emph{compiled} programming language.
+\item[\emph{Compiler}]
+has to take C code written to produce assembly instructions that the CPU will execute.
+\end{description}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Pros
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cons
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+lots of control: imperative, low level & More work required by programmer \\
+Simple language & Many footguns \\
+little to no overhead & \\
+\end{longtable}
+
+Nevertheless, C is:
+
+\begin{itemize}
+\tightlist
+\item
+  Low-level enough for hardware (firmware)
+\item
+  Widely supported across embedded systems
+\item
+  Pervasive in system code
+\item
+  Good starter language.
+\end{itemize}
+
+\subheading{0.1 Basic Program}
+\label{01-basic-program}
+\hypertarget{01-basic-program}{}
+
+Anatomy:
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+int main(void) {
+    printf("Hello world!\n");
+    return 0;
+}
+\end{lstlisting}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{\#include\ \textless{}stdio.h\textgreater{}} makes the C ``standard input/output'' header file available to this program.
+\item
+  \texttt{int\ main(void)\ \{} declares the main function, and code \textbf{starts} executing from within \texttt{main}. The \texttt{void} means that the function does not take any input arguments. The opening brace \texttt{\{} means the start of the code within \texttt{main}.
+\item
+  \texttt{printf("Hello\ world!\textbackslash{}n");} Creates a string \texttt{"Hello\ world!"} and a new line character \texttt{\textbackslash{}n} and passes the argument to \texttt{printf}, which is sent to the standard output of the program
+\item
+  Semicolon \texttt{;} indicates the end of the statement.
+\item
+  Closing brace \texttt{\}} ends the code within \texttt{main}.
+\end{enumerate}
+
+\textbf{Procedure}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Create file with extension .c, (\emph{e.g.} \texttt{hello.c})
+\item
+  Write C code inside.
+\item
+  Compile C code to an executable program\textbackslash{}
+\end{enumerate}
+
+\begin{lstlisting}[style=shellcode]
+clang -o hello hello.c
+\end{lstlisting}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Run if no errors.
+\end{enumerate}
+
+\begin{lstlisting}[style=shellcode]
+./hello
+\end{lstlisting}
+
+\subheading{0.2 Variables and data storage}
+\label{02-variables-and-data-storage}
+\hypertarget{02-variables-and-data-storage}{}
+
+\subsubheading{0.2.1 Variables}
+\label{021-variables}
+\hypertarget{021-variables}{}
+
+Variables:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2100}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2900}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Type name(s)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Min value}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Max value}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Size (bytes)}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{char} & -128 & +127 & 1 (8 bits) \\
+\texttt{unsigned\ char} & 0 & +255 & 1 (8 bits) \\
+\texttt{int} & -32768 (-\(2^{15}\)) & +32767 (\(2^{15}-1\)) & 2 \\
+\texttt{unsigned\ int} & 0 & +65535 (\(2^{16}-1\)) & 2 \\
+\texttt{long} & -2147483648 (\(2^{31}\)) & +2147483647 (\(2^{31}-1\)) & 4 \\
+\texttt{unsigned\ long} & 0 & +4294967295 (\(2^{32}-1\)) & 4 \\
+\texttt{unsigned\ long\ long} & 0 & \(2^{64}-1\) & 8 \\
+\texttt{float} & 6-7 d.p. & 6-7 d.p. & 4 \\
+\texttt{double} & 15-17 d.p. & 15-17 d.p. & 8 \\
+\end{longtable}
+
+\emph{When to use which type}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{char} for ASCII characters
+\item
+  \texttt{int} for default integral types
+\item
+  \texttt{unsigned\ int} if integer \textgreater{} 0
+\item
+  \texttt{float} if you want to save memory and use decimals.
+\item
+  \texttt{double} if your values might be more precise decimal. Use double and instead of float, unless with good reason.
+\end{itemize}
+
+\emph{Initialization} You can also initialize a variable without declaring its value.
+
+\begin{lstlisting}[style=cscode]
+int a;
+int b;
+a = 372;
+b = a - 200;
+\end{lstlisting}
+
+\textbf{Overflow} If you have an \texttt{unsigned\ int} number at 255, and you increment it, you'll get 256 in return. As expected. If you have an \texttt{unsigned\ char} number at 255, and you increment it, you'll get 0 in return. It resets starting from the initial possible value.
+
+If you have a \texttt{unsigned\ char} number at 255 and you add 10 to it, you'll get the number 9:
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    unsigned char j = 255;
+    j = j + 10;
+    printf("%u", j); /* 9 */
+}
+\end{lstlisting}
+
+If you don't have a signed value, the behavior is undefined. It will basically give you a huge number which can vary, like in this case:
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    char j = 127;
+    j = j + 10;
+    printf("%u", j); /* 4294967177 */
+}
+\end{lstlisting}
+
+In other words, C does not protect you from going over the limits of a type. You need to take care of this yourself. However, if you initialize a variable with a wrong value, you will likely receive a warning:
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    char j = 1000;
+    char i;
+    i = 9999;
+    // This will give warning.
+}
+\end{lstlisting}
+
+However, incrementing the number will not give a warning and overflow.
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    char j = 0;
+    j += 1000;
+}
+\end{lstlisting}
+
+\textbf{ASCII table:}
+
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+Dec
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Dec
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Dec
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Dec
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Dec
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Symbol
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+48 & 0 & 63 & ? & 78 & N & 93 & \texttt{{]}} & 108 & l \\
+49 & 1 & 64 & @ & 79 & O & 94 & \^{} & 109 & m \\
+50 & 2 & 65 & A & 80 & P & 95 & \_ & 110 & n \\
+51 & 3 & 66 & B & 81 & Q & 96 & \texttt{\textbar{}\ 111\ \textbar{}\ o\ \textbar{}\ \textbar{}\ 52\ \textbar{}\ 4\ \textbar{}\ 67\ \textbar{}\ C\ \textbar{}\ 82\ \textbar{}\ R\ \textbar{}\ 97\ \textbar{}\ a\ \textbar{}\ 112\ \textbar{}\ p\ \textbar{}\ \textbar{}\ 53\ \textbar{}\ 5\ \textbar{}\ 68\ \textbar{}\ D\ \textbar{}\ 83\ \textbar{}\ S\ \textbar{}\ 98\ \textbar{}\ b\ \textbar{}\ 113\ \textbar{}\ q\ \textbar{}\ \textbar{}\ 54\ \textbar{}\ 6\ \textbar{}\ 69\ \textbar{}\ E\ \textbar{}\ 84\ \textbar{}\ T\ \textbar{}\ 99\ \textbar{}\ c\ \textbar{}\ 114\ \textbar{}\ r\ \textbar{}\ \textbar{}\ 55\ \textbar{}\ 7\ \textbar{}\ 70\ \textbar{}\ F\ \textbar{}\ 85\ \textbar{}\ U\ \textbar{}\ 100\ \textbar{}\ d\ \textbar{}\ 115\ \textbar{}\ s\ \textbar{}\ \textbar{}\ 56\ \textbar{}\ 8\ \textbar{}\ 71\ \textbar{}\ G\ \textbar{}\ 86\ \textbar{}\ V\ \textbar{}\ 101\ \textbar{}\ e\ \textbar{}\ 116\ \textbar{}\ t\ \textbar{}\ \textbar{}\ 57\ \textbar{}\ 9\ \textbar{}\ 72\ \textbar{}\ H\ \textbar{}\ 87\ \textbar{}\ W\ \textbar{}\ 102\ \textbar{}\ f\ \textbar{}\ 117\ \textbar{}\ u\ \textbar{}\ \textbar{}\ 58\ \textbar{}\ :\ \textbar{}\ 73\ \textbar{}\ I\ \textbar{}\ 88\ \textbar{}\ X\ \textbar{}\ 103\ \textbar{}\ g\ \textbar{}\ 118\ \textbar{}\ v\ \textbar{}\ \textbar{}\ 59\ \textbar{}\ ;\ \textbar{}\ 74\ \textbar{}\ J\ \textbar{}\ 89\ \textbar{}\ Y\ \textbar{}\ 104\ \textbar{}\ h\ \textbar{}\ 119\ \textbar{}\ w\ \textbar{}\ \textbar{}\ 60\ \textbar{}\ \textless{}\ \textbar{}\ 75\ \textbar{}\ K\ \textbar{}\ 90\ \textbar{}\ Z\ \textbar{}\ 105\ \textbar{}\ i\ \textbar{}\ 120\ \textbar{}\ x\ \textbar{}\ \textbar{}\ 61\ \textbar{}\ =\ \textbar{}\ 76\ \textbar{}\ L\ \textbar{}\ 91\ \textbar{}}{[}` & 106 & j \\
+62 & \textgreater{} & 77 & M & 92 & \textbackslash{} & 107 & k & 122 & z \\
+\end{longtable}
+
+It is possible to find the size of a variable.
+
+\textbf{sizeof()}
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+int main(void) {
+    int myInt;
+    float myFloat;
+    double myDouble;
+    char myChar;
+    printf("%d\n", sizeof(myInt));
+    printf("%d\n", sizeof(myFloat));
+    printf("%d\n", sizeof(myDouble));
+    printf("%d\n", sizeof(myChar));
+    return 0;
+}
+\end{lstlisting}
+
+output:
+
+\begin{lstlisting}[style=plaincode]
+4
+4
+8
+1
+\end{lstlisting}
+
+\subsubheading{0.2.2 Format Specifiers}
+\label{022-format-specifiers}
+\hypertarget{022-format-specifiers}{}
+
+\emph{Format specifiers}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1600}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1900}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Specifier}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Output}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Example}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{d} or \texttt{i} & Signed decimal integer & \texttt{392} \\
+\texttt{u} & Unsigned decimal integer & \texttt{7235} \\
+\texttt{o} & Unsigned octal & \texttt{610} \\
+\texttt{x} & Unsigned hexadecimal integer & \texttt{7fa} \\
+\texttt{X} & Unsigned hexadecimal integer (uppercase) & \texttt{7FA} \\
+\texttt{f} & Decimal floating point, lowercase & \texttt{392.65} \\
+\texttt{F} & Decimal floating point, uppercase & \texttt{392.65} \\
+\texttt{e} & Scientific notation (mantissa/exponent), lowercase & \texttt{3.9265e+2} \\
+\texttt{E} & Scientific notation (mantissa/exponent), uppercase & \texttt{3.9265E+2} \\
+\texttt{g} & Shortest representation: \texttt{\%e} or \texttt{\%f} & \texttt{392.65} \\
+\texttt{G} & Shortest representation: \texttt{\%E} or \texttt{\%F} & \texttt{392.65} \\
+\texttt{a} & Hexadecimal floating point, lowercase & \texttt{-0xc.90fep-2} \\
+\texttt{A} & Hexadecimal floating point, uppercase & \texttt{-0XC.90FEP-2} \\
+\texttt{c} & Character & \texttt{a} \\
+\texttt{s} & String of characters & \texttt{sample} \\
+\texttt{p} & Pointer address & \texttt{b8000000} \\
+\texttt{n} & Nothing printed. Argument must be a pointer to a signed \texttt{int}; the number of characters written so far is stored there. & --- \\
+\texttt{\%} & A literal \texttt{\%} character & \texttt{\%} \\
+\end{longtable}
+
+Below is an example:
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    int sixtyseven = 67;
+    double pi = 3.1415926535897;
+    char ahh = 'a';
+    char pain[] = "what?"; //adding [] to the end of the variable will make it a string instead of a char
+    printf("Integer: %d\n", sixtyseven);
+    printf("2dp Float: %.2f\n", pi);
+    printf("6dp Float: %.6f\n", pi);
+    printf("Char: %c\n", ahh);
+    printf("String: %s\n", pain);
+
+    return 0;
+}
+\end{lstlisting}
+
+\textbf{Integer Truncation} When you output the value of \texttt{double} with \texttt{\%d}, you will get the \emph{floor} of the value, truncating the decimal point and leaving the integer part.
+
+\begin{lstlisting}[style=cscode]
+int x = 5;
+x = x + 0.1; // Behind the scenes: (int)((double)5.0 + 0.1)
+printf("%d", x); 
+\end{lstlisting}
+
+\subheading{0.3 Arithmetic and Assignment Operators}
+\label{03-arithmetic-and-assignment-operators}
+\hypertarget{03-arithmetic-and-assignment-operators}{}
+
+\subsubheading{0.3.1 Arithmetic Operators}
+\label{031-arithmetic-operators}
+\hypertarget{031-arithmetic-operators}{}
+
+\textbf{Arithmetic operators} let us do math:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1700}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4900}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3400}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Operator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{=} & Assignment & \texttt{x=1} \\
+\texttt{+} & Addition & \texttt{x\ +\ y} \\
+\texttt{-} & Subtraction & \texttt{x\ -\ y} \\
+\texttt{*} & Multiplication & \texttt{x\ *\ y} \\
+\texttt{/} & Division & \texttt{x\ /\ y} \\
+\texttt{\%} & Modulo (remainder) & \texttt{x\ \%\ y} \\
+\end{longtable}
+
+\subsubheading{0.3.2 Unary operators}
+\label{032-unary-operators}
+\hypertarget{032-unary-operators}{}
+
+\textbf{Unary operators} only take one operand:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1700}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4900}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3400}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Operator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{+} & Unary plus & \texttt{+a} \\
+\texttt{-} & Unary minus & \texttt{-a} \\
+\texttt{++} & Increment & \texttt{a++} or \texttt{++a} \\
+\texttt{-\/-} & Decrement & \texttt{a-\/-} or \texttt{-\/-a} \\
+\end{longtable}
+
+Example:
+
+\begin{lstlisting}[style=cscode]
+int a = 2;
+int b;
+b = a++ /* b is 2, a is 3 */
+b = ++a /* b is 4, a is 4 */
+b = a-- /* b is 4, a is 3 */
+b = --a /* b is 2, a is 2 */
+\end{lstlisting}
+
+\subsubheading{0.3.3 Comparison Operators}
+\label{033-comparison-operators}
+\hypertarget{033-comparison-operators}{}
+
+\textbf{Comparison Operators}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1700}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4900}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3400}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Operator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{==} & Equal operator & \texttt{a\ ==\ b} \\
+\texttt{!=} & Not equal operator & \texttt{a\ !=\ b} \\
+\texttt{\textgreater{}} & Bigger than & \texttt{a\ \textgreater{}\ b} \\
+\texttt{\textless{}} & Less than & \texttt{a\ \textless{}\ b} \\
+\texttt{\textgreater{}=} & Bigger than or equal to & \texttt{a\ \textgreater{}=\ b} \\
+\texttt{\textless{}=} & Less than or equal to & \texttt{a\ \textless{}=\ b} \\
+\end{longtable}
+
+\subsubheading{0.3.4 Logic Operators}
+\label{034-logic-operators}
+\hypertarget{034-logic-operators}{}
+
+\textbf{Logical operators:} work with boolean values.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1700}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4900}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3400}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Operator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+example
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{!} & NOT & \texttt{!a} \\
+\texttt{\&} & AND & \texttt{a\ \&\&\ b} \\
+\texttt{\textbar{}} & OR & \texttt{a\ \textbar{}\textbar{}\ b} \\
+\end{longtable}
+
+\subsubheading{0.3.5 Assignment Operators}
+\label{035-assignment-operators}
+\hypertarget{035-assignment-operators}{}
+
+\textbf{Assignment Operators} perform arithmetic transformation and and assignment
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1700}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4900}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3400}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Operator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{+=} & Addition assignment & \texttt{a\ +=\ b} \\
+\texttt{-=} & Subtraction assignment & \texttt{a\ -=\ b} \\
+\texttt{*=} & Multiplication assignment & \texttt{a\ *=\ b} \\
+\texttt{/=} & Division assignment & \texttt{a\ /=\ b} \\
+\texttt{\%=} & Modulo assignment & \texttt{a\ \%=\ b} \\
+\end{longtable}
+
+\subsubheading{0.3.6 Integer Division}
+\label{036-integer-division}
+\hypertarget{036-integer-division}{}
+
+If \texttt{x} and \texttt{y} are \textbf{integer-like types}, \texttt{/} \textbf{truncates the fractional part}.
+
+\begin{lstlisting}[style=cscode]
+printf("%d\n", 50 / 20);  // 2
+printf("%d\n", 50 % 20);  // 10
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{50\ /\ 20} → \texttt{2}, not \texttt{2.5}
+\item
+  \texttt{50\ \%\ 20} → \texttt{10} (remainder)
+\item
+  \texttt{\%} only works on \textbf{integral types}; not \texttt{float}/\texttt{double}.
+\end{itemize}
+
+\subsubheading{0.3.7 Division with \texttt{double}}
+\label{037-division-with-double}
+\hypertarget{037-division-with-double}{}
+
+If you want to preserve decimal values, make sure \textbf{at least one operand is \texttt{double}/\texttt{float}}:
+
+\begin{lstlisting}[style=cscode]
+int x = 50;
+
+x / 20       // 2
+x / 20.0     // 2.5
+50.0 / 20.0  // 2.5
+(double)x / 20  // 2.5
+\end{lstlisting}
+
+You can explicitly convert a value using a \textbf{cast}:
+
+\begin{lstlisting}[style=cscode]
+(double)x
+\end{lstlisting}
+
+\subsubheading{0.3.8 Operator Precedence}
+\label{038-operator-precedence}
+\hypertarget{038-operator-precedence}{}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{*}, \texttt{/}, \texttt{\%} have \textbf{higher priority} than \texttt{+} and \texttt{-}
+\item
+  \texttt{()} has the \textbf{highest priority}
+\item
+  Similar to the normal order of operations in mathematics.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+x + 3 / x * (3 + x)
+\end{lstlisting}
+
+is evaluated according to these precedence rules.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Important:} \texttt{=} means \textbf{assignment}, not mathematical equality.
+\end{quote}
+
+\begin{lstlisting}[style=cscode]
+int x = 5;
+x = x + 2;  // x is now 7
+x += 2;     // x is now 9
+\end{lstlisting}
+
+Assignment \textbf{changes the state of the program} by changing the value stored in a variable.
+
+\subheading{0.4 Ternary Operators}
+\label{04-ternary-operators}
+\hypertarget{04-ternary-operators}{}
+
+The \textbf{ternary operator} provides a compact way to choose between two expressions based on a condition.
+
+\begin{lstlisting}[style=cscode]
+<expression1> ? <expression2> : <expression3>;
+\end{lstlisting}
+
+In English:
+
+\begin{quote}
+If \texttt{\textless{}expression1\textgreater{}} is true, evaluate \texttt{\textless{}expression2\textgreater{}}; otherwise, evaluate \texttt{\textless{}expression3\textgreater{}}.
+\end{quote}
+
+Example:
+
+\begin{lstlisting}[style=cscode]
+double product_cost = 888;
+
+double discount_amt = (product_cost >= 670) ? 2 : 0;
+\end{lstlisting}
+
+Since \texttt{product\_cost} is \texttt{888}:
+
+\begin{lstlisting}[style=plaincode]
+888 >= 670 → true
+\end{lstlisting}
+
+Therefore:
+
+\begin{lstlisting}[style=plaincode]
+discount_amt = 2
+\end{lstlisting}
+
+If \texttt{product\_cost} were less than \texttt{670}:
+
+\begin{lstlisting}[style=plaincode]
+discount_amt = 0
+\end{lstlisting}
+
+\subsubheading*{Common condition tests}
+\label{common-condition-tests}
+\hypertarget{common-condition-tests}{}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Operator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{\textgreater{}} & More than \\
+\texttt{\textgreater{}=} & More than or equal to \\
+\texttt{\textless{}} & Less than \\
+\texttt{\textless{}=} & Less than or equal to \\
+\texttt{==} & Equal to \\
+\texttt{!=} & Not equal to \\
+\end{longtable}
+
+Another example:
+
+\begin{lstlisting}[style=cscode]
+(product_cost >= 670)
+    ? printf("You've reached min-spend")
+    : printf("Spend another %f cents\n", 670 - product_cost);
+\end{lstlisting}
+
+The ternary operator is useful for \textbf{simple conditions} where there are two possible outcomes.
+
+\subheading{0.5 Undefined Behaviour}
+\label{05-undefined-behaviour}
+\hypertarget{05-undefined-behaviour}{}
+
+\textbf{Undefined Behaviour (UB)} is a major recurring aspect of C.
+
+C is defined by a document called the \textbf{C Standard}. CS1010 uses the \textbf{C23 standard}.
+
+The standard specifies what should happen for valid C code. However, for some erroneous code, the standard \textbf{imposes no requirements}.
+
+If a program contains \textbf{undefined behaviour}:
+
+\begin{quote}
+The program is allowed to do anything.
+\end{quote}
+
+It might:
+
+\begin{itemize}
+\tightlist
+\item
+  produce an unexpected result
+\item
+  crash
+\item
+  appear to work
+\item
+  behave differently on another compiler/system
+\item
+  do something else entirely
+\end{itemize}
+
+\textbf{There are no guarantees.}
+
+\subsubheading*{Example: Division by zero}
+\label{example-division-by-zero}
+\hypertarget{example-division-by-zero}{}
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main() {
+    printf("%d\n", 5);
+    printf("%d\n", 1 / 0);
+    return 0;
+}
+\end{lstlisting}
+
+The expression:
+
+\begin{lstlisting}[style=cscode]
+1 / 0
+\end{lstlisting}
+
+has \textbf{undefined behaviour}.
+
+Do \textbf{not} assume that it will always produce a particular result.
+
+\subsubheading*{Integer Overflow}
+\label{integer-overflow}
+\hypertarget{integer-overflow}{}
+
+Overflow occurs when a value exceeds the range that its type can represent.
+
+Assuming \texttt{int} is 4 bytes (32 bits):
+
+\textbf{Unsigned integer overflow is well-defined:}
+
+\begin{lstlisting}[style=cscode]
+unsigned int c = 4294967295;
+c = c + 1;
+\end{lstlisting}
+
+The value \textbf{wraps around}:
+
+\begin{lstlisting}[style=plaincode]
+c = 0
+\end{lstlisting}
+
+\textbf{Signed integer overflow is undefined behaviour:}
+
+\begin{lstlisting}[style=cscode]
+int c = 2147483647;
+c = c + 1;  // Undefined Behaviour!
+\end{lstlisting}
+
+So:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Situation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Behaviour
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Unsigned integer overflow & Well-defined; wraps around \\
+Signed integer overflow & \textbf{Undefined Behaviour} \\
+\end{longtable}
+
+\subsubheading*{Key takeaway}
+\label{key-takeaway}
+\hypertarget{key-takeaway}{}
+
+\textbf{UB = the C Standard gives no requirements for what happens.}
+
+Therefore, \textbf{never rely on what seems to happen when testing UB}. A program may behave differently depending on the compiler, optimisation, machine, or other circumstances.
+
+\begin{quote}
+\textbf{UB is an unavoidable part of C}, so learning to recognise and avoid it is important.
+\end{quote}
+
+\textbf{Compiler Warnings}
+
+The compiler can warn you about \textbf{some} problematic cases.
+
+\begin{lstlisting}[style=plaincode]
+Listen to what your compiler says!
+\end{lstlisting}
+
+Compiler warnings are useful for catching potential problems before they become bugs.
+
+\subheading{0.X Lab}
+\label{0x-lab}
+\hypertarget{0x-lab}{}
+
+\textbf{Goal:} Practice working with variables, format specifiers, and the ternary operator.
+
+\textbf{Exercise 1 --- Temperature conversion}
+
+Write a program that stores a temperature in Celsius as a \texttt{double}, converts it to Fahrenheit, and prints both values to 2 decimal places.
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    double celsius = 30.0;
+    double fahrenheit = celsius * 9.0 / 5.0 + 32;
+    printf("%.2f C = %.2f F\n", celsius, fahrenheit);
+    return 0;
+}
+\end{lstlisting}
+
+\textbf{Exercise 2 --- Even or odd, with a ternary}
+
+Read an \texttt{int} and use the ternary operator (not \texttt{if}) to print whether it is even or odd.
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+int main(void) {
+    int n = 7;
+    printf("%s\n", (n % 2 == 0) ? "even" : "odd");
+    return 0;
+}
+\end{lstlisting}
+
+\textbf{Things to watch out for}
+
+\begin{itemize}
+\tightlist
+\item
+  Integer division silently truncates --- cast to \texttt{double} if you need a fractional result (see \protect\hyperlink{037-division-with-double}{0.3.7}).
+\item
+  \texttt{\%} only works on integer types.
+\item
+  Always double check your format specifier matches the variable's type (e.g.~\texttt{\%f} for \texttt{double}/\texttt{float}, \texttt{\%d} for \texttt{int}) --- mismatching them is undefined behaviour (see \protect\hyperlink{05-undefined-behaviour}{0.5}).
+\end{itemize}
+
+\heading{L1: Conditionals and Functions}
+\label{l1-conditionals-and-functions}
+\hypertarget{l1-conditionals-and-functions}{}
+
+\subheading{1.1 Abstraction I: Functions}
+\label{11-abstraction-i-functions}
+\hypertarget{11-abstraction-i-functions}{}
+
+\begin{description}
+\tightlist
+\item[\emph{Function}]
+is a named, reusable block of code that performs a specific task. It takes zero or more \textbf{arguments} as input, and can \textbf{return} a single value as output.
+\end{description}
+
+\textbf{Why functions?}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Abstraction} --- the caller only needs to know \emph{what} a function does (its interface), not \emph{how} it does it (its implementation).
+\item
+  \textbf{Reuse} --- write the logic once, call it many times.
+\item
+  \textbf{Readability} --- breaking a program into small, well-named functions makes it easier to follow.
+\end{itemize}
+
+\textbf{Anatomy of a function}
+
+\begin{lstlisting}[style=cscode]
+int add(int a, int b) {
+    int sum = a + b;
+    return sum;
+}
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{int} (leftmost) is the \textbf{return type} --- the type of value the function sends back.
+\item
+  \texttt{add} is the function's \textbf{name}.
+\item
+  \texttt{(int\ a,\ int\ b)} are the \textbf{parameters} --- the inputs the function expects, along with their types.
+\item
+  \texttt{return\ sum;} sends the value of \texttt{sum} back to whoever called the function. A function with return type \texttt{void} does not return a value, and can use a bare \texttt{return;} (or nothing) to end early.
+\end{itemize}
+
+\textbf{Calling a function}
+
+\begin{lstlisting}[style=cscode]
+int result = add(3, 4); // result is 7
+\end{lstlisting}
+
+\textbf{Function prototypes}
+
+If a function is defined \emph{after} \texttt{main}, or in another file, the compiler needs to know its signature before it's used. A \textbf{prototype} declares the signature without the body:
+
+\begin{lstlisting}[style=cscode]
+int add(int a, int b); // prototype
+
+int main(void) {
+    int result = add(3, 4);
+    return 0;
+}
+
+int add(int a, int b) { // definition
+    return a + b;
+}
+\end{lstlisting}
+
+\subheading{1.2 Conditional Statements}
+\label{12-conditional-statements}
+\hypertarget{12-conditional-statements}{}
+
+\subsubheading{1.2.1 If/else constructs}
+\label{121-ifelse-constructs}
+\hypertarget{121-ifelse-constructs}{}
+
+The \texttt{if} statement runs a block of code only when a condition is true.
+
+\begin{lstlisting}[style=cscode]
+if (condition) {
+    // runs when condition is true
+}
+\end{lstlisting}
+
+Add an \texttt{else} to handle the opposite case:
+
+\begin{lstlisting}[style=cscode]
+if (condition) {
+    // condition is true
+} else {
+    // condition is false
+}
+\end{lstlisting}
+
+Chain multiple conditions with \texttt{else\ if}:
+
+\begin{lstlisting}[style=cscode]
+if (score >= 90) {
+    printf("A\n");
+} else if (score >= 75) {
+    printf("B\n");
+} else if (score >= 50) {
+    printf("C\n");
+} else {
+    printf("F\n");
+}
+\end{lstlisting}
+
+Only the \textbf{first} branch whose condition is true runs; the rest are skipped.
+
+\textbf{Always use braces}
+
+As seen in the L2 lab below, omitting \texttt{\{\ \}} means only the \emph{single statement} immediately after the \texttt{if}/\texttt{else} belongs to it --- everything after that runs unconditionally regardless of the condition. Always wrap the body in \texttt{\{\ \}}, even for one-line bodies, to avoid this class of bug.
+
+\subsubheading{1.2.2 Comparison and logical operators}
+\label{122-comparison-and-logical-operators}
+\hypertarget{122-comparison-and-logical-operators}{}
+
+Recall the comparison operators (\texttt{==}, \texttt{!=}, \texttt{\textless{}}, \texttt{\textgreater{}}, \texttt{\textless{}=}, \texttt{\textgreater{}=}) and logical operators (\texttt{\&\&}, \texttt{\textbar{}\textbar{}}, \texttt{!}) from \protect\hyperlink{03-arithmetic-and-assignment-operators}{0.3}. Inside an \texttt{if}, these are combined to build more complex conditions.
+
+\textbf{Truth tables}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\texttt{a}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{b}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{a\ \&\&\ b}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{a\ \textbar{}\textbar{}\ b}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 1 \\
+1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\texttt{a}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{!a}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 1 \\
+1 & 0 \\
+\end{longtable}
+
+\textbf{Short-circuit evaluation}
+
+\texttt{\&\&} and \texttt{\textbar{}\textbar{}} evaluate left to right and stop early once the result is already decided:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{a\ \&\&\ b} --- if \texttt{a} is false, \texttt{b} is \textbf{never evaluated} (the whole expression is already false).
+\item
+  \texttt{a\ \textbar{}\textbar{}\ b} --- if \texttt{a} is true, \texttt{b} is \textbf{never evaluated} (the whole expression is already true).
+\end{itemize}
+
+This matters when the right-hand side has side effects (e.g.~a function call that prints something), as seen in the \texttt{foo()\ \&\&\ bar()} example in the L2 lab below.
+
+\subsubheading{1.2.3 Boolean operators}
+\label{123-boolean-operators}
+\hypertarget{123-boolean-operators}{}
+
+C did not have a built-in boolean type until relatively recently. \texttt{\textless{}stdbool.h\textgreater{}} provides one:
+
+\begin{lstlisting}[style=cscode]
+#include <stdbool.h>
+
+bool is_valid = true;
+\end{lstlisting}
+
+Under the hood:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{bool} is really a small integer type; \texttt{true} is \texttt{1} and \texttt{false} is \texttt{0}.
+\item
+  Any non-zero value is treated as ``true'' in a condition; only \texttt{0} is ``false''.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+int x = 5;
+if (x) {        // true, since x != 0
+    printf("x is truthy\n");
+}
+\end{lstlisting}
+
+\textbf{Returning a \texttt{bool} from a function}
+
+\begin{lstlisting}[style=cscode]
+#include <stdbool.h>
+
+bool is_even(int n) {
+    return n % 2 == 0;
+}
+\end{lstlisting}
+
+This is the pattern used by \texttt{foo()} and \texttt{bar()} in the L2 lab below --- functions that return \texttt{bool} and are combined with \texttt{\&\&}/\texttt{\textbar{}\textbar{}} inside an \texttt{if}.
+
+\subheading{1.X Lab}
+\label{1x-lab}
+\hypertarget{1x-lab}{}
+
+\textbf{Goal:} Practice writing your own functions that use conditionals.
+
+\textbf{Exercise --- Grade classifier}
+
+Write a function \texttt{char\ grade(int\ score)} that returns \texttt{\textquotesingle{}A\textquotesingle{}}, \texttt{\textquotesingle{}B\textquotesingle{}}, \texttt{\textquotesingle{}C\textquotesingle{}}, or \texttt{\textquotesingle{}F\textquotesingle{}} based on the boundaries used in \protect\hyperlink{121-ifelse-constructs}{1.2.1}, then call it from \texttt{main} and print the result.
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+char grade(int score) {
+    if (score >= 90) {
+        return 'A';
+    } else if (score >= 75) {
+        return 'B';
+    } else if (score >= 50) {
+        return 'C';
+    } else {
+        return 'F';
+    }
+}
+
+int main(void) {
+    int score = 82;
+    printf("Grade: %c\n", grade(score));
+    return 0;
+}
+\end{lstlisting}
+
+\textbf{Stretch goal}
+
+Write \texttt{bool\ is\_leap\_year(int\ year)} using the rule: divisible by 4, except centuries, unless also divisible by 400. Combine \texttt{\&\&}, \texttt{\textbar{}\textbar{}}, and \texttt{!} from \protect\hyperlink{122-comparison-and-logical-operators}{1.2.2}.
+
+\heading{L2: Abstractions, Structs, and the Stack}
+\label{l2-abstractions-structs-and-the-stack}
+\hypertarget{l2-abstractions-structs-and-the-stack}{}
+
+\subheading{2.1 Abstraction II: Functions}
+\label{21-abstraction-ii-functions}
+\hypertarget{21-abstraction-ii-functions}{}
+
+\subsubheading{2.1.1 Abstraction of Behavior: Functions}
+\label{211-abstraction-of-behavior-functions}
+\hypertarget{211-abstraction-of-behavior-functions}{}
+
+Section \protect\hyperlink{11-abstraction-i-functions}{1.1} introduced functions as reusable blocks of code. Here we look at \emph{why} wrapping behaviour in a function is a form of \textbf{abstraction}.
+
+When we call a function, we only need to know:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Its \textbf{name}
+\item
+  Its \textbf{parameters} (types and meaning)
+\item
+  Its \textbf{return type}
+\end{enumerate}
+
+We don't need to know \emph{how} it's implemented internally --- that's hidden inside the function body. This is exactly what happens with \texttt{read\_point()} and \texttt{print\_movement()} in the lab below: \texttt{main} doesn't need to know how a point is read or how movement is computed, only that these functions exist and what they do.
+
+\textbf{Pass-by-value}
+
+In C, arguments are passed \textbf{by value} --- the function receives a \emph{copy} of the argument. Modifying a parameter inside a function does not affect the caller's variable.
+
+\begin{lstlisting}[style=cscode]
+void increment(int x) {
+    x = x + 1; // only changes the local copy
+}
+
+int main(void) {
+    int n = 5;
+    increment(n);
+    printf("%d\n", n); // still 5
+}
+\end{lstlisting}
+
+\subsubheading{2.1.2 Abstraction of Data: Structs}
+\label{212-abstraction-of-data-structs}
+\hypertarget{212-abstraction-of-data-structs}{}
+
+Just as functions abstract \emph{behaviour}, \textbf{structs} abstract \emph{data} --- they let us group related variables into a single named type.
+
+\begin{lstlisting}[style=cscode]
+typedef struct {
+    int x;
+    int y;
+} Point;
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{struct\ \{\ ...\ \}} defines a new structure with the listed fields (\textbf{members}).
+\item
+  \texttt{typedef\ ...\ Point;} gives the struct the alias \texttt{Point}, so we can write \texttt{Point\ p;} instead of \texttt{struct\ \{\ ...\ \}\ p;} every time.
+\end{itemize}
+
+\textbf{Creating and accessing a struct}
+
+\begin{lstlisting}[style=cscode]
+Point p;
+p.x = 3;
+p.y = 4;
+printf("(%d, %d)\n", p.x, p.y); // (3, 4)
+\end{lstlisting}
+
+The \texttt{.} (dot) operator accesses a member of a struct.
+
+\textbf{Why this is abstraction}
+
+Without a struct, a point would be two separate, unrelated \texttt{int} variables (\texttt{px}, \texttt{py}), and a function relating two points would need four separate parameters. With \texttt{Point}, related data travels together as one value --- as seen in the lab below, where \texttt{print\_movement(Point\ start,\ Point\ end)} takes just two arguments instead of four.
+
+\subheading{2.2 The Stack and Block Scoping}
+\label{22-the-stack-and-block-scoping}
+\hypertarget{22-the-stack-and-block-scoping}{}
+
+\subsubheading{2.2.1 Stack Frames}
+\label{221-stack-frames}
+\hypertarget{221-stack-frames}{}
+
+Every time a function is called, the program sets aside a small block of memory called a \textbf{stack frame} to hold that call's local variables, parameters, and return address.
+
+\begin{itemize}
+\tightlist
+\item
+  When a function is \textbf{called}, a new frame is \textbf{pushed} onto the \textbf{call stack}.
+\item
+  When the function \textbf{returns}, its frame is \textbf{popped} off the stack, and its memory is reclaimed.
+\item
+  Each call gets its \textbf{own} frame --- calling the same function twice (e.g.~\texttt{read\_point()} for \texttt{p} then for \texttt{q} in the lab below) creates two separate frames, each with its own copy of \texttt{pt}.
+\end{itemize}
+
+\begin{lstlisting}[style=plaincode]
+call main()
+  -> call read_point()    [frame for read_point pushed]
+  <- return                [frame for read_point popped]
+  -> call read_point()    [a *new* frame pushed]
+  <- return                [popped again]
+  -> call print_movement() [frame pushed]
+  <- return                [popped]
+\end{lstlisting}
+
+This is also why a function cannot ``see'' another function's local variables --- they live in different frames.
+
+\subsubheading{2.2.2 Local variables}
+\label{222-local-variables}
+\hypertarget{222-local-variables}{}
+
+A \textbf{local variable} is declared inside a function or block, and only exists --- is only \emph{in scope} --- within that block.
+
+\begin{lstlisting}[style=cscode]
+void foo(void) {
+    int a = 1; // local to foo
+}
+
+void bar(void) {
+    int a = 2; // a different `a`, local to bar
+}
+\end{lstlisting}
+
+\texttt{foo}'s \texttt{a} and \texttt{bar}'s \texttt{a} are unrelated; each lives in its own stack frame.
+
+\textbf{Block scoping}
+
+Any \texttt{\{\ \}} introduces a new scope, not just function bodies --- including \texttt{if}, \texttt{else}, and loop bodies:
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    int x = 10;
+    if (x > 5) {
+        int y = 20;     // y only exists inside this block
+        printf("%d\n", y);
+    }
+    // y is not visible here — out of scope
+    return 0;
+}
+\end{lstlisting}
+
+\textbf{Lifetime vs.~scope}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Scope} --- where in the code a variable's name is visible.
+\item
+  \textbf{Lifetime} --- how long the variable's memory actually exists (tied to its stack frame, from when the block is entered to when it's exited).
+\end{itemize}
+
+\subheading{2.X Lab}
+\label{2x-lab}
+\hypertarget{2x-lab}{}
+
+\textbf{More If-Else, Abstraction, Structs}
+
+Part 1a:
+
+Does the code below compile? What is its output?
+
+\begin{lstlisting}[style=cscode]
+#include <stdbool.h>
+#include <stdio.h>
+ 
+bool foo(){
+	printf("foo called returning true\n");
+	return true;
+}
+ 
+bool bar(){
+	printf("bar called returning false\n");
+	return false;
+}
+ 
+int main(){
+	if(foo() && bar()){
+		printf("line A reached\n");
+	}
+ 
+	printf("BOOP\n");
+ 
+	if(foo() || bar()){
+		printf("line B reached\n");
+	}
+}
+\end{lstlisting}
+
+Output: \textbf{Only one line output}
+
+\begin{itemize}
+\tightlist
+\item
+  If you omit the curly braces \texttt{\{\ \ \ \ \}} in your if statement, only the line \textbf{below} the \texttt{if} statement is used as its output.
+\item
+\end{itemize}
+
+Consider the following code:
+
+\begin{lstlisting}[style=cscode]
+#include "input.h"
+#include <stdbool.h>
+#include <stdio.h>
+
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+int main() {
+    Point p;
+    p.x = read_int();
+    p.y = read_int();
+
+    Point q;
+    q.x = read_int();
+    q.y = read_int();
+
+    int dx = q.x - p.x;
+    int dy = q.y - p.y;
+
+    bool moving_right = dx > 0;
+    bool moving_up = dy > 0;
+    bool on_same_x = dx == 0;
+    bool on_same_y = dy == 0;
+
+    if (on_same_x && on_same_y) {
+        printf("same point\n");
+    } else if (on_same_x) {
+        printf("vertical movement\n");
+    } else if (on_same_y) {
+        printf("horizontal movement\n");
+    } else if (moving_right && moving_up) {
+        printf("northeast\n");
+    } else if (!moving_right && moving_up) {
+        printf("northwest\n");
+    } else if (moving_right && !moving_up) {
+        printf("southeast\n");
+    } else {
+        printf("southwest\n");
+    }
+    return 0;
+}
+\end{lstlisting}
+
+We can simplify this to:
+
+\begin{lstlisting}[style=cscode]
+#include "input.h"
+#include <stdbool.h>
+#include <stdio.h>
+
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+Point read_point() {
+    Point pt;
+    pt.x = read_int();
+    pt.y = read_int();
+    return pt;
+}
+
+void print_movement(Point start, Point end) {
+    int dx = end.x - start.x;
+    int dy = end.y - start.y;
+
+    bool moving_right = dx > 0;
+    bool moving_up = dy > 0;
+    bool on_same_x = dx == 0;
+    bool on_same_y = dy == 0;
+
+    if (on_same_x && on_same_y) {
+        printf("same point\n");
+    } else if (on_same_x) {
+        printf("vertical movement\n");
+    } else if (on_same_y) {
+        printf("horizontal movement\n");
+    } else if (moving_right && moving_up) {
+        printf("northeast\n");
+    } else if (!moving_right && moving_up) {
+        printf("northwest\n");
+    } else if (moving_right && !moving_up) {
+        printf("southeast\n");
+    } else {
+        printf("southwest\n");
+    }
+}
+
+int main() {
+    Point p = read_point();
+    Point q = read_point();
+    print_movement(p, q);
+    return 0;
+}
+\end{lstlisting}
+
+\heading{L3: Fixed Size arrays and Recursion}
+\label{l3-fixed-size-arrays-and-recursion}
+\hypertarget{l3-fixed-size-arrays-and-recursion}{}
+
+\subheading{3.1 Arrays}
+\label{31-arrays}
+\hypertarget{31-arrays}{}
+
+\subsubheading{3.1.1 Array Declaration}
+\label{311-array-declaration}
+\hypertarget{311-array-declaration}{}
+
+Let's say we want to declare an array that stores 5 elements of type \texttt{double} that we want to call ``costs''.
+
+An \textbf{array} is declared as such: \texttt{\textless{}type\textgreater{}\ \textless{}array\ name\textgreater{}{[}\textless{}no.\ of\ elements\textgreater{}{]}}
+
+\begin{lstlisting}[style=cscode]
+double costs[5];
+\end{lstlisting}
+
+\begin{quote}
+\textbf{Important:} Arrays have a fixed type. You cannot add multiple different types to an array unlike Python.
+\end{quote}
+
+Arrays are stored on the stack.
+
+\begin{lstlisting}[style=plaincode]
+main
+
+costs = {?,?,?,?,?}
+\end{lstlisting}
+
+An array will have all of its elements stored contiguously to each other in memory. * This has implications for both performance and security in the far future.
+
+\begin{lstlisting}[style=cscode]
+double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+        // initializes the array with 5 values
+\end{lstlisting}
+
+It is stored in the stack as such:
+
+\begin{lstlisting}[style=plaincode]
+stack:
+|8.88|10.22|9.88|22.22|44.44|
+\end{lstlisting}
+
+\subsubheading{3.1.2 Initializing elements}
+\label{312-initializing-elements}
+\hypertarget{312-initializing-elements}{}
+
+However, what if we initialize only 3 elements out of 5?
+
+\begin{lstlisting}[style=cscode]
+double costs[5]= {8.88,10.22,9.88};
+// the remaining elements will be initialized to 0.0 by default.
+
+
+double zeroarray[5]={0};
+//^^this is a very good way to initialize an entire array to 0!
+\end{lstlisting}
+
+What if we initialize more than 5 elements?
+
+\begin{lstlisting}[style=cscode]
+double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
+\end{lstlisting}
+
+If we have more values than the specified size, what happens is up to the compiler (technically not undefined behavior) {[}we don't recommend doing this, there's no good reason to at this stage{]}
+
+What if we initialize it over 2 lines?
+
+\begin{lstlisting}[style=cscode]
+double costs[5];
+costs = {8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
+\end{lstlisting}
+
+\begin{quote}
+This does \textbf{NOT} work and throws a \texttt{compile\ error}. Unlike scalar variables, arrays cannot be assigned new values as a whole.
+\end{quote}
+
+\subsubheading{3.1.3 Accessing an Array (writing)}
+\label{313-accessing-an-array-writing}
+\hypertarget{313-accessing-an-array-writing}{}
+
+We use the index.
+
+\begin{lstlisting}[style=cscode]
+double costs[5];
+
+costs[0] = 8.88;
+// | 8.88 | ? | ? | ? | ? |
+
+costs[4] = 44.44;
+// | 8.88 | ? | ? | ? | 44.44 |
+\end{lstlisting}
+
+\subsubheading{3.1.4 Copying Semantics}
+\label{314-copying-semantics}
+\hypertarget{314-copying-semantics}{}
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    double costs_2[] = costs; // error!
+}
+\end{lstlisting}
+
+\begin{quote}
+This does \textbf{NOT} work and will throw a \emph{compile error}! \texttt{error:\ array\ initializer\ must\ be\ an\ initializer\ list.}
+\end{quote}
+
+Arrays (unlike numerical types and structs) as a whole are \textbf{not copyable} via assignment operators.
+
+\subsubheading{3.1.5 Arrays as arguments to functions}
+\label{315-arrays-as-arguments-to-functions}
+\hypertarget{315-arrays-as-arguments-to-functions}{}
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+#include <stddef.h>
+
+void print_doublearr_index(double arr[], size_t index) {
+    printf("%f\n", arr[index]);
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    print_doublearr_index(costs, 3);
+}
+\end{lstlisting}
+
+\texttt{size\_t}: unsigned type (typically \texttt{unsigned\ long})
+
+\begin{itemize}
+\tightlist
+\item
+  Guaranteed to be large enough to index any array
+\item
+  Intent is clear: use by default for array indices, unless we need negative values
+\item
+  \texttt{size\_t} is defined in \texttt{\textless{}stddef.h\textgreater{}}
+\end{itemize}
+
+Array indices can technically be any integral type (\texttt{char}, \texttt{int}, \texttt{long} \ldots)
+
+\subsubheading{3.1.6 Length of arrays}
+\label{316-length-of-arrays}
+\hypertarget{316-length-of-arrays}{}
+
+\begin{lstlisting}[style=cscode]
+void print_last_element (double arr[]) {
+    printf("%f\n", arr[?])
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    print_last_element(costs);
+}
+\end{lstlisting}
+
+In \textbf{C}, we do \textbf{NOT} have \texttt{length/len} operators to measure the length of an array.
+
+Instead, we use \texttt{size\_t} for now:
+
+\begin{lstlisting}[style=cscode]
+void print_last_element(double arr[], size_t length) {
+    printf("%f\n", arr[length - 1]);
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    print_last_element(costs, 5);
+}
+\end{lstlisting}
+
+\subsubheading*{Setting Values inside Functions}
+\label{setting-values-inside-functions}
+\hypertarget{setting-values-inside-functions}{}
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    set_doublearr_index(costs, 3, 5.5);
+    printf("%f\n", costs[3]);
+}
+void set_doublearr_index(double arr[], size_t index, double val) {
+    arr[index] = val;
+}
+    //output is... 5.5.
+\end{lstlisting}
+
+This sets the index 3 (the 4th) element of costs to 5.5. But how is that possible? This is because arrays are pointers.
+
+\subsubheading*{Returning from functions}
+\label{returning-from-functions}
+\hypertarget{returning-from-functions}{}
+
+For now, do not return arrays declared within functions.
+
+\begin{lstlisting}[style=cscode]
+// DONT DO THIS
+??? foo() {
+    double costs[5] ={8.88, 10.22, 9.88, 22.22, 44.44, 1.0};
+    return costs;
+} // will return UB
+\end{lstlisting}
+
+\subheading{3.2 Arrays and Structs}
+\label{32-arrays-and-structs}
+\hypertarget{32-arrays-and-structs}{}
+
+\subsubheading*{Zeroing out}
+\label{zeroing-out}
+\hypertarget{zeroing-out}{}
+
+\begin{lstlisting}[style=cscode]
+#include <stdio.h>
+
+typedef struct Position {
+    int x;
+    int y;
+} Position;
+
+int main(void){
+    Position positions[2] = {0};
+    printf("%d %d\n", positions[0].x, positions[0].y);
+} // This will zero out all members of all structs.
+\end{lstlisting}
+
+\subsubheading*{UB}
+\label{ub}
+\hypertarget{ub}{}
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    double costs[1] = {8.88};
+    printf("%f\n", costs[1]);
+}
+
+// UB [1] 
+
+
+int main(void) {
+    double costs[1];
+    printf("%f\n", costs[-1]);
+}
+
+// UB [2]
+
+??? foo() {
+    double costs[1] = {8.88};
+    return costs;
+}
+
+// UB [3]
+
+int main() {
+    double costs[1];
+    printf("%f\n", costs[0]);
+}
+\end{lstlisting}
+
+\subsubheading*{Variable-length arrays}
+\label{variable-length-arrays}
+\hypertarget{variable-length-arrays}{}
+
+Can we declare the size of an array as a variable? Yes.
+
+\begin{lstlisting}[style=cscode]
+double costs[var];
+\end{lstlisting}
+
+\begin{quote}
+However, there are much better ways to do this (discussed later). We do not allow VLAs because of underlying issues. As a matter of fact, VLA was removed from Linux operating system.
+\end{quote}
+
+\subheading{3.3 Multidimensional Arrays}
+\label{33-multidimensional-arrays}
+\hypertarget{33-multidimensional-arrays}{}
+
+\subsubheading{3.3.1 Array of arrays}
+\label{331-array-of-arrays}
+\hypertarget{331-array-of-arrays}{}
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    int a[2][3] = {{0,1,2},{3,4,5}};
+    printf("%d\n", a[1][0]);
+}
+\end{lstlisting}
+
+Then a is stored as: \[a =
+\left[\begin{matrix}
+    0 & 1 & 2 \\ 3 & 4 & 5
+\end{matrix}\right]
+\]
+
+We are storing an array of arrays.
+
+Example: tic-tac-toe
+
+\begin{lstlisting}[style=cscode]
+int grid[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
+\end{lstlisting}
+
+\[\text{grid} =
+\left[\begin{matrix}
+    1 & 2 &3 \\ 4 & 5 & 6 \\ 7&8&9
+\end{matrix}\right]\]
+
+Arrays can have more dimensions!
+
+\begin{quote}
+Only the first dimension size can be omitted.
+\end{quote}
+
+\subheading{3.4 Recursion}
+\label{34-recursion}
+\hypertarget{34-recursion}{}
+
+\subsubheading{3.4.1 Why Recursion}
+\label{341-why-recursion}
+\hypertarget{341-why-recursion}{}
+
+You \textbf{cannot call yourself a programmer if you don't know how to recurse}. You will be locking yourself away from future concepts if you don't learn this. This includes:
+
+\begin{itemize}
+\tightlist
+\item
+  Binary search trees
+\item
+  Fast/Efficient sorting algorithms
+\item
+  A lot of efficient algorithms. The fast Fourier transform (FFT) is an example
+\end{itemize}
+
+\subsubheading{3.4.2 Features of recursion}
+\label{342-features-of-recursion}
+\hypertarget{342-features-of-recursion}{}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Base Case:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The simplest possible case that we have to solve manually.
+  \end{itemize}
+\item
+  \textbf{Recursive Case:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In this case we usually have to ``steer'' the general case into the smaller case somehow.
+  \item
+    We will rely on Cheems to solve the smaller version of the problem for us.
+  \item
+    We will use whatever Cheems gives us + a little bit more work to solve the problems in general.
+  \end{itemize}
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+<return_type> foo(<param(s) here>){
+    if(<base case>){
+    return; // or return value;
+}
+
+// handle recursive case here
+// any computation before recursive call(s)
+
+foo(<with smaller case>);
+    // any computation after recursive call(s)
+}
+\end{lstlisting}
+
+\subsubheading{3.4.3 Example: Printing an array in reverse}
+\label{343-example-printing-an-array-in-reverse}
+\hypertarget{343-example-printing-an-array-in-reverse}{}
+
+Logic:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The base case is when the length of the array is 0, so we do nothing.
+\item
+  We have an entire array of \(n\) elements.
+\item
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  The entire array of \(n\) elements
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The last element will be our base case.
+  \item
+    Cheems will handle the rest with: \texttt{print\_arr\_reverse(arr,\ len-1)}
+  \end{itemize}
+\item
+  We should do something only with the last element. We print the last element before Cheems.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+void print_arr_reverse(int arr[], size_t len){
+    if (len == 0) {
+        return; // array has nothing, we do nothing.
+    }
+
+    printf("%d\n", arr[len-1]);
+
+    print_arr_reverse(arr, len-1); // cheems!
+}
+\end{lstlisting}
+
+\subsubheading*{Example: Reverse an array}
+\label{example-reverse-an-array}
+\hypertarget{example-reverse-an-array}{}
+
+Input: An array of length \texttt{len}. Output: Reverse the elements of \texttt{arr}.
+
+We need a helper function here: The function will need:
+
+\begin{itemize}
+\tightlist
+\item
+  take in an array
+\item
+  Swap the first and last elements
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+void reverse_arr_helper(int arr[], size_t start, size_t end) {
+    if (start >= end) {
+        return;
+    }
+    reverse_arr_helper(arr, start+1, end-1);
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+}
+
+void reverse_arr(int arr[], size_t len) {
+    if (len==0) {return;}
+    reverse_arr_helper(arr,0,len-1);
+}
+\end{lstlisting}
+
+\subsubheading*{Example: Sort an array}
+\label{example-sort-an-array}
+\hypertarget{example-sort-an-array}{}
+
+Let's say Cheems has already sorted the first \(n-1\) elements for us. What should we do with the last element? \textgreater{} We figure out where to put it.
+
+\begin{lstlisting}[style=cscode]
+void shift_left(int arr[], size_t len, size_t count) {
+    ...
+}
+
+void count_larger_than(int arr[], size_t len, size_t val) {
+    ...
+}
+
+void sort_arr(int arr[], size_t len) {
+    if(len==0){
+        return;
+    }
+    size_t count = count_larger_than(arr, len-1, arr[len-1]);
+    shift_left(arr, len, count);
+}
+
+\end{lstlisting}
+
+\heading{3.X Lab}
+\label{3x-lab}
+\hypertarget{3x-lab}{}
+
+\begin{itemize}
+\item
+  When declaring \texttt{arrays{[}{]}{[}{]}}, you need to at least declare the no. of columns \texttt{{[}{]}{[}cols{]}}.
+\item
+  \texttt{void} will not affect the variable inside \texttt{main} without \texttt{return}.
+\item
+  However, \texttt{void} calls on the array directly and can redefine the array elements.
+\end{itemize}
+
+\heading{L4: Loops}
+\label{l4-loops}
+\hypertarget{l4-loops}{}
+
+\subheading{4.1 \texttt{while} Loops and \texttt{for} Loops}
+\label{41-while-loops-and-for-loops}
+\hypertarget{41-while-loops-and-for-loops}{}
+
+\subsubheading*{Why loops?}
+\label{why-loops}
+\hypertarget{why-loops}{}
+
+Some problems can be solved using recursion, but recursion can use a lot of stack space. Consider printing every element of an array:
+
+\begin{lstlisting}[style=cscode]
+void print_arr_from(double arr[], size_t length, size_t i) {
+    if (i == length) {
+        return;
+    }
+    printf("%f\n", arr[i]);
+    print_arr_from(arr, length, i + 1);
+}
+
+void print_arr(double arr[], size_t length) {
+    print_arr_from(arr, length, 0);
+}
+\end{lstlisting}
+
+Each recursive call uses a stack frame and waits for the next call to finish. Printing an array of length \(n\) creates roughly \(n\) nested calls, so a sufficiently large array can exhaust the stack and cause a \textbf{stack overflow}. C does not guarantee tail-call optimization to avoid this.
+
+Loops let us repeat code without making a new function call for every repetition.
+
+\subsubheading*{\texttt{while} loops}
+\label{while-loops}
+\hypertarget{while-loops}{}
+
+\begin{lstlisting}[style=cscode]
+while (expression) {
+    // loop body
+}
+\end{lstlisting}
+
+The expression is checked first. If it is true, the loop body runs. At the end of the body, execution returns to the condition and checks it again. If the expression is false, the loop body is skipped or the loop ends.
+
+For example, print every element of an array:
+
+\begin{lstlisting}[style=cscode]
+void print_arr(double arr[], size_t length) {
+    size_t i = 0;
+
+    while (i < length) {
+        printf("%f\n", arr[i]);
+        i += 1;
+    }
+}
+\end{lstlisting}
+
+Here, \texttt{i} is the \textbf{index} (or iterator). It starts at zero, increases after each iteration, and the loop ends when \texttt{i\ \textless{}\ length} becomes false.
+
+If the loop body never changes anything that can make the condition false, the loop may run forever. For example, leaving out \texttt{i\ +=\ 1} would repeatedly print \texttt{arr{[}0{]}}.
+
+Array indices go from \texttt{0} to \texttt{length\ -\ 1}. Using \texttt{i\ \textless{}=\ length} would eventually access \texttt{arr{[}length{]}}, which is outside the array and causes undefined behavior.
+
+For reverse iteration with \texttt{size\_t}, avoid a condition such as \texttt{i\ \textgreater{}=\ 0}: \texttt{size\_t} is unsigned, so that condition is always true, even after the value wraps around. One way to print in reverse is:
+
+\begin{lstlisting}[style=cscode]
+void print_arr_reverse(double arr[], size_t length) {
+    for (size_t i = 0; i < length; i += 1) {
+        printf("%f\n", arr[(length - 1) - i]);
+    }
+}
+\end{lstlisting}
+
+\subsubheading*{\texttt{for} loops}
+\label{for-loops}
+\hypertarget{for-loops}{}
+
+A \texttt{for} loop puts initialization, condition, and iteration in one place:
+
+\begin{lstlisting}[style=cscode]
+for (expression1; expression2; expression3) {
+    // loop body
+}
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{expression1} runs once before the loop starts. It often declares and initializes an index.
+\item
+  \texttt{expression2} is the condition. The body runs only when it is true.
+\item
+  \texttt{expression3} runs after each execution of the body. It often updates the index.
+\end{itemize}
+
+The \texttt{while} and \texttt{for} versions below do the same thing:
+
+\begin{lstlisting}[style=cscode]
+size_t i = 0;
+while (i < length) {
+    printf("%f\n", arr[i]);
+    i += 1;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cscode]
+for (size_t i = 0; i < length; i += 1) {
+    printf("%f\n", arr[i]);
+}
+\end{lstlisting}
+
+Variables declared in a \texttt{for} loop's initialization are scoped to the loop, so \texttt{i} cannot be used after the loop. A variable declared before a \texttt{while} loop remains accessible after it.
+
+\subheading{4.2 Loop control with \texttt{break}, \texttt{continue}, \texttt{return}}
+\label{42-loop-control-with-break-continue-return}
+\hypertarget{42-loop-control-with-break-continue-return}{}
+
+\subsubheading*{\texttt{break}}
+\label{break}
+\hypertarget{break}{}
+
+\texttt{break} immediately exits the \textbf{innermost loop} containing it. Execution continues after that loop.
+
+\begin{lstlisting}[style=cscode]
+for (size_t i = 0; i < 5; ++i) {
+    printf("%zu\n", i);
+    if (i == 1) {
+        break;
+    }
+}
+printf("Loop ended!\n");
+\end{lstlisting}
+
+This prints \texttt{0}, \texttt{1}, and \texttt{Loop\ ended!}. In nested loops, \texttt{break} exits only the inner loop.
+
+\subsubheading*{\texttt{continue}}
+\label{continue}
+\hypertarget{continue}{}
+
+\texttt{continue} skips the rest of the current loop body and moves to the next iteration. In a \texttt{for} loop, the iteration expression runs before the condition is checked again.
+
+\begin{lstlisting}[style=cscode]
+for (size_t i = 0; i < 5; ++i) {
+    if (i == 1) {
+        continue;
+    }
+    printf("%zu\n", i);
+}
+\end{lstlisting}
+
+This prints \texttt{0}, \texttt{2}, \texttt{3}, and \texttt{4}.
+
+\subsubheading*{\texttt{return}}
+\label{return}
+\hypertarget{return}{}
+
+\texttt{return} immediately exits the \textbf{entire function}, including any loops inside it. For example, this function returns as soon as it finds a \texttt{1}:
+
+\begin{lstlisting}[style=cscode]
+bool has_one_inside_array(int arr[], size_t length) {
+    for (size_t i = 0; i < length; ++i) {
+        if (arr[i] == 1) {
+            return true;
+        }
+    }
+    return false;
+}
+\end{lstlisting}
+
+\subheading{4.3 Array recursion}
+\label{43-array-recursion}
+\hypertarget{43-array-recursion}{}
+
+Array elements are commonly processed by iterating over their indices:
+
+\begin{lstlisting}[style=cscode]
+for (size_t i = 0; i < length; ++i) {
+    // process arr[i]
+}
+\end{lstlisting}
+
+This is useful for tasks such as printing every element, initializing an array, and calculating a sum. The index starts at \texttt{0}, and the loop condition \texttt{i\ \textless{}\ length} ensures the last index accessed is \texttt{length\ -\ 1}.
+
+\subheading{4.4 Examples}
+\label{44-examples}
+\hypertarget{44-examples}{}
+
+\subsubheading*{Initialize every array element}
+\label{initialize-every-array-element}
+\hypertarget{initialize-every-array-element}{}
+
+\begin{lstlisting}[style=cscode]
+void init_array(double arr[], size_t length, double val) {
+    for (size_t i = 0; i < length; ++i) {
+        arr[i] = val;
+    }
+}
+\end{lstlisting}
+
+\texttt{++i}, \texttt{i++}, and \texttt{i\ +=\ 1} all increase \texttt{i} by one here.
+
+\subsubheading*{Nested loops: print a triangle}
+\label{nested-loops-print-a-triangle}
+\hypertarget{nested-loops-print-a-triangle}{}
+
+A loop can be placed inside another loop. The inner loop runs to completion during each outer loop iteration.
+
+\begin{lstlisting}[style=cscode]
+void print_triangle(size_t height) {
+    for (size_t i = 0; i < height; ++i) {
+        for (size_t j = 0; j < i + 1; ++j) {
+            printf("X ");
+        }
+        printf("\n");
+    }
+}
+\end{lstlisting}
+
+The outer loop controls the row number. The inner loop prints \texttt{i\ +\ 1} Xs on that row. Each loop's index is scoped to its own \texttt{for} loop.
+
+\subsubheading*{A method for planning loops}
+\label{a-method-for-planning-loops}
+\hypertarget{a-method-for-planning-loops}{}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Decide what condition must be true for the loop to continue.
+\item
+  If the loop needs an iterator, choose its type and initialize it.
+\item
+  Decide how to update the iterator after each iteration.
+\end{enumerate}
+
+\heading{L5: Pointers and Strings}
+\label{l5-pointers-and-strings}
+\hypertarget{l5-pointers-and-strings}{}
+
+\subheading{5.1 Pointers}
+\label{51-pointers}
+\hypertarget{51-pointers}{}
+
+\subsubheading*{memory}
+\label{memory}
+\hypertarget{memory}{}
+
+Before we talk about pointers, we need to first about memory. Memory has two Features:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{address} is the location of where data is stored
+\item
+  \textbf{value} of the memory is the data stored at the location
+\end{itemize}
+
+For example:
+
+\begin{lstlisting}[style=cscode]
+int x = 4;
+int *p = &x;
+\end{lstlisting}
+
+Then the memory would look like so:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Address
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Value
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+`0x1000' & `0x4' \\
+`0x1004' & `0x1000' \\
+`0x1008' & \\
+`0x100C' & \\
+`0x1010' & \\
+`0x1014' & \\
+`0x1018' & \\
+`0x101C' & \\
+\end{longtable}
+
+\subsubheading*{Pointers.}
+\label{pointers}
+\hypertarget{pointers}{}
+
+A pointer is a value that happens to be a sign that points to another value's address. We define integer \texttt{int\ x\ =\ 4}. In english, ``integer named \texttt{x} is set to \(4\).'' And then we define \texttt{int\ *p\ =\ \&x} In english, ``integer pointer named \texttt{p} is set to the \emph{address} of \texttt{x}'' The asterisk \texttt{*} stands for pointer, while the ampersand \texttt{\&} stands for address.
+
+\begin{lstlisting}[style=cscode]
+int *p = &x;
+int y = *p; 
+\end{lstlisting}
+
+when an asterisk is used without the type, it becomes a pointer \textbf{dereference}. In english, ``integer named \texttt{y} is set to \emph{the thing pointed to} by \texttt{p}.''
+
+\begin{lstlisting}[style=cscode]
+int x =1;
+int *ptr = &x;
+printf("%d\n",*ptr);
+// 1
+\end{lstlisting}
+
+\texttt{int\ *ptr\ =\ \&x} - type pointer to an integer. \texttt{\&} means address. \texttt{*ptr\ =\ 1;} - dereferencing a pointer to its address
+
+\subsubheading*{Why pointers?}
+\label{why-pointers}
+\hypertarget{why-pointers}{}
+
+We break down functions in C based on the actions they perform. However, they are sometimes out of scope that we want. To get around this, we pass the struct using a pointer so that the pointer to the struct is in scope of the functions we want. This reduces the space by not copying.
+
+Necessary for memory allocation.
+
+\subheading{5.2 Address-of (\&) and Dereferencing (*), nullptr, pointers to pointers}
+\label{52-address-of--and-dereferencing--nullptr-pointers-to-pointers}
+\hypertarget{52-address-of--and-dereferencing--nullptr-pointers-to-pointers}{}
+
+\subheading{5.3 Functions, structs, arrays, and pointer arithmetic}
+\label{53-functions-structs-arrays-and-pointer-arithmetic}
+\hypertarget{53-functions-structs-arrays-and-pointer-arithmetic}{}
+
+\subheading{5.4 Strings: Null termination, character arrays and string literals}
+\label{54-strings-null-termination-character-arrays-and-string-literals}
+\hypertarget{54-strings-null-termination-character-arrays-and-string-literals}{}
+
+\subheading{5.5 Printing strings, const and string library functions}
+\label{55-printing-strings-const-and-string-library-functions}
+\hypertarget{55-printing-strings-const-and-string-library-functions}{}
+
+\subheading{5.6 Pointer Provenance Framework: reasoning about pointers}
+\label{56-pointer-provenance-framework-reasoning-about-pointers}
+\hypertarget{56-pointer-provenance-framework-reasoning-about-pointers}{}
+
+\subheading{5.X Lab}
+\label{5x-lab}
+\hypertarget{5x-lab}{}
+
+\end{document}
