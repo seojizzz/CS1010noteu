@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.17)  12 OCT 2026 17:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.17)  12 OCT 2026 23:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -635,48 +635,39 @@ Package microtype Info: Character `texttrademark ' is missing
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2097.
  [24] [25] [26] [27]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 15 on input line 2364.
-
-[28] [29] [30] [31] [32]
-
-Package longtable Warning: Table widths have changed. Rerun LaTeX.
-
-[33] (./CS1010_Lecture_Notes.aux)
+<../assets/pointer.png, id=1030, 499.8675pt x 595.22375pt>
+File: ../assets/pointer.png Graphic file (type png)
+<use ../assets/pointer.png>
+Package pdftex.def Info: ../assets/pointer.png  used on input line 2392.
+(pdftex.def)             Requested size: 169.29674pt x 201.59232pt.
+ [28 <../assets/pointer.png (PNG copy)>] [29]
+<../assets/pointerpointer.png, id=1062, 1284.8pt x 1087.06125pt>
+File: ../assets/pointerpointer.png Graphic file (type png)
+<use ../assets/pointerpointer.png>
+Package pdftex.def Info: ../assets/pointerpointer.png  used on input line 2543.
+(pdftex.def)             Requested size: 169.28438pt x 143.23044pt.
+ [30 <../assets/pointerpointer.png (PNG copy)>] [31] [32] [33]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2898.
+ [34] [35] [36] [37] [38] [39] [40] [41] (./CS1010_Lecture_Notes.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-07-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 18016 strings out of 467159
- 277123 string characters out of 5413461
- 1261932 words of memory out of 5000000
- 45839 multiletter control sequences out of 15000+600000
- 715983 words of font info for 195 fonts, out of 8000000 for 9000
+ 18285 strings out of 467159
+ 280952 string characters out of 5413461
+ 1261692 words of memory out of 5000000
+ 45885 multiletter control sequences out of 15000+600000
+ 717269 words of font info for 207 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,8n,79p,1042b,2135s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{section*.63} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{subsection*.61} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{subsection*.60} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{subsection*.59} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{subsection*.58} has been referenced but does not exist, replaced by a fixed one
-
+ 74i,8n,79p,1042b,2137s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on CS1010_Lecture_Notes.pdf (33 pages, 433839 bytes).
+Output written on CS1010_Lecture_Notes.pdf (41 pages, 1023606 bytes).
 PDF statistics:
- 1565 PDF objects out of 1728 (max. 8388607)
- 1483 compressed objects within 15 object streams
- 1003 named destinations out of 1200 (max. 500000)
- 51473 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1840 PDF objects out of 2073 (max. 8388607)
+ 1745 compressed objects within 18 object streams
+ 1204 named destinations out of 1440 (max. 500000)
+ 52003 words of extra memory for PDF output out of 61914 (max. 10000000)
 

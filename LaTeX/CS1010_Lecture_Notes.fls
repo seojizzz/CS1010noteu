@@ -293,6 +293,15 @@ INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmtk10.tfm
+INPUT ../assets/pointer.png
+INPUT ../assets/pointer.png
+INPUT ../assets/pointer.png
+INPUT ../assets/pointer.png
+INPUT ../assets/pointerpointer.png
+INPUT ../assets/pointerpointer.png
+INPUT ../assets/pointerpointer.png
+INPUT ../assets/pointerpointer.png
+INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmtk10.tfm
 INPUT CS1010_Lecture_Notes.aux
 INPUT c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb
 INPUT c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb

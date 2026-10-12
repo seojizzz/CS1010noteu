@@ -58,7 +58,7 @@
 \contentsline {subsubsection}{3.4.3 Example: Printing an array in reverse}{23}{subsubsection*.48}%
 \contentsline {subsubsection}{Example: Reverse an array}{23}{lstnumber.-72.9}%
 \contentsline {subsubsection}{Example: Sort an array}{24}{lstnumber.-73.14}%
-\contentsline {section}{3.X Lab}{24}{section*.49}%
+\contentsline {subsection}{3.L Lab}{24}{subsection*.49}%
 \contentsline {section}{L4: Loops}{24}{section*.50}%
 \contentsline {subsection}{4.1 \texttt {while} Loops and \texttt {for} Loops}{24}{subsection*.51}%
 \contentsline {subsubsection}{Why loops?}{24}{subsection*.51}%
@@ -77,23 +77,32 @@
 \contentsline {subsection}{5.1 Pointers}{27}{subsection*.56}%
 \contentsline {subsubsection}{Memory}{27}{subsection*.56}%
 \contentsline {subsubsection}{Pointers}{28}{table.15}%
-\contentsline {subsubsection}{Why pointers?}{28}{lstnumber.-89.2}%
-\contentsline {subsection}{5.2 Address-of (\&) and Dereferencing (*), nullptr, pointers to pointers}{28}{subsection*.57}%
-\contentsline {subsubsection}{5.2.1 Printing Addresses}{28}{subsubsection*.58}%
+\contentsline {subsubsection}{Why pointers?}{29}{lstnumber.-89.2}%
+\contentsline {subsection}{5.2 Address-of (\&) and Dereferencing (*), nullptr, pointers to pointers}{29}{subsection*.57}%
+\contentsline {subsubsection}{5.2.1 Printing Addresses}{29}{subsubsection*.58}%
 \contentsline {subsubsection}{5.2.2 Address (\&) and Dereferencing (*)}{29}{subsubsection*.59}%
 \contentsline {subsubsection}{5.2.3 nullptr}{30}{subsubsection*.60}%
 \contentsline {subsubsection}{5.2.4 Pointer to a pointer}{30}{subsubsection*.61}%
-\contentsline {subsection}{5.3 Arrays, Pointer Arithmetic, \texttt {sizeof}, Structs, Functions}{30}{subsection*.62}%
-\contentsline {subsubsection}{5.3.1 Array Memory Addresses}{30}{subsubsection*.63}%
-\contentsline {subsubsection}{5.3.2 Pointer arithmetic}{31}{subsubsection*.64}%
+\contentsline {subsection}{5.3 Arrays, Pointer Arithmetic, \texttt {sizeof}, Structs, Functions}{31}{subsection*.62}%
+\contentsline {subsubsection}{5.3.1 Array Memory Addresses}{31}{subsubsection*.63}%
+\contentsline {subsubsection}{5.3.2 Pointer arithmetic}{32}{subsubsection*.64}%
 \contentsline {subsubsection}{5.3.3 \texttt {sizeof}}{32}{subsubsection*.65}%
 \contentsline {subsubsection}{Important array--pointer relationship}{32}{lstnumber.-102.13}%
-\contentsline {subsubsection}{5.3.4 Structs}{32}{subsubsection*.66}%
-\contentsline {subsubsection}{5.3.5 Functions}{32}{subsubsection*.67}%
-\contentsline {subsection}{5.4 Strings}{32}{subsection*.68}%
-\contentsline {subsubsection}{5.4.1 Strings and the null character}{32}{subsubsection*.69}%
-\contentsline {subsubsection}{5.4.2 Modifiable and read-only strings}{33}{subsubsection*.70}%
-\contentsline {subsubsection}{5.4.3 Printing strings}{33}{subsubsection*.71}%
-\contentsline {subsubsection}{5.4.4 \texttt {const}}{33}{subsubsection*.72}%
-\contentsline {subsection}{5.5 Pointer Provenance Framework: reasoning about pointers}{33}{subsection*.73}%
-\contentsline {section}{L6: Dynamic memory allocation}{33}{section*.74}%
+\contentsline {subsubsection}{5.3.4 Structs}{33}{subsubsection*.66}%
+\contentsline {subsubsection}{5.3.5 Functions}{33}{subsubsection*.67}%
+\contentsline {subsection}{5.4 Strings}{35}{subsection*.68}%
+\contentsline {subsubsection}{5.4.1 Strings and the null character}{35}{subsubsection*.69}%
+\contentsline {subsubsection}{5.4.2 Modifiable and read-only strings}{35}{subsubsection*.70}%
+\contentsline {subsubsection}{5.4.3 Printing strings}{36}{subsubsection*.71}%
+\contentsline {subsection}{5.4 Strings}{36}{subsection*.72}%
+\contentsline {subsubsection}{5.4.1 Strings and the null character}{36}{subsubsection*.73}%
+\contentsline {subsubsection}{5.4.2 Modifiable and read-only strings}{36}{subsubsection*.74}%
+\contentsline {subsubsection}{5.4.3 Printing strings}{37}{subsubsection*.75}%
+\contentsline {subsubsection}{5.4.4 \texttt {const}}{37}{subsubsection*.76}%
+\contentsline {subsection}{5.5 Pointer Provenance}{38}{subsection*.77}%
+\contentsline {subsubsection}{5.5.1 Origins: what does the pointer represent?}{38}{subsubsection*.78}%
+\contentsline {subsubsection}{5.5.2 Spatial component: access within valid bounds}{39}{subsubsection*.79}%
+\contentsline {subsubsection}{5.5.3 Aliasing and overlapping ranges}{40}{subsubsection*.80}%
+\contentsline {subsubsection}{5.5.4 Temporal component: the pointed-to object must still exist}{40}{subsubsection*.81}%
+\contentsline {subsubsection}{5.5.5 Uninitialized pointers and pointers to pointers}{41}{subsubsection*.82}%
+\contentsline {section}{L6: Dynamic memory allocation}{41}{section*.83}%

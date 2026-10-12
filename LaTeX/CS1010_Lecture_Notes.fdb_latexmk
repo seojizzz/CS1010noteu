@@ -1,9 +1,11 @@
 # Fdb version 4
-["pdflatex"] 1791792125.36803 "c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex" "CS1010_Lecture_Notes.pdf" "CS1010_Lecture_Notes" 1791792130.46057 0
-  "CS1010_Lecture_Notes.aux" 1791792129 32852 f16d43da466a6e57f40008244e9deb25 "pdflatex"
-  "CS1010_Lecture_Notes.tex" 1791792117 73387 b6d68c25b0d5c1bd263352672191ea99 ""
-  "CS1010_Lecture_Notes.toc" 1791792129 6687 613186852c988e9ee9ab8754648e176f "pdflatex"
-  "c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex" 1791792117 73387 b6d68c25b0d5c1bd263352672191ea99 ""
+["pdflatex"] 1791817727.94681 "c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex" "CS1010_Lecture_Notes.pdf" "CS1010_Lecture_Notes" 1791817732.83546 0
+  "../assets/pointer.png" 1791794771 76208 0ed7350dc71f9017ae7078ee081a0939 ""
+  "../assets/pointerpointer.png" 1791795689 480501 06c142e036f048e72cbb5367fb66bd25 ""
+  "CS1010_Lecture_Notes.aux" 1791817732 33356 44f26d6dd643afed1fd0f00ebc262b42 "pdflatex"
+  "CS1010_Lecture_Notes.tex" 1791817720 106498 e355579cb3d1f724c9d6f4d9a9395035 ""
+  "CS1010_Lecture_Notes.toc" 1791817732 8452 80c459b71fe4a740f0fc93ef087fbf44 "pdflatex"
+  "c:/dev/CS1010noteu/LaTeX/CS1010_Lecture_Notes.tex" 1791817720 106498 e355579cb3d1f724c9d6f4d9a9395035 ""
   "c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1786913759 2375 baa924870cfb487815765f9094cf3728 ""
   "c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1786913759 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1786913759 2405 5dcf2c1b967ee25cc46c58cd52244aed ""

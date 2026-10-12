@@ -90,7 +90,7 @@
   stringstyle=\color{CodeString},
   directivestyle=\color{CodePreprocessor},
   morekeywords={bool,true,false,nullptr,alignas,alignof,static_assert,thread_local,typeof,typeof_unqual,constexpr},
-  morekeywords=[2]{add,bar,count_larger_than,foo,grade,has_one_inside_array,increment,init_array,is_even,main,param,print_arr,print_arr_from,print_arr_reverse,print_doublearr_index,print_last_element,print_movement,print_triangle,printf,read_int,read_point,reverse_arr,reverse_arr_helper,set_doublearr_index,shift_left,sort_arr},
+  morekeywords=[2]{add,bar,count_larger_than,foo,grade,has_one_inside_array,increment,init_array,is_even,main,param,print_arr,print_arr_from,print_arr_reverse,print_doublearr_index,print_last_element,print_movement,print_triangle,printf,read_int,read_point,reverse_arr,reverse_arr_helper,set_doublearr_index,shift_left,sort_arr,strlen,strcpy,putchar,print_str,copy_arr,get_arr},
   morekeywords=[3]{size_t,ptrdiff_t,Point,Position}
 }
 % Add new function names to morekeywords=[2] above when extending the notes.
@@ -2077,7 +2077,7 @@ void sort_arr(int arr[], size_t len) {
 
 \end{lstlisting}
 
-\heading{3.X Lab}
+\subheading{3.L Lab}
 \label{3x-lab}
 \hypertarget{3x-lab}{}
 
@@ -2383,12 +2383,12 @@ int *p = &x;
 \end{itemize}
 
 \begin{center}
-\IfFileExists{assets/pointer.png}{%
-    \includegraphics[width=0.75\linewidth]{assets/pointer.png}%
+\IfFileExists{../assets/pointer.png}{%
+    \includegraphics[width=0.35\linewidth]{../assets/pointer.png}%
 }{%
-    \fbox{\parbox{0.75\linewidth}{\centering
+    \fbox{\parbox{0.35\linewidth}{\centering
         Pointer diagram: place the image at
-        \texttt{assets/pointer.png}.}}%
+        \texttt{../assets/pointer.png}.}}%
 }
 \par\smallskip
 {\small Figure 5.1.1: A pointer storing an object's address.}
@@ -2534,15 +2534,15 @@ int main(void) {
 \end{itemize}
 
 \begin{center}
-\IfFileExists{assets/pointerpointer.png}{%
-    \includegraphics[width=0.75\linewidth]{assets/pointerpointer.png}%
+\IfFileExists{../assets/pointerpointer.png}{%
+    \includegraphics[width=0.35\linewidth]{../assets/pointerpointer.png}%
 }{%
-    \fbox{\parbox{0.75\linewidth}{\centering
+    \fbox{\parbox{0.35\linewidth}{\centering
         Pointer-to-pointer diagram: place the image at
-        \texttt{assets/pointerpointer.png}.}}%
+        \texttt{../assets/pointerpointer.png}.}}%
 }
 \par\smallskip
-{\small A pointer to another pointer.}
+{\small Fig. 5.2.4. A pointer to another pointer.}
 \end{center}
 
 \begin{lstlisting}[style=cscode]
@@ -2741,7 +2741,227 @@ it is not a separate copy of the array.
 
 \subsubheading{5.3.4 Structs}
 
+\begin{itemize}
+    \item A \textbf{pointer to a struct} stores the address of a
+          struct variable.
+    \item Declare it using the struct's type followed by
+          \texttt{*}, and initialize it with \texttt{\&}.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode,
+    morekeywords={[3]{Acceleration}}]
+typedef struct {
+    double x, y, z;
+} Acceleration;
+
+Acceleration a = {0.2, 0.3, -0.5};
+Acceleration *p = &a;
+\end{lstlisting}
+
+Here, \texttt{p} points to \texttt{a}; dereferencing \texttt{p}
+gives access to that struct.
+
+\textbf{Accessing struct members: \texttt{.} versus \texttt{->}}
+
+\begin{longtable}{@{}
+    >{\raggedright\arraybackslash}p{0.22\linewidth}
+    >{\raggedright\arraybackslash}p{\dimexpr0.78\linewidth-2\tabcolsep\relax}@{}}
+\toprule
+\textbf{Expression} & \textbf{Meaning} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{a.x}
+    & Access member \texttt{x} of struct \texttt{a}. \\
+\texttt{(*p).x}
+    & Dereference \texttt{p}, then access member \texttt{x}. \\
+\texttt{p->x}
+    & Shorthand for \texttt{(*p).x}. \\
+\end{longtable}
+
+\begin{lstlisting}[style=cscode]
+printf("%f\n", a.x);    // 0.200000
+printf("%f\n", (*p).x); // 0.200000
+printf("%f\n", p->x);   // 0.200000
+
+p->x = 1.5;
+printf("%f\n", a.x);    // 1.500000: a itself was modified.
+\end{lstlisting}
+
+\begin{itemize}
+    \item Use \textbf{\texttt{.} with a struct object} and
+          \textbf{\texttt{->} with a pointer to a struct}.
+    \item Parentheses are needed in \texttt{(*p).x} because
+          \texttt{.} has higher precedence than unary \texttt{*}.
+    \item \texttt{sizeof p} gives the size of the pointer;
+          \texttt{sizeof *p} gives the size of the struct.
+\end{itemize}
+
+\textbf{Why pass structs using pointers?}
+
+\begin{itemize}
+    \item A function can modify the caller's original struct
+          through its pointer.
+    \item Passing a pointer avoids passing the entire struct by
+          value, which can reduce copying for large structs.
+    \item It does not guarantee faster execution; compiler
+          optimizations and the task affect performance.
+    \item For a function that should only read the struct, use
+          a parameter such as \texttt{Acceleration const *p}.
+\end{itemize}
+
 \subsubheading{5.3.5 Functions}
+
+\begin{itemize}
+    \item C passes arguments \textbf{by value}: each parameter
+          receives a copy of its argument.
+    \item Passing a pointer copies the \textbf{pointer value},
+          not the pointed-to object.
+    \item Dereferencing that copied pointer accesses the caller's
+          object, allowing the function to modify it.
+\end{itemize}
+
+\textbf{Passing a value versus passing its address}
+
+\begin{lstlisting}[style=cscode,
+    morekeywords={[2]{set_copy,set_ptr}}]
+#include <stdio.h>
+
+void set_copy(int x) {
+    x = 10; // Changes only the local copy.
+}
+
+void set_ptr(int *p) {
+    *p = 10; // Changes the caller's integer.
+}
+
+int main(void) {
+    int n = 5;
+
+    set_copy(n);
+    printf("%d\n", n); // 5
+
+    set_ptr(&n);
+    printf("%d\n", n); // 10
+}
+\end{lstlisting}
+
+\begin{longtable}{@{}
+    >{\raggedright\arraybackslash}p{0.25\linewidth}
+    >{\raggedright\arraybackslash}p{\dimexpr0.75\linewidth-2\tabcolsep\relax}@{}}
+\toprule
+\textbf{Step} & \textbf{Meaning} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{set\_copy(n)}
+    & Copy the value of \texttt{n} into the parameter
+      \texttt{x}. \\
+\texttt{set\_ptr(\&n)}
+    & Copy the address of \texttt{n} into the parameter
+      \texttt{p}. \\
+\texttt{*p = 10}
+    & Write \texttt{10} into the object pointed to by
+      \texttt{p}, which is \texttt{n}. \\
+\end{longtable}
+
+\textbf{Example: correcting a struct}
+
+Using the \texttt{Acceleration} type from 5.3.4:
+
+\begin{lstlisting}[style=cscode,
+    morekeywords={[2]{correct_copy,correct_ptr}},
+    morekeywords={[3]{Acceleration}}]
+// Pass the struct by value and return the corrected copy.
+Acceleration correct_copy(Acceleration a) {
+    a.x -= 0.00000002;
+    a.y += 0.00000001;
+    a.z -= 0.00000003;
+    return a;
+}
+
+// Pass its address and modify the original struct directly.
+void correct_ptr(Acceleration *a) {
+    a->x -= 0.00000002;
+    a->y += 0.00000001;
+    a->z -= 0.00000003;
+}
+\end{lstlisting}
+
+\begin{longtable}{@{}
+    >{\raggedright\arraybackslash}p{0.25\linewidth}
+    >{\raggedright\arraybackslash}p{0.32\linewidth}
+    >{\raggedright\arraybackslash}p{\dimexpr0.43\linewidth-4\tabcolsep\relax}@{}}
+\toprule
+\textbf{Approach} & \textbf{Call in \texttt{main}} &
+\textbf{Effect} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Pass the struct by value
+    & \texttt{a = correct\_copy(a);}
+    & Return a corrected copy and assign it back to
+      \texttt{a}. \\
+Pass the struct's address
+    & \texttt{correct\_ptr(\&a);}
+    & Modify the original \texttt{a} through its address. \\
+\end{longtable}
+
+\begin{itemize}
+    \item Calling \texttt{correct\_copy(a)} without assigning its
+          return value leaves the caller's \texttt{a} unchanged.
+    \item \texttt{correct\_ptr} returns \texttt{void} because its
+          result is written into the original struct.
+\end{itemize}
+
+\textbf{Changing the object versus changing the local pointer}
+
+\begin{lstlisting}[style=cscode,
+    morekeywords={[2]{redirect}}]
+void redirect(int *p, int *q) {
+    p = q; // Changes only this function's local pointer.
+}
+
+int main(void) {
+    int x = 5;
+    int y = 10;
+    int *ptr = &x;
+
+    redirect(ptr, &y);
+    // ptr still points to x.
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item Assigning to \texttt{*p} changes the pointed-to object.
+    \item Assigning to \texttt{p} changes only the function's
+          local pointer.
+    \item To change the caller's pointer variable, pass its
+          address using a \textbf{pointer to a pointer}
+          (\texttt{int **}); see 5.2.4.
+\end{itemize}
+
+\textbf{Arrays as function parameters}
+
+\begin{itemize}
+    \item \texttt{void f(int arr[])} and
+          \texttt{void f(int *arr)} declare the same parameter type.
+    \item When passed an array, the function receives a pointer
+          to its first element; it can modify elements using
+          \texttt{arr[i]}.
+    \item Pass the array length separately, for example:
+          \texttt{void f(int *arr, size\_t len)}.
+    \item Inside such a function, \texttt{sizeof arr} gives the
+          pointer size, so it cannot determine the original
+          array length.
+\end{itemize}
+
+The caller must supply a pointer to a suitable live object;
+dereferencing an uninitialized, null, or dangling pointer
+causes \textbf{undefined behaviour}.
 
 \subheading{5.4 Strings}
 
@@ -2830,9 +3050,517 @@ printf("%s\n", p);
           string and one from the format string.
 \end{itemize}
 
+% Add the new function names to the existing syntax-highlighting style.
+
+
+\subheading{5.4 Strings}
+
+\subsubheading{5.4.1 Strings and the null character}
+
+A string is a contiguous sequence of characters terminated by,
+and including, the first null character,
+\texttt{'\textbackslash0'}.
+
+\begin{center}
+\begin{tabular}{@{}*{6}{c}@{}}
+\toprule
+\(N\) & \(N+1\) & \(N+2\) & \(N+3\) & \(N+4\) & \(N+5\) \\
+\midrule
+\texttt{'H'} &
+\texttt{'e'} &
+\texttt{'l'} &
+\texttt{'l'} &
+\texttt{'o'} &
+\texttt{'\textbackslash0'} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item C strings do not store a separate length field.
+          String functions find the end using the null character.
+    \item The null character acts as the string terminator.
+    \item Without a terminator, operations that expect a string
+          may read beyond the array's bounds, causing
+          \textbf{undefined behaviour}.
+\end{itemize}
+
+\subsubheading{5.4.2 Modifiable and read-only strings}
+
+\textbf{A modifiable character array}
+
+\begin{itemize}
+    \item The following are alternative declarations with the same
+          initial contents. Use one declaration at a time.
+    \item The array can be modified, for example using
+          \texttt{p[0] = 'a';}.
+    \item String literals automatically include an extra
+          \texttt{'\textbackslash0'}.
+    \item To store the complete string, the array must have space
+          for the null terminator.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+// Alternative declarations: use one at a time.
+char p[] = "hi";
+char p[] = {'h', 'i', '\0'};
+char p[3] = "hi";
+\end{lstlisting}
+
+\textbf{A pointer to a string literal}
+
+\begin{lstlisting}[style=cscode]
+char *p = "hi";
+\end{lstlisting}
+
+\begin{itemize}
+    \item Here, \texttt{p} points to a string literal.
+    \item Attempting to modify the literal, such as with
+          \texttt{p[0] = 'a';}, causes
+          \textbf{undefined behaviour}.
+    \item Implementations often store string literals in
+          read-only memory.
+\end{itemize}
+
+\subsubheading{5.4.3 Printing strings}
+
+\begin{lstlisting}[style=cscode]
+char *p = "Hello\n";
+printf("%s\n", p);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{Format specifier}: \texttt{\%s} prints a string.
+    \item Printing stops at the first
+          \texttt{'\textbackslash0'}, which is not printed.
+    \item This example prints two newline characters: one from
+          the string and one from the format string.
+\end{itemize}
+
 \subsubheading{5.4.4 \texttt{const}}
 
-\subheading{5.5 Pointer Provenance Framework: reasoning about pointers}
+\begin{itemize}
+    \item \texttt{const} is a \textbf{type qualifier} indicating
+          that something must not be modified through the
+          const-qualified access.
+    \item For pointers, its position determines whether the
+          pointed-to value, the pointer itself, or both are
+          protected.
+    \item Use it when a value or function input should not be
+          modified. It communicates intent and helps the compiler
+          catch mistakes.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+int const x = 5; // Equivalent to: const int x = 5;
+// x = 10;      // Compiler error: x is const.
+\end{lstlisting}
+
+\textbf{\texttt{const} and string literals}
+
+Modifying a string literal is \textbf{undefined behaviour (UB)},
+even when the pointer has type \texttt{char *}.
+
+\begin{lstlisting}[style=cscode]
+char *p = "hi";
+// p[0] = 'a'; // UB: attempts to modify a string literal.
+\end{lstlisting}
+
+Prefer a pointer to \texttt{const char} so the compiler catches
+attempts to write through it:
+
+\begin{lstlisting}[style=cscode]
+char const *p = "hi"; // Equivalent to: const char *p = "hi";
+
+// p[0] = 'a';       // Compiler error: cannot modify through p.
+p = "bye";          // Allowed: the pointer itself can change.
+\end{lstlisting}
+
+\textbf{A pointer to a const value versus a const pointer}
+
+The position of \texttt{const} matters. Here, assume that
+\texttt{x} is a modifiable \texttt{int}.
+
+\begin{longtable}{@{}
+    >{\raggedright\arraybackslash}p{0.36\linewidth}
+    >{\raggedright\arraybackslash}p{0.28\linewidth}
+    >{\raggedright\arraybackslash}p{0.18\linewidth}
+    >{\raggedright\arraybackslash}p{\dimexpr0.18\linewidth-6\tabcolsep\relax}@{}}
+\toprule
+\textbf{Declaration} &
+\textbf{Meaning} &
+\textbf{Reassign \texttt{p}?} &
+\textbf{Assign to \texttt{*p}?} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{int *p = \&x;}
+    & Pointer to an integer
+    & Yes & Yes \\
+\texttt{int const *p = \&x;}
+    & Pointer to a const integer
+    & Yes & No \\
+\texttt{int *const p = \&x;}
+    & Const pointer to an integer
+    & No & Yes \\
+\texttt{int const *const p = \&x;}
+    & Const pointer to a const integer
+    & No & No \\
+\end{longtable}
+
+\begin{itemize}
+    \item \texttt{const} \textbf{before \texttt{*}} qualifies the
+          pointed-to type.
+    \item \texttt{const} \textbf{after \texttt{*}} qualifies the
+          pointer itself.
+    \item \texttt{int const *p} and \texttt{const int *p}
+          are equivalent.
+\end{itemize}
+
+\textbf{\texttt{const} does not make every object it points to
+unchangeable}
+
+A pointer to const prevents modification
+\textbf{through that pointer}. A modifiable object can still be
+changed through another name or pointer.
+
+\begin{lstlisting}[style=cscode]
+char text[] = "hi";
+char const *p = text;
+
+// p[0] = 'H'; // Compiler error.
+text[0] = 'H'; // Allowed: text is a modifiable array.
+
+printf("%s\n", p); // Hi
+\end{lstlisting}
+
+However, if the object itself was declared \texttt{const},
+attempting to modify it, even through a cast, causes UB.
+
+\textbf{\texttt{const} in function parameters}
+
+\begin{lstlisting}[style=cscode]
+void print_arr(int const arr[], size_t len);
+
+// Equivalent parameter type:
+void print_arr(int const *arr, size_t len);
+\end{lstlisting}
+
+\begin{itemize}
+    \item The function can read \texttt{arr[i]}, but cannot assign
+          to \texttt{arr[i]} through this parameter.
+    \item The local pointer can still move, for example using
+          \texttt{++arr}.
+    \item The caller can pass a modifiable array. Passing it does
+          not make the original array const.
+\end{itemize}
+
+Examples from \texttt{<string.h>} using simplified declarations:
+
+\begin{longtable}{@{}
+    >{\raggedright\arraybackslash}p{0.55\linewidth}
+    >{\raggedright\arraybackslash}p{\dimexpr0.45\linewidth-2\tabcolsep\relax}@{}}
+\toprule
+\textbf{Function declaration} &
+\textbf{Meaning of \texttt{const}} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{size\_t strlen(char const *s);}
+    & Reads the string and returns its length, excluding
+      \texttt{'\textbackslash0'}. \\
+\texttt{char *strcpy(char *dest, char const *src);}
+    & Copies \texttt{src}, including
+      \texttt{'\textbackslash0'}, into writable \texttt{dest}. \\
+\end{longtable}
+
+For \texttt{strcpy}, \texttt{dest} must have enough space, and
+the source and destination must not overlap.
+
+\subheading{5.5 Pointer Provenance}
+
+A pointer's address alone does not tell us whether using it is
+valid. We also need to know \textbf{where it came from},
+\textbf{what memory it can access}, and
+\textbf{whether that memory still exists}.
+
+The lecture uses pointer provenance as a \textbf{mental model}
+with two components:
+
+\begin{longtable}{@{}
+    >{\raggedright\arraybackslash}p{0.20\linewidth}
+    >{\raggedright\arraybackslash}p{\dimexpr0.80\linewidth-2\tabcolsep\relax}@{}}
+\toprule
+\textbf{Component} & \textbf{Question} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\textbf{Spatial}
+    & Which memory locations can this pointer access? \\
+\textbf{Temporal}
+    & During what part of the program's execution can it
+      access them? \\
+\end{longtable}
+
+These are facts we must reason about; ordinary C pointers do not
+automatically store an array length or expiry time.
+
+\subsubheading{5.5.1 Origins: what does the pointer represent?}
+
+Two pointers with the same type can represent different things:
+
+\begin{lstlisting}[style=cscode]
+char ch = 'b';
+char text[] = "abcd";
+
+char *p = &ch;  // Points to one character.
+char *q = text; // Points to the first character of a string.
+\end{lstlisting}
+
+\begin{itemize}
+    \item \texttt{*p} is valid, but \texttt{p} does not point to a
+          null-terminated string. Do not pass it to
+          \texttt{\%s} or \texttt{strlen}.
+    \item \texttt{q} points into an array containing
+          \texttt{\{'a', 'b', 'c', 'd', '\textbackslash0'\}},
+          so it can be used as a string.
+    \item Similarly, \texttt{char **r} may point to one
+          \texttt{char *} variable or to an element of an array
+          of \texttt{char *} pointers.
+    \item The type alone does not tell us the array length,
+          whether there is a string terminator, or whether the
+          contents are writable.
+\end{itemize}
+
+\textbf{Takeaway:}
+Trace how the pointer was created and what the caller promises
+before deciding how to use it.
+
+\subsubheading{5.5.2 Spatial component: access within valid bounds}
+
+For an array of \(n\) elements:
+
+\begin{itemize}
+    \item Dereference only pointers to actual elements:
+          indices \(0\) to \(n-1\).
+    \item Pointer arithmetic may produce a pointer within the
+          same array, or \textbf{one past its end}.
+    \item A pointer one past the end may be formed, but
+          \textbf{must not be dereferenced}.
+    \item Forming a pointer farther outside the array using
+          pointer arithmetic is already UB.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+int arr[] = {10, 20, 30};
+int *p = arr;
+
+printf("%d\n", p[2]); // 30: valid element.
+int *end = arr + 3;   // Valid: one past the end.
+
+// printf("%d\n", *end); // UB: no element exists here.
+// printf("%d\n", p[-1]); // UB: before the array.
+// int *bad = p + 4;     // UB: beyond one past the end.
+\end{lstlisting}
+
+\begin{itemize}
+    \item Knowing that another variable is nearby in memory does
+          not allow accessing it by indexing beyond this array.
+    \item Subtracting pointers requires both to refer to the same
+          array, or one past it. The result counts
+          \textbf{elements}, not bytes, and must be representable
+          in \texttt{ptrdiff\_t}.
+\end{itemize}
+
+\textbf{Spatial reasoning for strings}
+
+\begin{lstlisting}[style=cscode]
+void print_str(char const *ptr) {
+    while (*ptr != '\0') {
+        putchar(*ptr++);
+    }
+}
+
+int main(void) {
+    char const s[] = "halp";
+    print_str(s);
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item The caller must provide a valid string with an
+          accessible \texttt{'\textbackslash0'}.
+    \item \texttt{*ptr++} means \texttt{*(ptr++)}: it yields the
+          character at the old pointer position and advances
+          the pointer.
+    \item The loop checks the terminator and stops without
+          reading beyond it.
+    \item A larger character array may contain unused space
+          after \texttt{'\textbackslash0'}. The string ends at
+          the first null character, while the array's bounds
+          depend on its size.
+\end{itemize}
+
+\subsubheading{5.5.3 Aliasing and overlapping ranges}
+
+\textbf{Aliasing} means different pointers refer to the same object.
+
+\begin{lstlisting}[style=cscode]
+int value = 0;
+int *x_ptr = &value;
+int *y_ptr = &value;
+
+*x_ptr = 5;
+*y_ptr = 20;
+
+printf("%d\n", *x_ptr); // 20: both point to value.
+\end{lstlisting}
+
+Writing through one pointer can therefore change what another
+pointer reads.
+
+\textbf{Example: copying an array without modifying the source}
+
+\begin{lstlisting}[style=cscode]
+void copy_arr(int const from[], int to[], size_t nmemb) {
+    for (size_t idx = 0; idx < nmemb; ++idx) {
+        to[idx] = from[idx];
+    }
+}
+\end{lstlisting}
+
+To copy correctly while leaving the source unchanged, use the
+following contract:
+
+\begin{itemize}
+    \item \texttt{from} has at least \texttt{nmemb} readable elements.
+    \item \texttt{to} has at least \texttt{nmemb} writable elements.
+    \item The ranges
+          \texttt{[from, from + nmemb)} and
+          \texttt{[to, to + nmemb)} do not overlap.
+          The closing \texttt{)} excludes the endpoint.
+\end{itemize}
+
+What if the caller passes overlapping parts of one array?
+
+\begin{lstlisting}[style=cscode]
+int arr[] = {1, 2, 3, 4};
+
+copy_arr(arr, arr + 1, 3);
+
+// Result: {1, 1, 1, 1}, rather than the intended {1, 1, 2, 3}.
+\end{lstlisting}
+
+\begin{itemize}
+    \item Writing \texttt{to[0]} changes \texttt{from[1]} before
+          it is read. Subsequent iterations propagate that
+          changed value.
+    \item The const-qualified element type prevents writes
+          \textbf{through \texttt{from}}, but does not prevent
+          writes to the same elements through \texttt{to}.
+    \item This loop's overlapping accesses are not automatically
+          UB. This call violates the stated copying contract
+          and gives the wrong result.
+\end{itemize}
+
+\subsubheading{5.5.4 Temporal component: the pointed-to object must
+still exist}
+
+An object's \textbf{lifetime} is the period during which it exists.
+A pointer can only access it during that period.
+
+\textbf{Returning a pointer to a local array}
+
+\begin{lstlisting}[style=cscode]
+int *get_arr(void) {
+    int arr[] = {0, 1, 2};
+    return arr; // Bad: arr's lifetime ends when the function returns.
+}
+
+int main(void) {
+    int *p = get_arr();
+    printf("%d\n", p[0]); // UB: the local array no longer exists.
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item Returning the pointer does not copy the array or
+          extend its lifetime.
+    \item The pointer is now a \textbf{dangling pointer}:
+          its former object no longer exists.
+    \item Memory that appears to retain the old values does not
+          make accessing it valid.
+\end{itemize}
+
+\textbf{Leaving a block}
+
+\begin{lstlisting}[style=cscode]
+int *p;
+
+{
+    int x = 10;
+    p = &x;
+} // x's lifetime ends here.
+
+// printf("%d\n", *p); // UB: x no longer exists.
+\end{lstlisting}
+
+The pointer variable may still exist even after the pointed-to
+object has stopped existing.
+
+\subsubheading{5.5.5 Uninitialized pointers and pointers to pointers}
+
+Declaring a local pointer does not create an object for it to
+point to:
+
+\begin{lstlisting}[style=cscode]
+int *p;
+
+// *p = 5; // UB: p is uninitialized; it has no valid target.
+\end{lstlisting}
+
+Initialize it with the address of a suitable live object before
+dereferencing:
+
+\begin{lstlisting}[style=cscode]
+int x;
+int *p = &x;
+
+*p = 5; // Valid: writes to x.
+\end{lstlisting}
+
+However, we can pass the
+\textbf{address of an uninitialized pointer variable}
+to a function that assigns it a value:
+
+\begin{lstlisting}[style=cscode]
+void foo(int **x) {
+    *x = nullptr; // C23: assigns a null pointer to the caller's p.
+}
+
+int main(void) {
+    int *p;
+    foo(&p);
+
+    // p is now a null pointer; dereferencing p would be UB.
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item \texttt{\&p} is valid because the pointer variable
+          \texttt{p} itself exists.
+    \item \texttt{x} points to \texttt{p}, so
+          \texttt{*x = nullptr;} gives \texttt{p} a defined value.
+    \item The function does not read the old value of
+          \texttt{p} or dereference that old value.
+\end{itemize}
+
+\textbf{Before using a pointer, check:}
+its origin, valid bounds, the object's lifetime, permission to
+read or write, and whether other pointers access the same memory.
 
 \heading{L6: Dynamic memory allocation}
 

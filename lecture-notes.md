@@ -1868,7 +1868,142 @@ double *arr2 = arr1;
 
 ### 5.3.4 Structs
 
+- A **pointer to a struct** stores the address of a struct variable.
+- Declare it using the struct's type followed by `*`, and initialize it with `&`.
+
+```c
+typedef struct {
+    double x, y, z;
+} Acceleration;
+
+Acceleration a = {0.2, 0.3, -0.5};
+Acceleration *p = &a;
+```
+
+Here, `p` points to `a`; dereferencing `p` gives access to that struct.
+
+**Accessing struct members: `.` vs. `->`**
+
+| Expression | Meaning |
+| --- | --- |
+| `a.x` | Access member `x` of struct `a`. |
+| `(*p).x` | Dereference `p`, then access member `x`. |
+| `p->x` | Shorthand for `(*p).x`. |
+
+```c
+printf("%f\n", a.x);    // 0.200000
+printf("%f\n", (*p).x); // 0.200000
+printf("%f\n", p->x);   // 0.200000
+
+p->x = 1.5;
+printf("%f\n", a.x);    // 1.500000: a itself was modified.
+```
+
+- Use **`.` with a struct object** and **`->` with a pointer to a struct**.
+- Parentheses are needed in `(*p).x` because `.` has higher precedence than unary `*`.
+- `sizeof p` gives the size of the pointer; `sizeof *p` gives the size of the struct.
+
+**Why pass structs using pointers?**
+
+- A function can modify the caller's original struct through its pointer.
+- Passing a pointer avoids passing the entire struct by value, which can reduce copying for large structs.
+- It does not guarantee faster execution; compiler optimizations and the task affect performance.
+- For a function that should only read the struct, use a parameter such as `Acceleration const *p`.
+
 ### 5.3.5 Functions
+
+- C passes arguments **by value**: each parameter receives a copy of its argument.
+- Passing a pointer copies the **pointer value**, not the pointed-to object.
+- Dereferencing that copied pointer accesses the caller's object, allowing the function to modify it.
+
+**Passing a value vs. passing its address**
+
+```c
+#include <stdio.h>
+
+void set_copy(int x) {
+    x = 10; // Changes only the local copy.
+}
+
+void set_ptr(int *p) {
+    *p = 10; // Changes the caller's integer.
+}
+
+int main(void) {
+    int n = 5;
+
+    set_copy(n);
+    printf("%d\n", n); // 5
+
+    set_ptr(&n);
+    printf("%d\n", n); // 10
+}
+```
+
+| Step | Meaning |
+| --- | --- |
+| `set_copy(n)` | Copy the value of `n` into the parameter `x`. |
+| `set_ptr(&n)` | Copy the address of `n` into the parameter `p`. |
+| `*p = 10` | Write `10` into the object pointed to by `p`, which is `n`. |
+
+**Example: correcting a struct**
+
+Using the `Acceleration` type from 5.3.4:
+
+```c
+// Pass the struct by value and return the corrected copy.
+Acceleration correct_copy(Acceleration a) {
+    a.x -= 0.00000002;
+    a.y += 0.00000001;
+    a.z -= 0.00000003;
+    return a;
+}
+
+// Pass its address and modify the original struct directly.
+void correct_ptr(Acceleration *a) {
+    a->x -= 0.00000002;
+    a->y += 0.00000001;
+    a->z -= 0.00000003;
+}
+```
+
+| Approach | Call in `main` | Effect |
+| --- | --- | --- |
+| Pass the struct by value | `a = correct_copy(a);` | Return a corrected copy and assign it back to `a`. |
+| Pass the struct's address | `correct_ptr(&a);` | Modify the original `a` through its address. |
+
+- Calling `correct_copy(a)` without assigning its return value leaves the caller's `a` unchanged.
+- `correct_ptr` returns `void` because its result is written into the original struct.
+
+**Changing the object vs. changing the local pointer**
+
+```c
+void redirect(int *p, int *q) {
+    p = q; // Changes only this function's local pointer.
+}
+
+int main(void) {
+    int x = 5;
+    int y = 10;
+    int *ptr = &x;
+
+    redirect(ptr, &y);
+    // ptr still points to x.
+}
+```
+
+- Assigning to `*p` changes the pointed-to object.
+- Assigning to `p` changes only the function's local pointer.
+- To change the caller's pointer variable, pass its address using a **pointer to a pointer** (`int **`); see 5.2.4.
+
+**Arrays as function parameters**
+
+- `void f(int arr[])` and `void f(int *arr)` declare the same parameter type.
+- The function receives a pointer to the first element; it can modify elements with `arr[i]`.
+- Pass the array length separately, e.g., `void f(int *arr, size_t len)`.
+- Inside such a function, `sizeof arr` gives the pointer size, so it cannot determine the original array length.
+
+The caller must supply a pointer to a suitable live object; dereferencing an uninitialized, null, or dangling pointer is UB.
 
 ## 5.4 Strings
 
@@ -1916,8 +2051,277 @@ printf("%s\n", p);
 
 ### 5.4.4 `const`
 
+- `const` is a **type qualifier** that specifies that something should not be modified. For pointers, its position determines whether the pointed-to value, the pointer itself, or both are protected.
+- Use it when a value or function input should not be modified. It makes the intent clear and helps the compiler catch mistakes.
 
-## 5.5 Pointer Provenance Framework: reasoning about pointers
+```c
+int const x = 5; // Equivalent to: const int x = 5;
+// x = 10;      // Compiler error: x is const.
+```
+
+**`const` and string literals**
+
+Modifying a string literal is **undefined behavior (UB)**, even when the pointer has type `char *`.
+
+```c
+char *p = "hi";
+// p[0] = 'a'; // UB: attempts to modify a string literal.
+```
+
+Prefer a pointer to `const char` so the compiler catches attempts to write through it:
+
+```c
+char const *p = "hi"; // Equivalent to: const char *p = "hi";
+// p[0] = 'a';       // Compiler error: cannot modify through p.
+p = "bye";           // Allowed: the pointer itself can change.
+```
+
+**A pointer to a const value vs. a const pointer**
+
+The position of `const` matters:
+
+| Declaration | Meaning | Can reassign `p`? | Can assign to `*p`? |
+| --- | --- | --- | --- |
+| `int *p = &x;` | Pointer to an integer | Yes | Yes |
+| `int const *p = &x;` | Pointer to a const integer | Yes | No |
+| `int *const p = &x;` | Const pointer to an integer | No | Yes |
+| `int const *const p = &x;` | Const pointer to a const integer | No | No |
+
+Here, assume `x` is a modifiable `int`.
+
+- `const` **before `*`** qualifies the pointed-to type.
+- `const` **after `*`** qualifies the pointer itself.
+- `int const *p` and `const int *p` are equivalent.
+
+**`const` does not make every object it points to unchangeable**
+
+A pointer to const prevents modification **through that pointer**. A modifiable object can still be changed through another name or pointer.
+
+```c
+char text[] = "hi";
+char const *p = text;
+
+// p[0] = 'H'; // Compiler error.
+text[0] = 'H'; // Allowed: text is a modifiable array.
+printf("%s\n", p); // Hi
+```
+
+However, if the object itself was declared `const`, attempting to modify it, even through a cast, is UB.
+
+**`const` in function parameters**
+
+```c
+void print_arr(int const arr[], size_t len);
+// Equivalent parameter type:
+void print_arr(int const *arr, size_t len);
+```
+
+- The function can read `arr[i]`, but cannot assign to `arr[i]` through this parameter.
+- The local pointer can still move, e.g., `++arr`.
+- The caller can pass a modifiable array; passing it does not make the original array const.
+
+Examples from `<string.h>`:
+
+| Function declaration | Meaning of `const` |
+| --- | --- |
+| `size_t strlen(char const *s);` | Reads the string; returns its length excluding `'\0'`. |
+| `char *strcpy(char *dest, char const *src);` | Copies `src`, including `'\0'`, into writable `dest`. |
+
+For `strcpy`, `dest` must have enough space, and the source and destination must not overlap.
+
+## 5.5 Pointer Provenance
+
+A pointer's address alone does not tell us whether using it is valid. We also need to know **where it came from**, **what memory it can access**, and **whether that memory still exists**.
+
+The lecture uses pointer provenance as a **mental model** with two components:
+
+| Component | Question |
+| --- | --- |
+| **Spatial** | Which memory locations can this pointer access? |
+| **Temporal** | During what part of the program's execution can it access them? |
+
+These are facts we must reason about; ordinary C pointers do not automatically store an array length or expiry time.
+
+### 5.5.1 Origins: what does the pointer represent?
+
+Two pointers with the same type can represent different things:
+
+```c
+char ch = 'b';
+char text[] = "abcd";
+
+char *p = &ch;  // Points to one character.
+char *q = text; // Points to the first character of a string.
+```
+
+- `*p` is valid, but `p` does not point to a null-terminated string. Do not pass it to `%s` or `strlen`.
+- `q` points into an array containing `{'a', 'b', 'c', 'd', '\0'}`, so it can be used as a string.
+- Similarly, `char **r` may point to one `char *` variable or to an element of an array of `char *` pointers.
+- The type alone does not tell us the array length, whether there is a string terminator, or whether the contents are writable.
+
+**Takeaway:** trace how the pointer was created and what the caller promises before deciding how to use it.
+
+### 5.5.2 Spatial component: access within valid bounds
+
+For an array of `n` elements:
+
+- Dereference only pointers to actual elements: indexes `0` to `n - 1`.
+- Pointer arithmetic may produce a pointer within the same array, or **one past its end**.
+- A pointer one past the end may be formed, but **must not be dereferenced**.
+- Forming a pointer farther outside the array using pointer arithmetic is already UB.
+
+```c
+int arr[] = {10, 20, 30};
+int *p = arr;
+
+printf("%d\n", p[2]); // 30: valid element.
+int *end = arr + 3;   // Valid: one past the end.
+
+// printf("%d\n", *end); // UB: no element exists here.
+// printf("%d\n", p[-1]); // UB: before the array.
+// int *bad = p + 4;      // UB: beyond one past the end.
+```
+
+- Knowing that another variable is nearby in memory does not allow accessing it by indexing beyond this array.
+- Subtracting pointers requires both to refer to the same array, or one past it. The result counts **elements**, not bytes.
+
+**Spatial reasoning for strings**
+
+```c
+void print_str(char const *ptr) {
+    while (*ptr != '\0') {
+        putchar(*ptr++);
+    }
+}
+
+int main(void) {
+    char const s[] = "halp";
+    print_str(s);
+}
+```
+
+- The caller must provide a valid string with an accessible `'\0'`.
+- `*ptr++` means `*(ptr++)`: read the current character, then move the pointer forward.
+- The loop checks the terminator and stops without reading beyond it.
+- A larger character array may contain unused space after `'\0'`; the string ends at the first `'\0'`, while the array's bounds depend on its size.
+
+### 5.5.3 Aliasing and overlapping ranges
+
+**Aliasing** means different pointers refer to the same object.
+
+```c
+int value = 0;
+int *x_ptr = &value;
+int *y_ptr = &value;
+
+*x_ptr = 5;
+*y_ptr = 20;
+printf("%d\n", *x_ptr); // 20, because both point to value.
+```
+
+Writing through one pointer can therefore change what another pointer reads.
+
+**Example: copying an array without modifying the source**
+
+```c
+void copy_arr(int const from[], int to[], size_t nmemb) {
+    for (size_t idx = 0; idx < nmemb; ++idx) {
+        to[idx] = from[idx];
+    }
+}
+```
+
+To copy correctly while leaving the source unchanged, this function requires:
+
+- `from` has at least `nmemb` readable elements.
+- `to` has at least `nmemb` writable elements.
+- The ranges `[from, from + nmemb)` and `[to, to + nmemb)` do not overlap. The closing `)` excludes the endpoint.
+
+What if the caller passes overlapping parts of one array?
+
+```c
+int arr[] = {1, 2, 3, 4};
+copy_arr(arr, arr + 1, 3);
+// Result: {1, 1, 1, 1}, rather than the intended {1, 1, 2, 3}.
+```
+
+- Writing `to[0]` changes `from[1]` before it is read; subsequent iterations propagate that changed value.
+- `const from` prevents writes **through `from`**, but does not prevent writes to the same elements through `to`.
+- This loop's overlapping accesses are not automatically UB; this call violates the stated copying contract and gives the wrong result.
+
+### 5.5.4 Temporal component: the pointed-to object must still exist
+
+An object's **lifetime** is the period during which it exists. A pointer can only access it during that period.
+
+**Returning a pointer to a local array**
+
+```c
+int *get_arr(void) {
+    int arr[] = {0, 1, 2};
+    return arr; // Bad: arr's lifetime ends when the function returns.
+}
+
+int main(void) {
+    int *p = get_arr();
+    printf("%d\n", p[0]); // UB: the local array no longer exists.
+}
+```
+
+- Returning the pointer does not copy the array or extend its lifetime.
+- The pointer is now a **dangling pointer**: its former object no longer exists.
+- Memory that appears to retain the old values does not make accessing it valid.
+
+**Leaving a block**
+
+```c
+int *p;
+{
+    int x = 10;
+    p = &x;
+} // x's lifetime ends here.
+
+// printf("%d\n", *p); // UB: x no longer exists.
+```
+
+The pointer variable may still exist even after the pointed-to object has stopped existing.
+
+### 5.5.5 Uninitialized pointers and pointers to pointers
+
+Declaring a local pointer does not create an object for it to point to:
+
+```c
+int *p;
+// *p = 5; // UB: p is uninitialized; it has no valid target.
+```
+
+Initialize it with the address of a suitable live object before dereferencing:
+
+```c
+int x;
+int *p = &x;
+*p = 5; // Valid: writes to x.
+```
+
+However, we can pass the **address of an uninitialized pointer variable** to a function that assigns it a value:
+
+```c
+void foo(int **x) {
+    *x = nullptr; // C23: assigns a null pointer to the caller's p.
+}
+
+int main(void) {
+    int *p;
+    foo(&p);
+    // p is now a null pointer; dereferencing p would be UB.
+}
+```
+
+- `&p` is valid because the pointer variable `p` itself exists.
+- `x` points to `p`, so `*x = nullptr` initializes `p`.
+- The function does not read the old value of `p` or dereference it.
+
+**Before using a pointer, check:** its origin, valid bounds, the object's lifetime, permission to read/write, and whether other pointers access the same memory.
+
 
 # L6: Dynamic memory allocation
 
