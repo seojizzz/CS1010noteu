@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.17)  12 OCT 2026 15:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.17)  12 OCT 2026 17:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -634,25 +634,49 @@ Package microtype Info: Character `texttrademark ' is missing
  [14] [15] [16] [17] [18] [19] [20] [21] [22{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [23]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2097.
- [24] [25] [26] [27] [28] (./CS1010_Lecture_Notes.aux)
+ [24] [25] [26] [27]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 15 on input line 2364.
+
+[28] [29] [30] [31] [32]
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
+[33] (./CS1010_Lecture_Notes.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-07-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 17862 strings out of 467159
- 275064 string characters out of 5413461
- 1261879 words of memory out of 5000000
- 45804 multiletter control sequences out of 15000+600000
- 715474 words of font info for 189 fonts, out of 8000000 for 9000
+ 18016 strings out of 467159
+ 277123 string characters out of 5413461
+ 1261932 words of memory out of 5000000
+ 45839 multiletter control sequences out of 15000+600000
+ 715983 words of font info for 195 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  74i,8n,79p,1042b,2135s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{section*.63} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection*.61} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection*.60} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection*.59} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection*.58} has been referenced but does not exist, replaced by a fixed one
+
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on CS1010_Lecture_Notes.pdf (28 pages, 411652 bytes).
+Output written on CS1010_Lecture_Notes.pdf (33 pages, 433839 bytes).
 PDF statistics:
- 1422 PDF objects out of 1440 (max. 8388607)
- 1346 compressed objects within 14 object streams
- 896 named destinations out of 1000 (max. 500000)
- 51481 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1565 PDF objects out of 1728 (max. 8388607)
+ 1483 compressed objects within 15 object streams
+ 1003 named destinations out of 1200 (max. 500000)
+ 51473 words of extra memory for PDF output out of 51595 (max. 10000000)
 

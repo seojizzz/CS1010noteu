@@ -1661,12 +1661,52 @@ Then the memory would look like so:
 | '0x101C' | |
 
 ### Pointers.
-A pointer is a value that happens to be a sign that points to another value's address.
+A pointer is a type of variable that points to another value's address.
 We define integer `int x = 4`. 
 In english, "integer named `x` is set to $4$."
 And then we define `int *p = &x`
 In english, "integer pointer named `p` is set to the *address* of `x`"
 The asterisk `*` stands for pointer, while the ampersand `&` stands for address.
+
+![fig 5.1.1: image of pointer](/assets/pointer.png)
+
+A pointer takes the same number of bytes as the object it points to.
+
+### Why pointers?
+We break down functions in C based on the actions they perform. However, they are sometimes out of scope that we want. To get around this, we pass the struct using a pointer so that the pointer to the struct is in scope of the functions we want. This reduces the space by not copying.
+
+
+## 5.2 Address-of (&) and Dereferencing (*), nullptr, pointers to pointers
+
+### 5.2.1 Printing Addresses
+
+```c
+char x ='A';
+printf("x is at %p\n,", &x);
+```
+- `%p` is a format specifier to print an address.
+- `&x` is the addres of x.
+- However, some addresses may have spillover addresses that stretch over 1 byte.
+
+For multibyte addresses,
+```c
+int y =1000; // asume that y takes up 2 bytes here
+printf("y is at %p\n,", (char *) &y);
+```
+
+- To print `&y`, we need to make it refer to a single byte (`&y` the first one).
+- The address of x (`&x`) refers to the entire object `x`.
+
+The addresses are printed in this strange-looking form
+- (e.g. 0x7ffd7f613f2b)
+- 7ffd7f613f2b is a number represented in hexadecimal form (base-16, where the 16 digits are 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F)
+- As a normal base-10 number, this address is 140726740533035
+- Addresses aren't guaranteed to be the same across different executions of the program.
+
+Takeaway: you have to use &x for e.g., to get the address of things (you can't just guess or assume what it is)
+
+
+### 5.2.2 Address (&) and Dereferencing (*)
 
 ```c
 int *p = &x;
@@ -1683,17 +1723,202 @@ printf("%d\n",*ptr);
 // 1
 ```
 
-`int *ptr = &x` - type pointer to an integer. `&` means address.
+`int *ptr = &x`
+- type pointer to an integer.
+- The unary operator `&` is the *address of* an object.
 `*ptr = 1;` - dereferencing a pointer to its address
 
-### Why pointers?
-We break down functions in C based on the actions they perform. However, they are sometimes out of scope that we want. To get around this, we pass the struct using a pointer so that the pointer to the struct is in scope of the functions we want. This reduces the space by not copying.
+```c
+int main(void) {
+    int x = 5;
+    int *y = &x;
+    printf("%d\n", x);
+    *y = 10; //Read this as "go to the address pointed to by y. Then, set the value at that address to 10
+    printf("%d\n", x);
+}
+```
 
-Necessary for memory allocation.
+### 5.2.3 nullptr
+* `nullptr` is a special value in C23 that is guaranteed not to point to anything valid
+* Dereferencing a pointer to nullptr is **undefined behavior**!
+* Sometimes, you can check if `ptr == nullptr`
 
-## 5.2 Address-of (&) and Dereferencing (*), nullptr, pointers to pointers
-## 5.3 Functions, structs, arrays, and pointer arithmetic
-## 5.4 Strings: Null termination, character arrays and string literals
-## 5.5 Printing strings, const and string library functions
-## 5.6 Pointer Provenance Framework: reasoning about pointers
-## 5.X Lab
+e.g.
+```c
+int main(void) {
+    int *y = nullptr;
+    // *y is UB.
+}
+```
+
+### 5.2.4 Pointer to a pointer
+- A pointer variable is stored in memory, and has an address as well, so you can point to it!
+- If i dereference `z` twice, I’ll get an `int` back
+![pointer squared](assets\pointerpointer.png)
+
+```c
+int main(void) {
+    int x = 5;
+    int *y = &x;
+    int **z = &y;
+}
+```
+
+**Summary:** A pointer is a type of variable that stores an address.
+
+Declaring a pointer to a specific type: `<type> *<ptr_name>;`
+Getting the value pointed to by the pointer `*<ptr_name>;`
+Getting the address of a variable: `&<var_name>;`
+Setting the value pointed to by the pointer `*<ptr_name> = <value>`
+
+## 5.3 Arrays, Pointer Arithmetic, `sizeof`, Structs, Functions
+
+### 5.3.1 Array Memory Addresses
+Surprise! Arrays are actually (kinda like) pointers.
+- *They're *not identical*, but often, arrays can be treated as pointers. 
+- Arrays decay into pointers when an array is used where a pointer is expected.
+    - The array decays into the pointer of the `0th element`.
+```c
+void set_doublearr_index(double arr[] , size_t index, double val)
+//                               ||
+void set_doublearr_index(double *arr , size_t index, double val)
+```
+
+For example, in the below function, `costs` is interpreted as `&costs[0]`, or the address of the 0th element of `costs`.
+```c
+void set_doublearr_index(double arr[], size_t index, double val) {
+    arr[index] = val;
+}
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    set_doublearr_index(costs, 3, 5.5);
+    printf("%f\n", costs[3]);
+}
+```
+
+- Elements of an array are guaranteed to be consecutively placed in the stack. Their memory addresses are also stored "consecutively."
+```c
+int main(){
+char chararr[4] = {0};
+int intarr[4] = {0};
+printf("chararr[0]: %p vs chararr[1]: %p\n\n", &chararr[0], &chararr[1]);
+printf("intarr[0]: %p vs intarr[1]: %p\n", (char*) &intarr[0], (char*) &intarr[1]);
+``` 
+
+`char`: one byte apart
+```bash
+chararr[0]:     0x7ffe74df3b2c vs
+chararr[0]:     0x7ffe74df3b2d
+```
+
+`int`: four bytes apart.
+```bash
+intarr[0]:     0x7ffe74df3b10 vs
+intarr[0]:     0x7ffe74df3b14 vs
+```
+
+
+### 5.3.2 pointer arithmetic
+- indexing e.g., `a[i]` is just shorthand for doing this: `*(a + i)`
+- Between a and i, one has to be a pointer, and one has to be an integer-like type
+- `*(x + i)` points `i` elements after `x`
+
+
+**Incrementing pointers (Lab 5)**
+Refer to Lab 5, activity 1.
+Each function receives its own copy of the pointer `arr`, initially pointing to `arr[0]`. Moving that local pointer does not change the array; modifying `*arr` changes an actual array element.
+
+| Expression | Parsed as | Effect |
+|---|---|---|
+| `++arr` | `++arr` | Moves the pointer to the next element |
+| `++*arr` | `++(*arr)` | Increments the pointed-to integer |
+| `*arr++` | `*(arr++)` | Moves the pointer to the next element |
+| `(*arr)++` | `(*arr)++` | Increments the pointed-to integer |
+
+
+### 5.3.3 `sizeof`
+- The `sizeof` operator in C is a unary compile-time operator used to determine the exact memory size (in bytes) of a data type, variable, or expression.
+- **Return Type**: It returns an unsigned integer of type size_t. When printing it using printf(), you should always use the %zu format specifier.
+```c
+    printf("Size of int: %zu bytes\n", sizeof(int));       // Output: Typically 4 or 2
+    printf("Size of char: %zu byte\n", sizeof(char));     // Output: Always 1
+    printf("Size of num: %zu bytes\n", sizeof num);        // Output: Typically 4
+    
+    int my_array[] = {10, 20, 30, 40, 50};
+    size_t total_bytes = sizeof(my_array);                  // Get the total size in bytes
+    size_t array_length = sizeof(my_array) / sizeof(my_array[0]); // Calculate the number of elements
+    printf("Total memory size: %zu bytes\n", total_bytes); 
+    printf("Number of elements: %zu\n", array_length);
+```
+
+### Important Array-pointer relationship
+Arrays and pointers are not equivalent.
+
+This causes a compile error:
+```c
+double arr1[5] = {0};
+double arr2[] = arr1;
+```
+
+However, this works:
+```c
+double arr1[5] = {0};
+double *arr2 = arr1;
+```
+
+### 5.3.4 Structs
+
+### 5.3.5 Functions
+
+## 5.4 Strings
+
+### 5.4.1 Strings and the null character.
+A string is a sequence of `char`s.
+The formal definition is: A string is a contiguous sequence of `char`s terminated by and including the first null character `'\0'`.
+
+|N|N+1|N+2|N+3|N+4|N+5|
+|--|--|--|--|--|--|
+|`'H'`|`'e'`|`'l'`|`'l'`|`'o'`|`'\0'`|
+
+- We don’t know how long a string is without the null character.
+- It acts as the terminator for a string, and without it, printing/reading a string will make stack overflow.
+
+### 5.4.2 Modifiable and read-only strings
+Strings come in two types:
+- A **Modifiable** `char` array:
+    - All of these cases are identical and we can modify it e.g., p[0] = 'a';
+    - Strings constructed with `" "` automatically include the extra `'\0'`.
+    - You can declare an array size but it must include space for the `'\0'`.
+
+```c
+char p[] = "hi";
+char p[] = {'h', 'i', '\0'};
+char p[3] = "hi";
+```
+
+- A **Read-only** `char` array
+    - We cannot modify the string e.g., p[0] = 'a'; is not allowed!
+    - We cannot do p[0] = 'a' now (UB!)
+    - For efficiency, C will often store these in a “read-only” part of computer memory.
+
+```c
+char *p = "hi";
+```
+
+### 5.4.3 Printing strings
+
+```c
+char *p = "Hello\n";
+printf("%s\n", p);
+```
+- **Format Specifier**: `%s` prints entire strings
+- It knows when to stop because of the ‘\0’
+
+### 5.4.4 `const`
+
+
+## 5.5 Pointer Provenance Framework: reasoning about pointers
+
+# L6: Dynamic memory allocation
+
+Pointers are not really the same as the object they point to.

@@ -2326,111 +2326,516 @@ The outer loop controls the row number. The inner loop prints \texttt{i\ +\ 1} X
 \end{enumerate}
 
 \heading{L5: Pointers and Strings}
-\label{l5-pointers-and-strings}
-\hypertarget{l5-pointers-and-strings}{}
 
 \subheading{5.1 Pointers}
-\label{51-pointers}
-\hypertarget{51-pointers}{}
 
-\subsubheading*{memory}
-\label{memory}
-\hypertarget{memory}{}
+\subsubheading*{Memory}
 
-Before we talk about pointers, we need to first about memory. Memory has two Features:
-
+Memory has two important properties:
 \begin{itemize}
-\tightlist
-\item
-  \textbf{address} is the location of where data is stored
-\item
-  \textbf{value} of the memory is the data stored at the location
+    \item \textbf{Address}: the location where data is stored.
+    \item \textbf{Value}: the data stored at that location.
 \end{itemize}
 
 For example:
+\begin{lstlisting}[style=cscode]
+int x = 4;
+int *p = &x;
+\end{lstlisting}
+
+An illustrative memory layout is shown below. Actual addresses,
+object sizes, and placement depend on the implementation.
+
+\begin{longtable}{@{}ll@{}}
+\toprule
+\textbf{Address} & \textbf{Value} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{0x1000} & \texttt{0x4} \\
+\texttt{0x1004} & \texttt{0x1000} \\
+\texttt{0x1008} & \\
+\texttt{0x100C} & \\
+\texttt{0x1010} & \\
+\texttt{0x1014} & \\
+\texttt{0x1018} & \\
+\texttt{0x101C} & \\
+\end{longtable}
+
+\subsubheading*{Pointers}
+
+A pointer variable stores an address.
 
 \begin{lstlisting}[style=cscode]
 int x = 4;
 int *p = &x;
 \end{lstlisting}
 
-Then the memory would look like so:
+\begin{itemize}
+    \item \texttt{int x = 4;} declares an integer named
+          \texttt{x} and initializes it to \(4\).
+    \item \texttt{int *p = \&x;} declares a pointer to
+          \texttt{int}, named \texttt{p}, and initializes it
+          with the \emph{address of} \texttt{x}.
+    \item In this declaration, \texttt{*} indicates a pointer type.
+    \item In an expression, \texttt{\&} is the address-of operator.
+\end{itemize}
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Address
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Value
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-`0x1000' & `0x4' \\
-`0x1004' & `0x1000' \\
-`0x1008' & \\
-`0x100C' & \\
-`0x1010' & \\
-`0x1014' & \\
-`0x1018' & \\
-`0x101C' & \\
-\end{longtable}
+\begin{center}
+\IfFileExists{assets/pointer.png}{%
+    \includegraphics[width=0.75\linewidth]{assets/pointer.png}%
+}{%
+    \fbox{\parbox{0.75\linewidth}{\centering
+        Pointer diagram: place the image at
+        \texttt{assets/pointer.png}.}}%
+}
+\par\smallskip
+{\small Figure 5.1.1: A pointer storing an object's address.}
+\end{center}
 
-\subsubheading*{Pointers.}
-\label{pointers}
-\hypertarget{pointers}{}
+\textbf{Pointer size:}
+A pointer's size is determined by its pointer type and the
+implementation. It does \emph{not} have to equal the size of the
+object it points to. For example, a pointer may occupy \(8\) bytes
+while pointing to a \(4\)-byte \texttt{int}.
 
-A pointer is a value that happens to be a sign that points to another value's address. We define integer \texttt{int\ x\ =\ 4}. In english, ``integer named \texttt{x} is set to \(4\).'' And then we define \texttt{int\ *p\ =\ \&x} In english, ``integer pointer named \texttt{p} is set to the \emph{address} of \texttt{x}'' The asterisk \texttt{*} stands for pointer, while the ampersand \texttt{\&} stands for address.
+\subsubheading*{Why pointers?}
+
+A function can use a pointer to access an object declared elsewhere,
+provided that the object is still alive and the pointer is valid.
+
+Passing a pointer to a struct lets the function access or modify the
+original struct without copying the entire struct. The pointer
+itself is still passed \textbf{by value}.
+
+\subheading{5.2 Address-of (\&) and Dereferencing (*), nullptr,
+pointers to pointers}
+
+\subsubheading{5.2.1 Printing Addresses}
+
+\begin{lstlisting}[style=cscode]
+char x = 'A';
+printf("x is at %p\n", (void *)&x);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \texttt{\%p} prints a pointer value.
+    \item \texttt{\&x} gives the address of \texttt{x}.
+    \item \texttt{\%p} expects a \texttt{void *} argument, so cast
+          an object pointer to \texttt{void *} when printing it.
+\end{itemize}
+
+An object may occupy multiple bytes, but it still has a starting
+address:
+\begin{lstlisting}[style=cscode]
+int y = 1000;
+printf("y is at %p\n", (void *)&y);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \texttt{\&y} has type \texttt{int *} and points to the
+          entire object \texttt{y}.
+    \item Casting to \texttt{char *} is useful for accessing an
+          object's individual bytes; it is not required to print
+          its address.
+    \item The size of \texttt{int} is implementation-dependent.
+\end{itemize}
+
+Addresses are commonly printed in hexadecimal form:
+\begin{itemize}
+    \item Example: \texttt{0x7ffd7f613f2b}.
+    \item Hexadecimal is base \(16\), using the digits
+          \(0,1,\ldots,9,A,B,C,D,E,F\).
+    \item This example corresponds to the decimal number
+          \(140726740533035\).
+    \item The exact format produced by \texttt{\%p} is
+          implementation-defined.
+    \item Addresses are not guaranteed to remain the same across
+          different executions of a program.
+\end{itemize}
+
+\textbf{Takeaway:}
+Use an expression such as \texttt{\&x} to obtain an object's
+address; do not guess its address.
+
+\subsubheading{5.2.2 Address (\&) and Dereferencing (*)}
 
 \begin{lstlisting}[style=cscode]
 int *p = &x;
-int y = *p; 
+int y = *p;
 \end{lstlisting}
 
-when an asterisk is used without the type, it becomes a pointer \textbf{dereference}. In english, ``integer named \texttt{y} is set to \emph{the thing pointed to} by \texttt{p}.''
+In an expression, unary \texttt{*} performs
+\textbf{pointer dereferencing}: it accesses the object pointed to
+by the pointer.
+
+Read \texttt{int y = *p;} as:
+``Initialize the integer \texttt{y} with the value of the object
+pointed to by \texttt{p}.''
 
 \begin{lstlisting}[style=cscode]
-int x =1;
+int x = 1;
 int *ptr = &x;
-printf("%d\n",*ptr);
+printf("%d\n", *ptr);
 // 1
 \end{lstlisting}
 
-\texttt{int\ *ptr\ =\ \&x} - type pointer to an integer. \texttt{\&} means address. \texttt{*ptr\ =\ 1;} - dereferencing a pointer to its address
+\begin{itemize}
+    \item \texttt{int *ptr = \&x;} declares a pointer to an integer.
+    \item The unary operator \texttt{\&} obtains an object's address.
+    \item \texttt{*ptr} accesses the object at that address.
+    \item \texttt{*ptr = 1;} sets the pointed-to object to \(1\).
+\end{itemize}
 
-\subsubheading*{Why pointers?}
-\label{why-pointers}
-\hypertarget{why-pointers}{}
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    int x = 5;
+    int *y = &x;
 
-We break down functions in C based on the actions they perform. However, they are sometimes out of scope that we want. To get around this, we pass the struct using a pointer so that the pointer to the struct is in scope of the functions we want. This reduces the space by not copying.
+    printf("%d\n", x); // 5
 
-Necessary for memory allocation.
+    // Go to the object pointed to by y and set its value to 10.
+    *y = 10;
 
-\subheading{5.2 Address-of (\&) and Dereferencing (*), nullptr, pointers to pointers}
-\label{52-address-of--and-dereferencing--nullptr-pointers-to-pointers}
-\hypertarget{52-address-of--and-dereferencing--nullptr-pointers-to-pointers}{}
+    printf("%d\n", x); // 10
+}
+\end{lstlisting}
 
-\subheading{5.3 Functions, structs, arrays, and pointer arithmetic}
-\label{53-functions-structs-arrays-and-pointer-arithmetic}
-\hypertarget{53-functions-structs-arrays-and-pointer-arithmetic}{}
+\subsubheading{5.2.3 nullptr}
 
-\subheading{5.4 Strings: Null termination, character arrays and string literals}
-\label{54-strings-null-termination-character-arrays-and-string-literals}
-\hypertarget{54-strings-null-termination-character-arrays-and-string-literals}{}
+\begin{itemize}
+    \item \texttt{nullptr} is a null pointer constant introduced
+          in C23. It can initialize a pointer that points to no
+          valid object or function.
+    \item Dereferencing a null pointer causes
+          \textbf{undefined behaviour}.
+    \item You can test whether a pointer is null using
+          \texttt{ptr == nullptr}.
+    \item Being non-null alone does not guarantee that a pointer
+          is valid to dereference.
+\end{itemize}
 
-\subheading{5.5 Printing strings, const and string library functions}
-\label{55-printing-strings-const-and-string-library-functions}
-\hypertarget{55-printing-strings-const-and-string-library-functions}{}
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    int *y = nullptr;
+    // Dereferencing y would cause undefined behaviour.
+}
+\end{lstlisting}
 
-\subheading{5.6 Pointer Provenance Framework: reasoning about pointers}
-\label{56-pointer-provenance-framework-reasoning-about-pointers}
-\hypertarget{56-pointer-provenance-framework-reasoning-about-pointers}{}
+\subsubheading{5.2.4 Pointer to a pointer}
 
-\subheading{5.X Lab}
-\label{5x-lab}
-\hypertarget{5x-lab}{}
+\begin{itemize}
+    \item A pointer variable is itself stored in memory and has
+          an address, so another pointer can point to it.
+    \item If \texttt{z} points to \texttt{y}, and \texttt{y}
+          points to \texttt{x}, then \texttt{**z} accesses
+          \texttt{x}.
+\end{itemize}
+
+\begin{center}
+\IfFileExists{assets/pointerpointer.png}{%
+    \includegraphics[width=0.75\linewidth]{assets/pointerpointer.png}%
+}{%
+    \fbox{\parbox{0.75\linewidth}{\centering
+        Pointer-to-pointer diagram: place the image at
+        \texttt{assets/pointerpointer.png}.}}%
+}
+\par\smallskip
+{\small A pointer to another pointer.}
+\end{center}
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    int x = 5;
+    int *y = &x;
+    int **z = &y;
+
+    // *z is y: a pointer to int.
+    // **z is x: an int with value 5.
+}
+\end{lstlisting}
+
+\textbf{Summary:} A pointer variable stores an address.
+
+\begin{itemize}
+    \item Declare a pointer:
+          \texttt{<type> *<ptr\_name>;}
+    \item Access the pointed-to object:
+          \texttt{*<ptr\_name>}
+    \item Obtain a variable's address:
+          \texttt{\&<var\_name>}
+    \item Assign to the pointed-to object:
+          \texttt{*<ptr\_name> = <value>;}
+\end{itemize}
+
+\subheading{5.3 Arrays, Pointer Arithmetic, \texttt{sizeof},
+Structs, Functions}
+
+\subsubheading{5.3.1 Array Memory Addresses}
+
+Arrays and pointers are \textbf{not identical}, but array expressions
+often undergo a conversion called \textbf{array-to-pointer decay}.
+
+\begin{itemize}
+    \item In most expressions, an array is converted to a pointer
+          to its first element, at index \(0\).
+    \item Important exceptions include an array used as the operand
+          of \texttt{sizeof} or unary \texttt{\&}.
+    \item In a function parameter declaration, array notation is
+          adjusted to pointer notation.
+\end{itemize}
+
+These two function declarations describe the same parameter types:
+\begin{lstlisting}[style=cscode]
+void set_doublearr_index(double arr[], size_t index, double val);
+
+// Equivalent declaration:
+void set_doublearr_index(double *arr, size_t index, double val);
+\end{lstlisting}
+
+In the function call below, \texttt{costs} is converted to
+\texttt{\&costs[0]}, the address of its first element.
+
+\begin{lstlisting}[style=cscode]
+void set_doublearr_index(double arr[], size_t index, double val) {
+    arr[index] = val;
+}
+
+int main(void) {
+    double costs[5] = {8.88, 10.22, 9.88, 22.22, 44.44};
+    set_doublearr_index(costs, 3, 5.5);
+    printf("%f\n", costs[3]);
+}
+\end{lstlisting}
+
+Array elements are guaranteed to occupy consecutive locations in
+memory. Arrays are not necessarily stored on a stack.
+
+\begin{lstlisting}[style=cscode]
+int main(void) {
+    char chararr[4] = {0};
+    int intarr[4] = {0};
+
+    printf("chararr[0]: %p vs chararr[1]: %p\n\n",
+           (void *)&chararr[0], (void *)&chararr[1]);
+
+    printf("intarr[0]: %p vs intarr[1]: %p\n",
+           (void *)&intarr[0], (void *)&intarr[1]);
+}
+\end{lstlisting}
+
+Adjacent \texttt{char} elements are one byte apart.
+Example output:
+\begin{lstlisting}[style=plaincode]
+chararr[0]: 0x7ffe74df3b2c vs chararr[1]: 0x7ffe74df3b2d
+\end{lstlisting}
+
+Adjacent \texttt{int} elements are \texttt{sizeof(int)} bytes apart.
+On a system where \texttt{sizeof(int) == 4}, example output is:
+\begin{lstlisting}[style=plaincode]
+intarr[0]: 0x7ffe74df3b10 vs intarr[1]: 0x7ffe74df3b14
+\end{lstlisting}
+
+\subsubheading{5.3.2 Pointer arithmetic}
+
+\begin{itemize}
+    \item Indexing with \texttt{a[i]} is equivalent to
+          \texttt{*(a + i)}.
+    \item One operand of this addition is a pointer; the other has
+          integer type.
+    \item \texttt{x + i} points \(i\) elements after \texttt{x}.
+    \item \texttt{*(x + i)} accesses the object at that position.
+    \item Pointer arithmetic must stay within the same array or
+          reach at most one position past its end. The one-past
+          pointer must not be dereferenced.
+\end{itemize}
+
+\textbf{Incrementing pointers (Lab 5)}
+
+Refer to Lab 5, activity 1.
+
+Each function receives its own copy of the pointer \texttt{arr},
+initially pointing to \texttt{arr[0]}. Moving that local pointer does
+not change the array; modifying \texttt{*arr} changes an actual
+array element.
+
+\begin{longtable}{@{}
+    p{0.18\linewidth}
+    p{0.20\linewidth}
+    p{\dimexpr0.62\linewidth-4\tabcolsep\relax}@{}}
+\toprule
+\textbf{Expression} & \textbf{Parsed as} & \textbf{Effect} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{++arr}
+    & \texttt{++arr}
+    & Moves the pointer to the next element. \\
+\texttt{++*arr}
+    & \texttt{++(*arr)}
+    & Increments the pointed-to integer. \\
+\texttt{*arr++}
+    & \texttt{*(arr++)}
+    & Dereferences the old pointer and advances the pointer
+      to the next element; the integer is unchanged. \\
+\texttt{(*arr)++}
+    & \texttt{(*arr)++}
+    & Increments the pointed-to integer. \\
+\end{longtable}
+
+\subsubheading{5.3.3 \texttt{sizeof}}
+
+\begin{itemize}
+    \item \texttt{sizeof} determines the size, in bytes, of a type
+          or the type of an expression.
+    \item For ordinary non-variable-length types, its result is
+          determined at compile time. Variable-length arrays can
+          require evaluation at runtime.
+    \item \textbf{Return type}: \texttt{size\_t}, an unsigned
+          integer type.
+    \item Print a \texttt{size\_t} value using
+          \texttt{printf} with \texttt{\%zu}.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+int num = 42;
+
+printf("Size of int: %zu bytes\n", sizeof(int));
+printf("Size of char: %zu byte\n", sizeof(char)); // Always 1
+printf("Size of num: %zu bytes\n", sizeof num);
+
+int my_array[] = {10, 20, 30, 40, 50};
+
+size_t total_bytes = sizeof(my_array);
+size_t array_length = sizeof(my_array) / sizeof(my_array[0]);
+
+printf("Total memory size: %zu bytes\n", total_bytes);
+printf("Number of elements: %zu\n", array_length);
+\end{lstlisting}
+
+\textbf{Important:}
+The array-length calculation works when \texttt{my\_array} is
+an actual array. It does not work on a pointer or on an array
+parameter that has been adjusted to a pointer.
+
+\subsubheading*{Important array--pointer relationship}
+
+Arrays and pointers are not equivalent.
+
+This causes a compilation error:
+\begin{lstlisting}[style=cscode]
+double arr1[5] = {0};
+double arr2[] = arr1; // Invalid array initialization
+\end{lstlisting}
+
+However, this works:
+\begin{lstlisting}[style=cscode]
+double arr1[5] = {0};
+double *arr2 = arr1;
+\end{lstlisting}
+
+Here, \texttt{arr2} points to the first element of \texttt{arr1};
+it is not a separate copy of the array.
+
+\subsubheading{5.3.4 Structs}
+
+\subsubheading{5.3.5 Functions}
+
+\subheading{5.4 Strings}
+
+\subsubheading{5.4.1 Strings and the null character}
+
+A string is a contiguous sequence of characters terminated by,
+and including, the first null character, \texttt{'\textbackslash0'}.
+
+\begin{center}
+\begin{tabular}{@{}*{6}{c}@{}}
+\toprule
+\(N\) & \(N+1\) & \(N+2\) & \(N+3\) & \(N+4\) & \(N+5\) \\
+\midrule
+\texttt{'H'} &
+\texttt{'e'} &
+\texttt{'l'} &
+\texttt{'l'} &
+\texttt{'o'} &
+\texttt{'\textbackslash0'} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item C strings do not carry a separate length field;
+          string functions locate the end using the null character.
+    \item The null character acts as the string terminator.
+    \item If an array lacks a null terminator, operations that
+          expect a string may read beyond the array's bounds,
+          causing \textbf{undefined behaviour}.
+    \item This does not necessarily cause a stack overflow.
+\end{itemize}
+
+\subsubheading{5.4.2 Modifiable and read-only strings}
+
+\textbf{A modifiable character array}
+
+\begin{itemize}
+    \item The following are alternative declarations with the same
+          initial contents. Use one declaration at a time.
+    \item The array can be modified, for example with
+          \texttt{p[0] = 'a';}.
+    \item A string literal includes an implicit
+          \texttt{'\textbackslash0'}.
+    \item To store the complete string in an array, allow room
+          for its null terminator.
+\end{itemize}
+
+\begin{lstlisting}[style=cscode]
+// Alternative declarations: use one at a time.
+char p[] = "hi";
+char p[] = {'h', 'i', '\0'};
+char p[3] = "hi";
+\end{lstlisting}
+
+\textbf{A pointer to a string literal}
+
+\begin{lstlisting}[style=cscode]
+char *p = "hi";
+\end{lstlisting}
+
+\begin{itemize}
+    \item Here, \texttt{p} points to a string literal.
+    \item Attempting to modify the literal, for example using
+          \texttt{p[0] = 'a';}, causes
+          \textbf{undefined behaviour}.
+    \item Implementations often store string literals in read-only
+          memory.
+    \item Prefer \texttt{const char *p = "hi";} to express that the
+          characters must not be modified through \texttt{p}.
+\end{itemize}
+
+\subsubheading{5.4.3 Printing strings}
+
+\begin{lstlisting}[style=cscode]
+const char *p = "Hello\n";
+printf("%s\n", p);
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{Format specifier}: \texttt{\%s} prints a string.
+    \item Printing stops at the first
+          \texttt{'\textbackslash0'}; the null character itself
+          is not printed.
+    \item This example prints two newline characters: one from the
+          string and one from the format string.
+\end{itemize}
+
+\subsubheading{5.4.4 \texttt{const}}
+
+\subheading{5.5 Pointer Provenance Framework: reasoning about pointers}
+
+\heading{L6: Dynamic memory allocation}
+
+A pointer is a separate object from the object it points to.
 
 \end{document}

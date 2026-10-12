@@ -75,12 +75,25 @@
 \contentsline {subsubsection}{A method for planning loops}{27}{lstnumber.-87.8}%
 \contentsline {section}{L5: Pointers and Strings}{27}{section*.55}%
 \contentsline {subsection}{5.1 Pointers}{27}{subsection*.56}%
-\contentsline {subsubsection}{memory}{27}{subsection*.56}%
-\contentsline {subsubsection}{Pointers.}{28}{table.15}%
-\contentsline {subsubsection}{Why pointers?}{28}{lstnumber.-90.4}%
+\contentsline {subsubsection}{Memory}{27}{subsection*.56}%
+\contentsline {subsubsection}{Pointers}{28}{table.15}%
+\contentsline {subsubsection}{Why pointers?}{28}{lstnumber.-89.2}%
 \contentsline {subsection}{5.2 Address-of (\&) and Dereferencing (*), nullptr, pointers to pointers}{28}{subsection*.57}%
-\contentsline {subsection}{5.3 Functions, structs, arrays, and pointer arithmetic}{28}{subsection*.58}%
-\contentsline {subsection}{5.4 Strings: Null termination, character arrays and string literals}{28}{subsection*.59}%
-\contentsline {subsection}{5.5 Printing strings, const and string library functions}{28}{subsection*.60}%
-\contentsline {subsection}{5.6 Pointer Provenance Framework: reasoning about pointers}{28}{subsection*.61}%
-\contentsline {subsection}{5.X Lab}{28}{subsection*.62}%
+\contentsline {subsubsection}{5.2.1 Printing Addresses}{28}{subsubsection*.58}%
+\contentsline {subsubsection}{5.2.2 Address (\&) and Dereferencing (*)}{29}{subsubsection*.59}%
+\contentsline {subsubsection}{5.2.3 nullptr}{30}{subsubsection*.60}%
+\contentsline {subsubsection}{5.2.4 Pointer to a pointer}{30}{subsubsection*.61}%
+\contentsline {subsection}{5.3 Arrays, Pointer Arithmetic, \texttt {sizeof}, Structs, Functions}{30}{subsection*.62}%
+\contentsline {subsubsection}{5.3.1 Array Memory Addresses}{30}{subsubsection*.63}%
+\contentsline {subsubsection}{5.3.2 Pointer arithmetic}{31}{subsubsection*.64}%
+\contentsline {subsubsection}{5.3.3 \texttt {sizeof}}{32}{subsubsection*.65}%
+\contentsline {subsubsection}{Important array--pointer relationship}{32}{lstnumber.-102.13}%
+\contentsline {subsubsection}{5.3.4 Structs}{32}{subsubsection*.66}%
+\contentsline {subsubsection}{5.3.5 Functions}{32}{subsubsection*.67}%
+\contentsline {subsection}{5.4 Strings}{32}{subsection*.68}%
+\contentsline {subsubsection}{5.4.1 Strings and the null character}{32}{subsubsection*.69}%
+\contentsline {subsubsection}{5.4.2 Modifiable and read-only strings}{33}{subsubsection*.70}%
+\contentsline {subsubsection}{5.4.3 Printing strings}{33}{subsubsection*.71}%
+\contentsline {subsubsection}{5.4.4 \texttt {const}}{33}{subsubsection*.72}%
+\contentsline {subsection}{5.5 Pointer Provenance Framework: reasoning about pointers}{33}{subsection*.73}%
+\contentsline {section}{L6: Dynamic memory allocation}{33}{section*.74}%
